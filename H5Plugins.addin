@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Name>H5Plugins</Name>
+    <Assembly>H5Plugins.dll</Assembly>
+    <AddInId>
+      98EFFF6D-9FC3-4436-A4E6-BFDD2834D1AC
+    </AddInId>
+    <FullClassName>H5Plugins.DetalhesTipicos</FullClassName>
+    <Text>Detalhes Típicos</Text>
+    <Description>Cria detalhes típicos</Description>
+    <VendorId>Daniel</VendorId>
+    <VendorDescription>Daniel Pinheiro</VendorDescription>
+    <VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
+  </AddIn>
+  <AddIn Type="Application">
+    <Name>Detalhes Típicos</Name>
+    <Assembly>H5Plugins.dll</Assembly>
+    <AddInId>
+      8D80856F-EA83-4A2D-B456-D18E1692769B
+    </AddInId>
+    <FullClassName>H5Plugins.AplicacaoExterna</FullClassName>
+    <VendorId>Daniel</VendorId>
+    <VendorDescription>Daniel Pinheiro</VendorDescription>
+  </AddIn>
+  <!--
+  <AddIn Type="DBApplication">
+    <Name>DBApplicationPlugin</Name>
+    <Assembly>H5Plugins.dll</Assembly>
+    <AddInId>
+      FE73EF92-A8CC-4F95-9D6E-93911023BCD7
+    </AddInId>
+    <FullClassName>H5Plugins.ExternalDBApplication</FullClassName>
+    <VendorId>Daniel</VendorId>
+    <VendorDescription>Daniel Pinheiro</VendorDescription>
+  </AddIn>
+  -->
+</RevitAddIns>
