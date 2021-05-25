@@ -9,26 +9,13 @@ using Revit.SDK.Samples.DuplicateViews.CS;
 namespace H5Plugins
 {
     [Transaction(TransactionMode.Manual)]
-    public class DetalhesTipicos : IExternalCommand
+    public class DetalhesTipicos 
     {
-        public const string Path = @"V:\Projetos\2108-BIM\Desenvolvimento-BIM\00-TEMPLATES\00-REVIT\05-MECÂNICA\DETALHES TÍPICOS.rvt";
+        
+        public static void DetTip(UIApplication application, Document doc, Document opendoc, UIDocument uidoc)
 
-        public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
-
-        {
-            //Get UIDocument and Document            
-
-            UIApplication application = commandData.Application;
-            NewMethod(application);
-            return Result.Succeeded;
-        }
-
-        public static void NewMethod(UIApplication application)
-        {
-            Document opendoc = application.Application.OpenDocumentFile(Path);
-            UIDocument uidoc = application.ActiveUIDocument;
-            Document doc = uidoc.Document;
-
+        {       
+           
             try
             {
                 //Coletando as drafting views do documento externo "Detalhes Típicos"
@@ -94,8 +81,6 @@ namespace H5Plugins
                     DuplicateViewUtils.DuplicateDraftingViews(opendoc, draftingViews, doc);
                 int numDrafting = draftingViews.Count<ViewDrafting>();
 
-
-
                 //Coletando a família de folha apropriada: Family Symbol
                 FamilySymbol tBlock = new FilteredElementCollector(doc)
                     .OfCategory(BuiltInCategory.OST_TitleBlocks)
@@ -128,44 +113,60 @@ namespace H5Plugins
                 int[] numberOfdraftingViews = Enumerable.Range(1, viewsDrafing.Count()).ToArray();
                 int a = 0;
 
-                foreach (View item in viewsDrafingIn)
+
+                using (TransactionGroup transactionGroup = new TransactionGroup(doc, "Detalhes Típicos"))
+
                 {
 
-                    using (Transaction trans = new Transaction(doc, "Create Sheet"))
+                    transactionGroup.Start();
+
+                    foreach (View item in viewsDrafingIn)
                     {
+                        using (Transaction trans = new Transaction(doc, "Criar folhas"))
+                        {
 
-                        trans.Start();
-                        //Criando uma família de folha                       
-                        ViewSheet vSheet = ViewSheet.Create(doc, tBlock.Id);
-                        vSheet.Name = item.Name.ToString();
-                        vSheet.SheetNumber = numberOfdraftingViews[a].ToString();
+                            trans.Start();
+                            //Criando uma família de folha                       
+                            ViewSheet vSheet = ViewSheet.Create(doc, tBlock.Id);
+                            vSheet.Name = item.Name.ToString();
+                            vSheet.SheetNumber = numberOfdraftingViews[a].ToString();
 
 
-                        //Get Midpoint
-                        BoundingBoxUV outline = vSheet.Outline;
-                        double x = (outline.Max.U + outline.Min.U) / 2;
-                        double y = (outline.Max.V + outline.Min.V) / 2;
-                        XYZ midPoint = new XYZ(x, y, 0);
+                            //Get Midpoint
+                            BoundingBoxUV outline = vSheet.Outline;
+                            double x = (outline.Max.U + outline.Min.U) / 2;
+                            double y = (outline.Max.V + outline.Min.V) / 2;
+                            XYZ midPoint = new XYZ(x, y, 0);
 
-                        //Criando uma viewport e inserindo o detalhe na folha
-                        Viewport vPort = Viewport.Create(doc, vSheet.Id, item.Id, midPoint);
-                        string nameDraftingView = item.Name.ToString();
-                        a++;
+                            //Criando uma viewport e inserindo o detalhe na folha
+                            Viewport vPort = Viewport.Create(doc, vSheet.Id, item.Id, midPoint);
+                            string nameDraftingView = item.Name.ToString();
+                            a++;
 
-                        trans.Commit();
+                            trans.Commit();
+                        }
                     }
+
+                    transactionGroup.Assimilate();
+                }
+
+
+                string str = "";
+                foreach (var x in viewsDrafingIn)
+                {
+                    str += Environment.NewLine + x.Name;
                 }
 
                 // Mostrando na tela as vista de desenho importadas 
                 TaskDialog.Show("Detalhes Típicos",
-                    String.Format("Foram criadas {0} folhas com Detalhes Típicos.", viewsDrafing.Count().ToString()));          
+                    String.Format("Foram importados os seguintes Detalhes Típicos:{0}", str));
 
             }
             catch (Exception)
-            {               
-                
+            {
+
             }
         }
+        
     }
-
 }

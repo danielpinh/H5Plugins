@@ -38,6 +38,12 @@ namespace H5Plugins
 
         InitializeComponent();
 
+            this.Topmost = true;
+            this.ShowInTaskbar = true;            
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            this.SizeToContent = SizeToContent.WidthAndHeight;
+                  
+
         m_Handler = handler;
         /* Here we assign the instance from the ExternalApllication class to the RequestHandler variable.
          This class will handle each command started through the MainWindow controls as Requests (see auxiliary method: MakeRequest). */
@@ -91,5 +97,6 @@ namespace H5Plugins
         m_Handler = null;
         this.Close();
     }
-}
+
+    }
 }

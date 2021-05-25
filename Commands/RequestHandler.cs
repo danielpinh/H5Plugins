@@ -26,9 +26,14 @@ namespace H5Plugins
         }
 
         public Request Request { get; } = new Request(); // instantiating the Request class, which will take the commands by the user by indentifying its RequestId 
+        public const string Path = @"V:\Projetos\2108-BIM\Desenvolvimento-BIM\00-TEMPLATES\00-REVIT\05-MECÂNICA\DETALHES TÍPICOS.rvt";
 
         public void Execute(UIApplication app)
-        {
+            
+        {            
+            UIDocument uidoc = app.ActiveUIDocument;
+            Document doc = uidoc.Document;
+            Document opendoc = app.Application.OpenDocumentFile(Path);
             try
             {
                 /* Based on the command started by the user in the MainWindow, 
@@ -42,7 +47,7 @@ namespace H5Plugins
                         }
                     case RequestId.Command01:
                         {
-                            DetalhesTipicos.NewMethod(app);
+                            DetalhesTipicos.DetTip(app, doc, opendoc, uidoc);
                             break;
                         }
 
@@ -55,7 +60,7 @@ namespace H5Plugins
             }
             finally
             {
-                AplicacaoExterna.thisApp.WakeWindowUp(); // keeping the dialog active after a request
+                ExternalApplication.thisApp.WakeWindowUp(); // keeping the dialog active after a request
             }
             return;
         }

@@ -4,7 +4,7 @@
     <Name>H5Plugins</Name>
     <Assembly>H5Plugins.dll</Assembly>
     <AddInId>
-      98EFFF6D-9FC3-4436-A4E6-BFDD2834D1AC
+		E2546D18-3097-450B-9DB2-0219F4FCACD1
     </AddInId>
     <FullClassName>H5Plugins.DetalhesTipicos</FullClassName>
     <Text>Detalhes Típicos</Text>
@@ -14,15 +14,45 @@
     <VisibilityMode>NotVisibleWhenNoActiveDocument</VisibilityMode>
   </AddIn>
   <AddIn Type="Application">
-    <Name>Detalhes Típicos</Name>
+    <Name>DetalhesTipicos</Name>
     <Assembly>H5Plugins.dll</Assembly>
     <AddInId>
-      8D80856F-EA83-4A2D-B456-D18E1692769B
+		EDB5C4EF-59AB-427E-81D2-55595D55D06F
     </AddInId>
-    <FullClassName>H5Plugins.AplicacaoExterna</FullClassName>
+    <FullClassName>H5Plugins.ExternalApplication</FullClassName>
     <VendorId>Daniel</VendorId>
     <VendorDescription>Daniel Pinheiro</VendorDescription>
   </AddIn>
+	<AddIn Type="Command">
+		<Name>ReordenarCortes</Name>
+		<Assembly>H5Plugins.dll</Assembly>
+		<AddInId>
+			5724C0F4-8F7C-46E2-99A8-4E7EC09F9482
+		</AddInId>
+		<FullClassName>H5Plugins.OrdenarCortes</FullClassName>
+		<VendorId>Daniel</VendorId>
+		<VendorDescription>Daniel Pinheiro</VendorDescription>
+	</AddIn>
+	<AddIn Type="Command">
+		<Name>Reordenar Cortes</Name>
+		<Assembly>H5Plugins.dll</Assembly>
+		<AddInId>
+			0A5BF4B8-9F0D-4446-BB43-2CE51A1F4A27
+		</AddInId>
+		<FullClassName>H5Plugins.ParametrosCompartilhados</FullClassName>
+		<VendorId>Daniel</VendorId>
+		<VendorDescription>Daniel Pinheiro</VendorDescription>
+	</AddIn>
+	<AddIn Type="Command">
+		<Name>About</Name>
+		<Assembly>H5Plugins.dll</Assembly>
+		<AddInId>
+			9611352F-4CC2-481A-80C1-2506D21A54C3
+		</AddInId>
+		<FullClassName>H5Plugins.About</FullClassName>
+		<VendorId>Daniel</VendorId>
+		<VendorDescription>Daniel Pinheiro</VendorDescription>
+	</AddIn>
   <!--
   <AddIn Type="DBApplication">
     <Name>DBApplicationPlugin</Name>

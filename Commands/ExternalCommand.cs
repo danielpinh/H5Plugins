@@ -26,7 +26,7 @@ public class ExternalCommand : IExternalCommand
         try
         {
                 /* Calling the application to show the MainWindow with its controls (each containing a different command). */
-                AplicacaoExterna.thisApp.ShowWindow(commandData.Application);
+                ExternalApplication.thisApp.ShowWindow(commandData.Application);
 
             return Result.Succeeded;
         }
