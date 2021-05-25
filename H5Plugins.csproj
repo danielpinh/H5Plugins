@@ -93,7 +93,7 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Services\LOGO-H5-02.jpeg" />
+    <Resource Include="Services\LOGO-H5-02.jpeg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

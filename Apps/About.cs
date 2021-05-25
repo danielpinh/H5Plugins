@@ -8,9 +8,9 @@ using System.Linq;
 namespace H5Plugins
 {
     [Transaction(TransactionMode.Manual)]
-    public class About
+    public class About : IExternalCommand
     {
-        public void Abt ()
+        public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
 
         {
 
@@ -22,7 +22,7 @@ namespace H5Plugins
             {
 
             }
-
+            return Result.Succeeded;
 
         }
 
