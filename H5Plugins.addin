@@ -53,6 +53,26 @@
 		<VendorId>Daniel</VendorId>
 		<VendorDescription>Daniel Pinheiro</VendorDescription>
 	</AddIn>
+	<AddIn Type="Command">
+		<Name>About</Name>
+		<Assembly>H5Plugins.dll</Assembly>
+		<AddInId>
+			3FC62555-3197-44F2-A198-135BCD8AFE31
+		</AddInId>
+		<FullClassName>H5Plugins.AtribuirCodigos</FullClassName>
+		<VendorId>Daniel</VendorId>
+		<VendorDescription>Daniel Pinheiro</VendorDescription>
+	</AddIn>
+	<AddIn Type="Command">
+		<Name>MyCsvReader</Name>
+		<Assembly>H5Plugins.dll</Assembly>
+		<AddInId>
+			5976F6AF-07E4-4428-B186-CFAE221B33C6
+		</AddInId>
+		<FullClassName>H5Plugins.MyCsvResource</FullClassName>
+		<VendorId>Daniel</VendorId>
+		<VendorDescription>Daniel Pinheiro</VendorDescription>
+	</AddIn>
   <!--
   <AddIn Type="DBApplication">
     <Name>DBApplicationPlugin</Name>

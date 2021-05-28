@@ -1,5 +1,7 @@
 ﻿using Autodesk.Revit.UI;
 using System;
+using System.Drawing;
+using System.IO;
 using System.Reflection;
 using System.Windows.Media.Imaging;
 
@@ -38,14 +40,12 @@ namespace H5Plugins
             string help = @"https://www.head5.com.br/";
             ContextualHelp contexHelp = new ContextualHelp(ContextualHelpType.Url, help);
             button1.SetContextualHelp(contexHelp);       
-            button1.ToolTip = toolTip1;              
-
-            // Adding icon to first button
-            Uri imagePath1 = new Uri(@"D:\Users\daniel.santos\OneDrive\1-HEAD5\3-DESENVOLVIMENTO BIM\7-PLUGINS\Imagens\Detalhes Típicos.png");
-            BitmapImage image1 = new BitmapImage(imagePath1);
+            button1.ToolTip = toolTip1;        
+            // Adding icon to first button                        
             PushButton pushButton1 = panelMec.AddItem(button1) as PushButton;
-            pushButton1.LargeImage = image1;
+            pushButton1.LargeImage = PngImageSource("H5Plugins.Resources.DetalhesTipicos.png");           
 
+                
             /////////////////////////////////////////////////BUTTON #2   
             //Creating second button on Menu Ribbon
             RibbonPanel panelGer = application.CreateRibbonPanel("H5Apps", "Geral");
@@ -53,26 +53,30 @@ namespace H5Plugins
             PushButtonData button2 = new PushButtonData("Button2", String.Format("Ordenar" + Environment.NewLine + "Cortes"), path, "H5Plugins.OrdenarCortes");            
             button2.ToolTip = toolTip2;
             button2.SetContextualHelp(contexHelp);
-
-            // Adding icon to second button
-            Uri imagePath2 = new Uri(@"D:\Users\daniel.santos\OneDrive\1-HEAD5\3-DESENVOLVIMENTO BIM\7-PLUGINS\Imagens\Cortes.png");
-            BitmapImage image2 = new BitmapImage(imagePath2);
+            // Adding icon to second button            
             PushButton pushButton2 = panelGer.AddItem(button2) as PushButton;
-            pushButton2.LargeImage = image2;
+            pushButton2.LargeImage = PngImageSource("H5Plugins.Resources.OrdenarCortes.png");
 
 
             /////////////////////////////////////////////////BUTTON #3   
             //Creating third button on Menu Ribbon           
             string toolTip3 = "Insere Parâmetros Compartilhados Nas Famílias.";
-            PushButtonData button3 = new PushButtonData("Button3", String.Format("Parâmetros" + Environment.NewLine + "Compartilhados"), path, "H5Plugins.ParametrosCompartilhados");
+            PushButtonData button3 = new PushButtonData("Button3", String.Format("Gerenciar" + Environment.NewLine + "Parâmetros"), path, "H5Plugins.ParametrosCompartilhados");
             button3.ToolTip = toolTip3;
             button3.SetContextualHelp(contexHelp);
-            // Adding icon to third button
-            Uri imagePath3 = new Uri(@"D:\Users\daniel.santos\OneDrive\1-HEAD5\3-DESENVOLVIMENTO BIM\7-PLUGINS\Imagens\Parametros.png");
-            BitmapImage image3 = new BitmapImage(imagePath3);
+            // Adding icon to third button            
             PushButton pushButton3 = panelMec.AddItem(button3) as PushButton;
-            pushButton3.LargeImage = image3;
+            pushButton3.LargeImage = PngImageSource("H5Plugins.Resources.GerenciarParametros.png");
 
+            /////////////////////////////////////////////////BUTTON #4   
+            //Creating third button on Menu Ribbon           
+            string toolTip4 = "Atribui os Códigos Internos e de Fabricantes às Famílias de Sistema";
+            PushButtonData button4 = new PushButtonData("Button3", String.Format("Atribuir" + Environment.NewLine + "Códigos"), path, "H5Plugins.AtribuirCodigos");
+            button4.ToolTip = toolTip4;
+            button4.SetContextualHelp(contexHelp);
+            // Adding icon to third button            
+            PushButton pushButton4 = panelGer.AddItem(button4) as PushButton;
+            pushButton4.LargeImage = PngImageSource("H5Plugins.Resources.AtribuirCodigos.png");
 
 
             /////////////////////////////////////////////////ABOUT BUTTON
@@ -84,21 +88,18 @@ namespace H5Plugins
             ContextualHelp contexHelpAbout = new ContextualHelp(ContextualHelpType.Url, helpAbout);
             buttonAbout.SetContextualHelp(contexHelpAbout);
             buttonAbout.ToolTip = toolTipAbout;
-            //ToolTip Image path
-            Uri toolTipimagePathAbout = new Uri(@"D:\Users\daniel.santos\OneDrive\1-HEAD5\3-DESENVOLVIMENTO BIM\7-PLUGINS\Imagens\AboutImage.png");
-            BitmapImage tootlTipimageAbout = new BitmapImage(toolTipimagePathAbout);            
-            buttonAbout.ToolTipImage = tootlTipimageAbout;
-            // Adding icon to about button
-            Uri imagePathAbout = new Uri(@"D:\Users\daniel.santos\OneDrive\1-HEAD5\3-DESENVOLVIMENTO BIM\7-PLUGINS\Imagens\h5.png");
-            BitmapImage imageAbout = new BitmapImage(imagePathAbout);
+            //ToolTip Image path            
+            buttonAbout.ToolTipImage = buttonAbout.LargeImage = PngImageSource("H5Plugins.Resources.Sobre.png");
+            // Adding icon to about button         
             PushButton pushButtonAbout = panelAbout.AddItem(buttonAbout) as PushButton;
-            pushButtonAbout.LargeImage = imageAbout;
+            pushButtonAbout.LargeImage = PngImageSource("H5Plugins.Resources.Head5.png"); ;
 
 
             mWnd = null; // the MainWindow (modeless dialog) will not be initialized here, but only by the ShowWindow mehod below (called by the ExternalCommand class, started by the app button)
             thisApp = this; // replacing the null value of the application with the application itself since its ribbon elements are now set
 
             return Result.Succeeded;
+
 
         }
 
@@ -132,7 +133,13 @@ namespace H5Plugins
                 mWnd.Activate();
             }
         }
+        private System.Windows.Media.ImageSource PngImageSource(string embeddedPath)
+        {
+            Stream stream = this.GetType().Assembly.GetManifestResourceStream(embeddedPath);
+            var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
 
-
+            return decoder.Frames[0];
+        }
     }
-}
+
+}  
