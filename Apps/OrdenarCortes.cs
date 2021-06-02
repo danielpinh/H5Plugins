@@ -12,7 +12,6 @@ namespace H5Plugins
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-
             UIApplication uiapp = commandData.Application;
             UIDocument uidoc = uiapp.ActiveUIDocument;
             Document doc = uidoc.Document;
@@ -36,8 +35,7 @@ namespace H5Plugins
 
                 //Collect all sheets in active document and sort them by sheet number
 
-                Dictionary<int, ViewSheet> viewSheetsbynumber = new Dictionary<int, ViewSheet>();
-                                        
+                Dictionary<int, ViewSheet> viewSheetsbynumber = new Dictionary<int, ViewSheet>();                                        
 
                 FilteredElementCollector collectorSheets = new FilteredElementCollector(doc);
                 ElementCategoryFilter filterSheets = new ElementCategoryFilter(BuiltInCategory.OST_Sheets);
@@ -59,9 +57,7 @@ namespace H5Plugins
                     viewId.Add(dicKeys.Value.GetAllPlacedViews());                    
                 }
 
-
                 List<ElementId> sectionsId = new List<ElementId>();
-
 
                 foreach (HashSet<ElementId> hashSet in viewId)
                 {
@@ -88,8 +84,12 @@ namespace H5Plugins
                         trans.Start();
                         if (item.ViewType.ToString().Equals("Section"))
                         {
-                            Parameter param = item.LookupParameter("Nome da vista");
-                            param.Set($"Corte " + sectionLetter.ToString());
+                            Parameter param1 = item.LookupParameter("Nome da vista");
+                            Parameter param2 = item.LookupParameter("Número de detalhe");
+                            Parameter param3 = item.LookupParameter("Título da página");
+                            param1.Set($"CORTE " + sectionLetter.ToString() + "-" + sectionLetter.ToString());
+                            param2.Set(sectionLetter.ToString());
+                            param3.Set("CORTE");
                             sectionLetter++;                
                         }                      
                         trans.Commit();

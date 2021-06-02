@@ -13,16 +13,44 @@ namespace H5Plugins
     
     public class LookUpTableMapping
     {
-        public string LookupByHeader(string keyHeader, string keyValue, string headerToSearchValue) 
+        public string LookupByTwoHeaders(string keyHeader1, string keyHeader2, string keyValue1, string keyValue2, string headerToSearchValue, string csvPath)
+        {
+
+            string rowValue = "";
+
+            //Key Header1 List
+            var keyHeader1ListColumnValues = CsvColumnListValuesByHeader(keyHeader1, csvPath);
+
+            //Key Header2 List
+            var keyHeader2ListColumnValues = CsvColumnListValuesByHeader(keyHeader2, csvPath);
+
+            //Head5 Code List
+            var listToSearchValue = CsvColumnListValuesByHeader(headerToSearchValue, csvPath);
+
+            //Search Parameter Value
+            for (int i = 0; i < keyHeader1ListColumnValues.Count; i++)
+            {
+                if (keyHeader1ListColumnValues[i] == keyValue1 && keyHeader2ListColumnValues[i] == keyValue2)
+                {
+                    rowValue += i.ToString();
+                }
+            }
+            // Return final value
+            string parameterValue = ValueByCsvColumnListAndRowIndex(listToSearchValue, rowValue);
+            return parameterValue;
+
+        }
+
+        public string LookupByOneHeader(string keyHeader, string keyValue, string headerToSearchValue, string csvPath) 
         {
 
             string rowValue = "";
 
             //Key Header List
-            var keyHeaderListColumnValues = CsvColumnListValuesByHeader(keyHeader);          
+            var keyHeaderListColumnValues = CsvColumnListValuesByHeader(keyHeader, csvPath);          
 
             //Head5 Code List
-            var listToSearchValue = CsvColumnListValuesByHeader(headerToSearchValue);
+            var listToSearchValue = CsvColumnListValuesByHeader(headerToSearchValue, csvPath);
 
             //Search Parameter Value
             for (int i = 0; i < keyHeaderListColumnValues.Count; i++)
@@ -34,20 +62,19 @@ namespace H5Plugins
             }
 
             // Return final value
-
             string parameterValue = ValueByCsvColumnListAndRowIndex(listToSearchValue, rowValue);      
             return parameterValue; 
            
         }
-        public List<string> CsvColumnListValuesByHeader(string header)
+        public List<string> CsvColumnListValuesByHeader(string header, string csvPath)
         {
             //necessary default variables
             var csvList = new List<string[]>();
-            var heightColumn = new List<string>();
+            var columnValues = new List<string>();
             string keyColumnValue = "";
 
             //Path to acess the .csv file
-            string[] csvLines = System.IO.File.ReadAllLines(@"V:\Projetos\2108-BIM\Desenvolvimento-BIM\04-COMPONENTES 3D\02-ELÉTRICA\1004.3.2 - Leitos_Para_Cabos\Leito_Cabos.csv");
+            string[] csvLines = System.IO.File.ReadAllLines(csvPath);
 
             //Split each row into column data and create an array of strings with each row into a new List
             for (int i = 0; i < csvLines.Length; i++)
@@ -64,9 +91,9 @@ namespace H5Plugins
                         keyColumnValue += z.ToString();
                     }
                 }
-                heightColumn.Add(csvList[j][int.Parse(keyColumnValue)]);
+                columnValues.Add(csvList[j][int.Parse(keyColumnValue)]);
             }
-            return heightColumn;
+            return columnValues;
         }
         public string ValueByCsvColumnListAndRowIndex(List<string> List, string rowValue)
         {

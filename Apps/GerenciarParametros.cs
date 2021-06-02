@@ -11,7 +11,7 @@ using System.Text;
 namespace H5Plugins
 {
     [Transaction(TransactionMode.Manual)]
-    public class ParametrosCompartilhados : IExternalCommand
+    public class GerenciarParametros : IExternalCommand
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
@@ -24,8 +24,6 @@ namespace H5Plugins
             {
 
 
-
-
             }
             finally
             {
@@ -33,6 +31,5 @@ namespace H5Plugins
             }
             return Result.Succeeded;
         }
-
     }
 }

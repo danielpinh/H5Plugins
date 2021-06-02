@@ -34,12 +34,12 @@
 		<VendorDescription>Daniel Pinheiro</VendorDescription>
 	</AddIn>
 	<AddIn Type="Command">
-		<Name>Reordenar Cortes</Name>
+		<Name>GerenciarParametros</Name>
 		<Assembly>H5Plugins.dll</Assembly>
 		<AddInId>
 			0A5BF4B8-9F0D-4446-BB43-2CE51A1F4A27
 		</AddInId>
-		<FullClassName>H5Plugins.ParametrosCompartilhados</FullClassName>
+		<FullClassName>H5Plugins.GerenciarParametros</FullClassName>
 		<VendorId>Daniel</VendorId>
 		<VendorDescription>Daniel Pinheiro</VendorDescription>
 	</AddIn>
@@ -60,16 +60,6 @@
 			3FC62555-3197-44F2-A198-135BCD8AFE31
 		</AddInId>
 		<FullClassName>H5Plugins.AtribuirCodigos</FullClassName>
-		<VendorId>Daniel</VendorId>
-		<VendorDescription>Daniel Pinheiro</VendorDescription>
-	</AddIn>
-	<AddIn Type="Command">
-		<Name>MyCsvReader</Name>
-		<Assembly>H5Plugins.dll</Assembly>
-		<AddInId>
-			5976F6AF-07E4-4428-B186-CFAE221B33C6
-		</AddInId>
-		<FullClassName>H5Plugins.MyCsvResource</FullClassName>
 		<VendorId>Daniel</VendorId>
 		<VendorDescription>Daniel Pinheiro</VendorDescription>
 	</AddIn>

@@ -87,9 +87,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Apps\About.cs" />
+    <Compile Include="Apps\VerificarInclinacao.cs" />
     <Compile Include="Apps\OrdenarCortes.cs" />
     <Compile Include="Apps\AtribuirCodigos.cs" />
-    <Compile Include="Apps\ParametrosCompartilhados.cs" />
+    <Compile Include="Apps\GerenciarParametros.cs" />
     <Compile Include="Commands\ExternalCommand.cs" />
     <Compile Include="Commands\RequestHandler.cs" />
     <Compile Include="Factorys\LookUpTableMapping.cs" />
@@ -125,12 +126,18 @@
     <Resource Include="Services\LOGO-H5-02.jpeg" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\AtribuirCodigos.png" />
-    <EmbeddedResource Include="Resources\DetalhesTipicos.png" />
-    <EmbeddedResource Include="Resources\GerenciarParametros.png" />
     <EmbeddedResource Include="Resources\Head5.png" />
     <EmbeddedResource Include="Resources\OrdenarCortes.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\AtribuirCodigos.png" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="Resources\Sobre.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\DetalhesTipicos.png" />
+    <EmbeddedResource Include="Resources\GerenciarParametros.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
