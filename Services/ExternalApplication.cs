@@ -28,85 +28,70 @@ namespace H5Plugins
         public Result OnStartup(UIControlledApplication app)
         {
             //Variables
-            string addinName = "H5 Apps";
+            string addinName = "H5Apps";          
 
             //New Menu Ribbon  
             app.CreateRibbonTab("H5Apps");
             string path = Assembly.GetExecutingAssembly().Location;
-            
+
+            //Help adress for buttons
+            string helpAdress = @"https://www.head5.com.br/";            
+
             //Ribbon Menu Groups
             RibbonPanel panelMec = NewMenuRibbonGroup(app, addinName, "Mecânica");
             RibbonPanel panelGer = NewMenuRibbonGroup(app, addinName, "Geral");
             RibbonPanel panelEle = NewMenuRibbonGroup(app, addinName, "Elétrica");
             RibbonPanel panelAbout = NewMenuRibbonGroup(app, addinName, "Sobre");
 
-            //Criando grupo no Menu Ribbon
-            //RibbonPanel panelMec = application.CreateRibbonPanel(addinName, "Mecânica");
-            //RibbonPanel panelGer = application.CreateRibbonPanel(addinName, "Geral");
-            //RibbonPanel panelEle = application.CreateRibbonPanel(addinName, "Elétrica");
-            //RibbonPanel panelAbout = application.CreateRibbonPanel(addinName, "Sobre");
+            //Adding buttons
+            //Detalhes Típicos            
+            PushButton detalhesTipicos = NewMenuRibbonButton("Button1", String.Format("Detalhes" + Environment.NewLine + "Típicos"),
+                path, 
+                "H5Plugins.ExternalCommand", 
+                "Cria Folhas com os Detalhes Típicos dos Equipamentos Inseridos no Projeto.", 
+                panelMec, 
+                "H5Plugins.Resources.DetalhesTipicos.png", 
+                helpAdress);
 
+            //Ordenar Cortes    
+            PushButton ordenarCortes = NewMenuRibbonButton("Button2", String.Format("Ordenar" + Environment.NewLine + "Cortes"),
+                path, 
+                "H5Plugins.OrdenarCortes", 
+                "Ordena os Cortes do Projeto Conforme a Numeração das Folhas.", 
+                panelGer, 
+                "H5Plugins.Resources.OrdenarCortes.png", 
+                helpAdress);
 
+            //Gerenciar Parâmetros    
+            PushButton gerenciarParametros = NewMenuRibbonButton("Button3", String.Format("Gerenciar" + Environment.NewLine + "Parâmetros"),
+                path,
+                "H5Plugins.ParametrosCompartilhados",
+                "Insere Parâmetros em Lotes em Projetos e Famílias.",
+                panelGer,
+                "H5Plugins.Resources.GerenciarParametros.png", 
+                helpAdress);
 
-            /////////////////////////////////////////////////DETALHES TÍPICOS  
-            //Creating first button on Menu Ribbon
-            string toolTip1 = "Cria Folhas com os Detalhes Típicos dos Equipamentos Inseridos no Projeto.";            
-            PushButtonData button1 = new PushButtonData("Button1", String.Format("Detalhes" + Environment.NewLine + "Típicos"), path, "H5Plugins.ExternalCommand");
-            string help = @"https://www.head5.com.br/";
-            ContextualHelp contexHelp = new ContextualHelp(ContextualHelpType.Url, help);
-            button1.SetContextualHelp(contexHelp);       
-            button1.ToolTip = toolTip1;        
-            // Adding icon to first button                        
-            PushButton pushButton1 = panelMec.AddItem(button1) as PushButton;
-            pushButton1.LargeImage = PngImageSource("H5Plugins.Resources.DetalhesTipicos.png");           
+            //Atribuir Códigos    
+            PushButton atribuirCodigos = NewMenuRibbonButton("Button4", String.Format("Atribuir" + Environment.NewLine + "Códigos"),
+                path,
+                "H5Plugins.AtribuirCodigos",
+                "Atribui os Códigos Internos e de Fabricantes às Famílias de Sistema",
+                panelEle,
+                "H5Plugins.Resources.AtribuirCodigos.png",
+                helpAdress);
 
-                
-            /////////////////////////////////////////////////ORDENAR CORTES 
-            //Creating second button on Menu Ribbon            
-            string toolTip2 = "Ordena os Cortes do Projeto Conforme a Numeração das Folhas.";
-            PushButtonData button2 = new PushButtonData("Button2", String.Format("Ordenar" + Environment.NewLine + "Cortes"), path, "H5Plugins.OrdenarCortes");            
-            button2.ToolTip = toolTip2;
-            button2.SetContextualHelp(contexHelp);
-            // Adding icon to second button            
-            PushButton pushButton2 = panelGer.AddItem(button2) as PushButton;
-            pushButton2.LargeImage = PngImageSource("H5Plugins.Resources.OrdenarCortes.png");
+            //Sobre a Head5   
+            PushButton aboutButton = NewMenuRibbonButton("Button5", String.Format("Head5"),
+                path,
+                "H5Plugins.About",
+                "Mais que Projetos. Engenharia Aplicada à Inovação.",
+                panelAbout,
+                "H5Plugins.Resources.Head5.png",
+                helpAdress);
 
-
-            /////////////////////////////////////////////////GERENCIAR PARÂMETROS
-            //Creating third button on Menu Ribbon           
-            string toolTip3 = "Insere Parâmetros Compartilhados Nas Famílias.";
-            PushButtonData button3 = new PushButtonData("Button3", String.Format("Gerenciar" + Environment.NewLine + "Parâmetros"), path, "H5Plugins.ParametrosCompartilhados");
-            button3.ToolTip = toolTip3;
-            button3.SetContextualHelp(contexHelp);
-            // Adding icon to third button            
-            PushButton pushButton3 = panelMec.AddItem(button3) as PushButton;
-            pushButton3.LargeImage = PngImageSource("H5Plugins.Resources.GerenciarParametros.png");
-
-            /////////////////////////////////////////////////ATRIBUIR CÓDIGOS        
-            //Creating fourth button on Menu Ribbon           
-            string toolTip4 = "Atribui os Códigos Internos e de Fabricantes às Famílias de Sistema";
-            PushButtonData button4 = new PushButtonData("Button3", String.Format("Atribuir" + Environment.NewLine + "Códigos"), path, "H5Plugins.AtribuirCodigos");
-            button4.ToolTip = toolTip4;
-            button4.SetContextualHelp(contexHelp);
-            // Adding icon to third button            
-            PushButton pushButton4 = panelEle.AddItem(button4) as PushButton;
-            pushButton4.LargeImage = PngImageSource("H5Plugins.Resources.AtribuirCodigos.png");
-
-
-            /////////////////////////////////////////////////SOBRE A HEAD5
-            //Creating about fifth on Menu Ribbon            
-            string toolTipAbout = "Mais que Projetos. Engenharia Aplicada à Inovação.";
-            string helpAbout = @"https://www.head5.com.br/";
-            PushButtonData buttonAbout = new PushButtonData("Button1", String.Format("Head5"), path, "H5Plugins.About");          
-            ContextualHelp contexHelpAbout = new ContextualHelp(ContextualHelpType.Url, helpAbout);
-            buttonAbout.SetContextualHelp(contexHelpAbout);
-            buttonAbout.ToolTip = toolTipAbout;
-            //ToolTip Image path            
-            buttonAbout.ToolTipImage = buttonAbout.LargeImage = PngImageSource("H5Plugins.Resources.Sobre.png");
-            // Adding icon to about button         
-            PushButton pushButtonAbout = panelAbout.AddItem(buttonAbout) as PushButton;
-            pushButtonAbout.LargeImage = PngImageSource("H5Plugins.Resources.Head5.png"); ;
-
+            //Adding ToolTipImage to a about button
+            aboutButton.ToolTipImage = PngImageSource("H5Plugins.Resources.Sobre.png");
+            
 
             mWnd = null; // the MainWindow (modeless dialog) will not be initialized here, but only by the ShowWindow mehod below (called by the ExternalCommand class, started by the app button)
             thisApp = this; // replacing the null value of the application with the application itself since its ribbon elements are now set
@@ -119,6 +104,23 @@ namespace H5Plugins
             
             RibbonPanel panelMec = application.CreateRibbonPanel(addinName, groupName);
             return panelMec;
+        }
+
+        public PushButton NewMenuRibbonButton(string genericName, string buttonName, string buttonPath, string buttonCommand, string toolTip, RibbonPanel panelName, string imageIconSource, string helpAdress)
+        {
+            //Help button adress            
+            ContextualHelp contexHelp = new ContextualHelp(ContextualHelpType.Url, helpAdress);
+
+            //Create a button
+            PushButtonData newPushButtonData = new PushButtonData(genericName, buttonName, buttonPath, buttonCommand);
+            newPushButtonData.SetContextualHelp(contexHelp);
+            newPushButtonData.ToolTip = toolTip;
+
+            //Adding icon to button                        
+            PushButton newpushButton = panelName.AddItem(newPushButtonData) as PushButton;
+            newpushButton.LargeImage = PngImageSource(imageIconSource);         
+            
+            return newpushButton;
         }
 
         public void ShowWindow(UIApplication uiApp)

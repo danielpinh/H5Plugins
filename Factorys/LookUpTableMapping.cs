@@ -15,7 +15,6 @@ namespace H5Plugins
     {
         public string LookupByTwoHeaders(string keyHeader1, string keyHeader2, string keyValue1, string keyValue2, string headerToSearchValue, string csvPath)
         {
-
             string rowValue = "";
 
             //Key Header1 List
@@ -38,7 +37,6 @@ namespace H5Plugins
             // Return final value
             string parameterValue = ValueByCsvColumnListAndRowIndex(listToSearchValue, rowValue);
             return parameterValue;
-
         }
 
         public string LookupByOneHeader(string keyHeader, string keyValue, string headerToSearchValue, string csvPath) 

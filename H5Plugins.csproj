@@ -141,8 +141,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>goto exit
-copy "$(TargetDir)"."" "$(AppData)\Autodesk\Revit\Addins\2020\"
-: exit</PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetDir)"."" "$(AppData)\Autodesk\Revit\Addins\2020\"
+</PostBuildEvent>
   </PropertyGroup>
 </Project>
