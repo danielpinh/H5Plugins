@@ -37,9 +37,6 @@
     <ApplicationManifest>H5Plugins.addin</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CsvHelper, Version=27.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
-      <HintPath>packages\CsvHelper.27.1.0\lib\net47\CsvHelper.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -87,22 +84,34 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Apps\About.cs" />
+    <Compile Include="Apps\SupportManager.cs" />
+    <Compile Include="Apps\VedaJunta.cs" />
+    <Compile Include="Apps\ConnectConduit.cs" />
+    <Compile Include="Commands\LookupExternalCommand.cs" />
+    <Compile Include="Factorys\Util.cs" />
+    <Compile Include="Request\Request.cs" />
+    <Compile Include="Factorys\Collectors.cs" />
     <Compile Include="Apps\VerificarInclinacao.cs" />
     <Compile Include="Apps\OrdenarCortes.cs" />
-    <Compile Include="Apps\AtribuirCodigos.cs" />
+    <Compile Include="Apps\LookupTableMap.cs" />
     <Compile Include="Apps\GerenciarParametros.cs" />
-    <Compile Include="Commands\ExternalCommand.cs" />
+    <Compile Include="Commands\DTExternalCommand.cs" />
     <Compile Include="Commands\RequestHandler.cs" />
     <Compile Include="Factorys\LookUpTableMapping.cs" />
-    <Compile Include="Services\Request.cs" />
     <Compile Include="Services\ExternalApplication.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Factorys\DuplicateViewUtils.cs" />
     <Compile Include="Apps\DetalhesTipicos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="Windows\SupportManagerWindow.xaml.cs">
+      <DependentUpon>SupportManagerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\LookupTableMapWindow.xaml.cs">
+      <DependentUpon>LookupTableMapWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\DTWindow.xaml.cs">
+      <DependentUpon>DTWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -112,25 +121,27 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Services\MainWindow.xaml">
+    <Page Include="Windows\SupportManagerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\LookupTableMapWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\DTWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\LOGO-H5-02.jpeg">
+    <Resource Include="Windows\LOGO-H5-02.jpeg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Services\LOGO-H5-02.jpeg" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Resources\Head5.png" />
     <EmbeddedResource Include="Resources\OrdenarCortes.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\AtribuirCodigos.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Sobre.png" />
@@ -139,9 +150,22 @@
     <EmbeddedResource Include="Resources\DetalhesTipicos.png" />
     <EmbeddedResource Include="Resources\GerenciarParametros.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\SupportManager.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\VedaJunta.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ConnectConduit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\LookupTableMapping.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetDir)"."" "$(AppData)\Autodesk\Revit\Addins\2020\"
-</PostBuildEvent>
+    <PostBuildEvent>goto exit
+copy "$(TargetDir)"."" "$(AppData)\Autodesk\Revit\Addins\2020\"
+:exit</PostBuildEvent>
   </PropertyGroup>
 </Project>

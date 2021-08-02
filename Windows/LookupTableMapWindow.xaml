@@ -1,0 +1,19 @@
+﻿<Window x:Class="H5Plugins.LookupTableMapWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:H5Plugins"
+        mc:Ignorable="d"
+        Title="Lookup Table Mapping | Head5 Engenharia" Height="360" Width="295.333" WindowStyle="ToolWindow">
+    <Grid HorizontalAlignment="Right" Margin="0,0,0,0" Width="285">
+        <Button Content="Leitos" Margin="85,0,0,233" Background="#FF2A3C7A" BorderBrush="#FF8D94CA" FontFamily="Artifakt Element" Foreground="White" Click="Command01" RenderTransformOrigin="0.511,0.071" HorizontalAlignment="Left" Width="116" Height="25" VerticalAlignment="Bottom"/>
+        <TextBlock Margin="10,0,143,303" TextWrapping="Wrap" VerticalAlignment="Bottom" FontFamily="Artifakt Element" Foreground="#FF2A3C7A" FontWeight="Bold" RenderTransformOrigin="0.449,-2.849"><Run Text="Selecione"/><Run Text=" a categoria: "/></TextBlock>
+        <Button Content="Eletrocalhas" Margin="85,0,0,196" Background="#FF2A3C7A" BorderBrush="#FF8D94CA" FontFamily="Artifakt Element" Foreground="White" Click="Command02" RenderTransformOrigin="0.511,0.071" HorizontalAlignment="Left" Width="116" Height="25" VerticalAlignment="Bottom"/>
+        <Button Content="Eletrodutos" Margin="85,0,0,159" Background="#FF2A3C7A" BorderBrush="#FF8D94CA" FontFamily="Artifakt Element" Foreground="White" Click="Command03" RenderTransformOrigin="0.511,0.071" HorizontalAlignment="Left" Width="116" Height="25" VerticalAlignment="Bottom"/>
+        <Button Content="Perfilados" Margin="85,0,0,121" Background="#FF2A3C7A" BorderBrush="#FF8D94CA" FontFamily="Artifakt Element" Foreground="White" Click="Command04" RenderTransformOrigin="0.511,0.071" HorizontalAlignment="Left" Width="116" Height="25" VerticalAlignment="Bottom"/>
+        <Button Content="Dutos" Margin="85,0,0,82" Background="#FF2A3C7A" BorderBrush="#FF8D94CA" FontFamily="Artifakt Element" Foreground="White" Click="Command05" RenderTransformOrigin="0.511,0.071" HorizontalAlignment="Left" Width="116" Height="25" VerticalAlignment="Bottom"/>
+        <Image HorizontalAlignment="Left" Margin="161,286,0,0" Width="124" Source="LOGO-H5-02.jpeg" RenderTransformOrigin="0.14,0.654"/>
+    </Grid>
+    <!-- Nothing fancy here. Just a window containing the buttons that will convert user actions into requests for Revit. See the code behind for more info -->
+</Window>

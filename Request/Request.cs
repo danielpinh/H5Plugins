@@ -13,7 +13,12 @@ namespace H5Plugins
     public enum RequestId : int
 {
     None = 0,
-    Command01 = 1,   
+    Leitos = 1,
+    Eletrocalhas = 2,
+    Eletrodutos = 3,    
+    Perfilados = 4,
+    Dutos = 5,
+    DetalhesTipicos = 6,
 }
 
 /// <summary>
