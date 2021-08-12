@@ -65,18 +65,23 @@ namespace H5Plugins
                             break;
                         }
                     case RequestId.Dutos:
+                        {                           
+                            LookupTableMap lk = new LookupTableMap();
+                            lk.DutosRetangulares(doc);
+                            lk.DutosRedondos(doc);
+                            break;
+                        }
+                    case RequestId.Tubos:
+                        {                            
+                            LookupTableMap lk = new LookupTableMap();
+                            lk.Tubos(doc);                           
+                            break;
+                        }
+                    case RequestId.Sistemas:
                         {
-                            try
-                            {
-                                LookupTableMap lk = new LookupTableMap();
-                                lk.DutosRetangulares(doc);
-                                lk.DutosRedondos(doc);
-                            }
-                            finally
-                            {
-
-                            }                         
-                            break;                          
+                            LookupTableMap lk = new LookupTableMap();
+                            lk.Sistemas(doc);
+                            break;
                         }
                     case RequestId.DetalhesTipicos:
                         {                          

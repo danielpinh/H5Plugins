@@ -4,7 +4,9 @@ using Autodesk.Revit.UI;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace H5Plugins
 {
@@ -421,5 +423,214 @@ namespace H5Plugins
 
             }
         }
+        public void Tubos(Document doc)
+        {
+            try
+            {
+                //TUBOS SCH80     
+                //Define code for each tube
+                List<Element> pipeListsch80 = myCollector.PipeByFamilyTypeName(doc, "SCH80");
+                foreach (Element pp in pipeListsch80)
+                {
+                    //LookupMapping parameters
+                    string keyHeader = "DN##length##millimeters";
+                    string header1 = "COD##other##";
+                    string header2 = "PESOUNIT##mass##kilograms";    
+                    string csvPath = @"V:\Projetos\2108-BIM\Desenvolvimento-BIM\04-COMPONENTES 3D\05-MECÂNICA\00-MATÉRIA-PRIMA\00-TUBO\Tubos-Sch80.csv";
+                    string codMat = "H5 Código do material";
+                    string massaLinear = "H5 Massa";                 
+
+                    Element pipeElement = doc.GetElement(pp.Id);
+                    string pipeDiameter = pipeElement.get_Parameter(BuiltInParameter.RBS_PIPE_DIAMETER_PARAM).AsValueString();
+
+                    LookUpTableMapping lktmapping = new LookUpTableMapping();
+                    string codMatValue = lktmapping.LookupByOneHeader(keyHeader, pipeDiameter.ToString(), header1, csvPath);
+                    string massaLinearValue = lktmapping.LookupByOneHeader(keyHeader, pipeDiameter.ToString(), header2, csvPath);                    
+
+                    using (Transaction trans = new Transaction(doc, "Atribuir Códigos"))
+                    {
+                        trans.Start();
+                        {
+                            Parameter paramSet1 = pp.LookupParameter(codMat);
+                            paramSet1.Set(codMatValue);
+                            Parameter paramSet2 = pp.LookupParameter(massaLinear);
+                            paramSet2.SetValueString(massaLinearValue);                            
+                        }
+                        trans.Commit();
+                    }
+                }
+
+                //TUBOS SCH40     
+                //Define code for each tube
+                List<Element> pipeListsch40 = myCollector.PipeByFamilyTypeName(doc, "SCH40");
+                foreach (Element pp in pipeListsch40)
+                {
+                    //LookupMapping parameters
+                    string keyHeader = "DN##length##millimeters";
+                    string header1 = "COD##other##";
+                    string header2 = "PESOUNIT##mass##kilograms";
+                    string csvPath = @"V:\Projetos\2108-BIM\Desenvolvimento-BIM\04-COMPONENTES 3D\05-MECÂNICA\00-MATÉRIA-PRIMA\00-TUBO\Tubos-Sch40.csv";
+                    string codMat = "H5 Código do material";
+                    string massaLinear = "H5 Massa";
+
+                    Element pipeElement = doc.GetElement(pp.Id);
+                    string pipeDiameter = pipeElement.get_Parameter(BuiltInParameter.RBS_PIPE_DIAMETER_PARAM).AsValueString();
+
+                    LookUpTableMapping lktmapping = new LookUpTableMapping();
+                    string codMatValue = lktmapping.LookupByOneHeader(keyHeader, pipeDiameter.ToString(), header1, csvPath);
+                    string massaLinearValue = lktmapping.LookupByOneHeader(keyHeader, pipeDiameter.ToString(), header2, csvPath);
+
+                    using (Transaction trans = new Transaction(doc, "Atribuir Códigos"))
+                    {
+                        trans.Start();
+                        {
+                            Parameter paramSet1 = pp.LookupParameter(codMat);
+                            paramSet1.Set(codMatValue);
+                            Parameter paramSet2 = pp.LookupParameter(massaLinear);
+                            paramSet2.SetValueString(massaLinearValue);
+                        }
+                        trans.Commit();
+                    }
+                }
+
+                //TUBOS STD     
+                //Define code for each tube
+                List<Element> pipeListSTD = myCollector.PipeByFamilyTypeName(doc, "STD");
+                foreach (Element pp in pipeListSTD)
+                {
+                    //LookupMapping parameters
+                    string keyHeader = "DN##length##millimeters";
+                    string header1 = "COD##other##";
+                    string header2 = "PESOUNIT##mass##kilograms";
+                    string csvPath = @"V:\Projetos\2108-BIM\Desenvolvimento-BIM\04-COMPONENTES 3D\05-MECÂNICA\00-MATÉRIA-PRIMA\00-TUBO\Tubos-STD.csv";
+                    string codMat = "H5 Código do material";
+                    string massaLinear = "H5 Massa";
+
+                    Element pipeElement = doc.GetElement(pp.Id);
+                    string pipeDiameter = pipeElement.get_Parameter(BuiltInParameter.RBS_PIPE_DIAMETER_PARAM).AsValueString();
+
+                    LookUpTableMapping lktmapping = new LookUpTableMapping();
+                    string codMatValue = lktmapping.LookupByOneHeader(keyHeader, pipeDiameter.ToString(), header1, csvPath);
+                    string massaLinearValue = lktmapping.LookupByOneHeader(keyHeader, pipeDiameter.ToString(), header2, csvPath);
+
+                    using (Transaction trans = new Transaction(doc, "Atribuir Códigos"))
+                    {
+                        trans.Start();
+                        {
+                            Parameter paramSet1 = pp.LookupParameter(codMat);
+                            paramSet1.Set(codMatValue);
+                            Parameter paramSet2 = pp.LookupParameter(massaLinear);
+                            paramSet2.SetValueString(massaLinearValue);
+                        }
+                        trans.Commit();
+                    }
+                }
+            }
+            finally
+            {
+
+            }
+        }
+
+        public void Sistemas(Document doc)
+        {
+
+            string systemAbreviationValue;
+            string systemNameValue;
+
+            try
+            {
+                string systemParameter = "H5 Sistema";
+                string keyHeader = "ABREVIATURA##other##";
+                string header1 = "NOME##other##";
+                string csvPath = @"V:\Projetos\2108-BIM\Desenvolvimento-BIM\04-COMPONENTES 3D\05-MECÂNICA\00-MATÉRIA-PRIMA\00-SISTEMAS\Sistemas.csv";
+
+                //EQUIPAMENTOS MECÂNICOS   
+                //Define code for each mechanical equipment
+                List<Element> mechanicalList = myCollector.AllMechanicalEquipments(doc);               
+                foreach (Element me in mechanicalList)
+                {
+                    try
+                    {
+                        Element myEle = doc.GetElement(me.Id);
+                        systemAbreviationValue = myEle.get_Parameter(BuiltInParameter.RBS_SYSTEM_NAME_PARAM).AsString();
+
+                        if (systemAbreviationValue != null)
+                        {
+                            try
+                            {
+                                string substringValue = systemAbreviationValue.Substring(0, 3);                                
+
+                                LookUpTableMapping lktmapping = new LookUpTableMapping();
+                                systemNameValue = lktmapping.LookupByOneHeader(keyHeader, substringValue.ToString(), header1, csvPath);                        
+
+                                using (Transaction trans = new Transaction(doc, "Atribuir Sistemas"))
+                                {
+                                    trans.Start();
+                                    {
+                                        Parameter paramSet1 = me.LookupParameter("H5 Sistema");
+                                        paramSet1.Set(systemNameValue);
+                                    }
+                                    trans.Commit();
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                continue;
+                            }
+                            
+                        }                      
+                       
+                    }
+                    catch (Exception)
+                    {
+
+                        continue;
+                    }
+
+                }
+
+                //VÁLVULAS
+                //var encoding = Encoding.UTF8;
+                //StreamReader stream = new StreamReader(csvPath, encoding);
+
+                List<Element> valvesList = myCollector.AllPipeAcessories(doc);
+                foreach (Element pa in valvesList)
+                {
+                    try
+                    {
+                        Element myEle = doc.GetElement(pa.Id);
+                        systemAbreviationValue = myEle.get_Parameter(BuiltInParameter.RBS_DUCT_PIPE_SYSTEM_ABBREVIATION_PARAM).AsString();
+
+                        LookUpTableMapping lktmapping = new LookUpTableMapping();
+                        systemNameValue = lktmapping.LookupByOneHeader(keyHeader, systemAbreviationValue.ToString(), header1, csvPath);
+                                            
+
+
+                        using (Transaction trans = new Transaction(doc, "Atribuir Sistemas"))
+                        {
+                            trans.Start();
+                            {
+                                Parameter paramSet1 = pa.LookupParameter(systemParameter);
+                                paramSet1.Set(systemNameValue.ToString());
+                            }
+                            trans.Commit();
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+                }
+            }
+            finally
+            {
+
+            }
+        } 
+      
     }
-}  
+}
+
+
+

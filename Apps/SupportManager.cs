@@ -111,6 +111,9 @@ namespace H5Plugins
                         }
 
                         //Distance between face and cable tray mid elevation
+                        Parameter midElevationParam = element.LookupParameter("Elevação intermediária");
+                        string midElevationValue = midElevationParam.AsValueString();
+                        midElevationDouble = Math.Round(double.Parse(midElevationValue), 4);                   
                         double result = elevationFace - midElevationDouble;
                         myresult = result.ToString();                                            
 
@@ -138,15 +141,14 @@ namespace H5Plugins
                             }
                         }                                              
                     }                   
-                } 
-                
+                }                 
                 else
                 {
                     foreach (Reference eleRef in pickedObj)
                     {                        
                         eleId = eleRef.ElementId;
                         element = doc.GetElement(eleId);
-                        Parameter param2 = element.LookupParameter("Elevação inferior");
+                        Parameter param2 = element.LookupParameter("Bottom Elevation");
                         string minimalElevation = param2.AsValueString();
                         double minimalElevationDouble = Math.Round(double.Parse(minimalElevation), 4);
                         minimalElevations.Add(minimalElevationDouble);
@@ -171,7 +173,6 @@ namespace H5Plugins
                         {
                             angleToY = Math.Acos(originPoint.Y);
                         }
-
                     }
 
                     //Criando o ponto em X e Y para inserção da família  
@@ -396,7 +397,7 @@ namespace H5Plugins
                         //Pegando as informações de altura de cada um dos elementos selecionados
                         eleId = eleRef.ElementId;
                         element = doc.GetElement(eleId);
-                        Parameter param2 = element.LookupParameter("Elevação inferior");
+                        Parameter param2 = element.LookupParameter("Bottom Elevation");
                         string minimalElevation = param2.AsValueString();
                         double minimalElevationDouble = Math.Round(double.Parse(minimalElevation), 4);
 
@@ -449,7 +450,7 @@ namespace H5Plugins
                             Collectors myCollector = new Collectors();
                             Element hangerElement = myCollector.HangerByFamilyName(doc, "V161");
                             FamilySymbol symbol = hangerElement as FamilySymbol;
-                            Parameter param = element.LookupParameter("Largura");
+                            Parameter param = element.LookupParameter("Width");
                             string paramValue = param.AsValueString();
 
                             string larguraConvertida = (double.Parse(paramValue) / 1000).ToString();
@@ -459,7 +460,7 @@ namespace H5Plugins
                                 t.Start();
                                 Element fixacao = doc.Create.NewFamilyInstance(locationPoint, symbol,
                                     levelsList.First(), Autodesk.Revit.DB.Structure.StructuralType.NonStructural);
-                                Parameter param1 = fixacao.LookupParameter("Largura");
+                                Parameter param1 = fixacao.LookupParameter("Width");
                                 param1.SetValueString(larguraConvertida);
 
                                 Parameter elevacaodoNivel = fixacao.get_Parameter(BuiltInParameter.INSTANCE_ELEVATION_PARAM);
@@ -480,7 +481,7 @@ namespace H5Plugins
                             Collectors myCollector = new Collectors();
                             Element hangerElement = myCollector.HangerByFamilyName(doc, "V171");
                             FamilySymbol symbol = hangerElement as FamilySymbol;
-                            Parameter param = element.LookupParameter("Largura");
+                            Parameter param = element.LookupParameter("Width");
                             string paramValue = param.AsValueString();
 
                             string larguraConvertida = (double.Parse(paramValue) / 1000).ToString();

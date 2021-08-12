@@ -51,6 +51,16 @@
 		<VendorDescription>Daniel Pinheiro</VendorDescription>
 	</AddIn>
 	<AddIn Type="Command">
+		<Name>IsometricCreator</Name>
+		<Assembly>IsometricCreator.dll</Assembly>
+		<AddInId>
+			77A73E1E-64B1-4D36-B2BE-F50FDF4298D5
+		</AddInId>
+		<FullClassName>H5Plugins.IsometricCreator</FullClassName>
+		<VendorId>Daniel</VendorId>
+		<VendorDescription>Daniel Pinheiro</VendorDescription>
+	</AddIn>
+	<AddIn Type="Command">
 		<Name>LookUpTableMap</Name>
 		<Assembly>H5Plugins.dll</Assembly>
 		<AddInId>

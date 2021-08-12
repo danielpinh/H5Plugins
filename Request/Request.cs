@@ -19,6 +19,8 @@ namespace H5Plugins
     Perfilados = 4,
     Dutos = 5,
     DetalhesTipicos = 6,
+    Tubos = 7,
+    Sistemas = 8,
 }
 
 /// <summary>

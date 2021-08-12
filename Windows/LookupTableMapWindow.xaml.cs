@@ -53,17 +53,14 @@ namespace H5Plugins
         {
             MakeRequest(RequestId.Leitos);
         }
-
         private void Command02(object sender, RoutedEventArgs e)
         {
             MakeRequest(RequestId.Eletrocalhas);
         }
-
         private void Command03(object sender, RoutedEventArgs e)
         {
             MakeRequest(RequestId.Eletrodutos);
         }
-
         private void Command04(object sender, RoutedEventArgs e)
         {
             MakeRequest(RequestId.Perfilados);
@@ -72,6 +69,14 @@ namespace H5Plugins
         {
             MakeRequest(RequestId.Dutos);
         }
+        private void Command06(object sender, RoutedEventArgs e)
+        {
+            MakeRequest(RequestId.Tubos);
+        }
+        private void Command07(object sender, RoutedEventArgs e)
+        {
+            MakeRequest(RequestId.Sistemas);
+        }
         private void MakeRequest(RequestId request)
         {
             /* As seen above this method is used to handle and raise the commands requested by the user as external events for Revit. */
@@ -79,6 +84,7 @@ namespace H5Plugins
             m_Handler.Request.Make(request); // uses the Make method of the Request class instantiated in the RequestHandler class to identify the command started by the user
             m_ExEvent.Raise(); // raises the command requested as an external event for Revit and the Execute method in the handler can finally be done
         }
+
     }
 
 }
