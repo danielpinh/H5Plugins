@@ -27,29 +27,7 @@ namespace H5Plugins
             //List Points
             List<XYZ> points = new List<XYZ>();
             List<ElementId> eleIds = new List<ElementId>();
-
-
-            //var collector = new FilteredElementCollector(doc).OfClass(typeof(IndependentTag)).OfCategory(BuiltInCategory.OST_PipeTags).ToElements();
-            //List<ElementId> iDs = new List<ElementId>();
-            //TaskDialog.Show("Teste", collector.Count().ToString());
-
-            //foreach (Element it in collector)
-            //{             
-            //    Parameter par = it.get_Parameter(BuiltInParameter.ELEM_FAMILY_PARAM);
-            //    ElementId eleId = it.Id;
-            //    string parString = par.AsValueString();                
-
-            //    if (parString == "ID-TUBO-POSICIONAMENTO+ITEM")
-            //    {
-            //        iDs.Add(eleId);
-            //    }                
-
-            //}
-
-            //TaskDialog.Show("Teste", iDs.Count().ToString());
-
-            
-
+                       
             //Get Isometric View Template
             string templateName = "H5-MEC-3D-ISO";
             View viewTemplate = new FilteredElementCollector(doc).OfClass(typeof(View)).
@@ -84,13 +62,14 @@ namespace H5Plugins
                            points.Max(p => p.Z));
 
             Collectors myCollector = new Collectors();
-            ElementId pipeFittingTag = myCollector.PipeFittingsTagsbyFamilyName(doc, "ID-CONEXÕES DE TUBO-POSICIONAMENTO+ITEM");
-           
-            ElementId pipeTag1 = myCollector.PipeTagsbyFamilyName(doc, "ID-TUBO-POSICIONAMENTO+ITEM");
 
-            ElementId pipeTag2 = myCollector.PipeTagsbyFamilyName(doc, "ID-TUBO-NÚMERO DA LINHA+SISTEMA+DIÂMETRO");
+            ElementId pipeFittingTag = myCollector.PipeFittingsTagsbyFamilyName(doc, "ID-CONEXÕES DE TUBO-ITEM+POSICIONAMENTO");
+           
+            ElementId pipeTag1 = myCollector.PipeTagsbyFamilyName(doc, "ID-TUBO-ITEM+POSICIONAMENTO");
+
+            ElementId pipeTag2 = myCollector.PipeTagsbyFamilyName(doc, "ID-TUBO-TAG+SISTEMA+DIÂMETRO");
             
-            ElementId pipeAcessoryTag = myCollector.PipeAcessoryTagsbyFamilyName(doc, "ID-ACESSÓRIOS DE TUBO-POSICIONAMENTO+ITEM");           
+            ElementId pipeAcessoryTag = myCollector.PipeAcessoryTagsbyFamilyName(doc, "ID-ACESSÓRIOS DE TUBO-ITEM+POSICIONAMENTO");           
 
             //creating a list of ElementId for each selected elements
             foreach (Reference item in refs)
@@ -149,6 +128,8 @@ namespace H5Plugins
                     .WherePasses(filter)
                     .ToElementIds();
 
+
+                //INSERTING TAGS 
                 using (Transaction secondTrans = new Transaction(doc))
                 {
                     try
@@ -157,6 +138,7 @@ namespace H5Plugins
                         secondTrans.Start("second transaction");
                         uidoc.ActiveView.HideElementsTemporary(sectionElements);
 
+                        view3d.IsolateElementsTemporary(eleIds);
                         view3d.ConvertTemporaryHideIsolateToPermanent();
 
                         foreach (ElementId eleId in eleIds)
@@ -166,12 +148,12 @@ namespace H5Plugins
                             Reference refe = new Reference(ele);
                             string categoryName = ele.Category.Name;
                            
-                            if (ele.Category.Name == "Tubulação")
+                            if (categoryName == "Tubulação")
                             {
-                                Parameter diameterParam = ele.get_Parameter(BuiltInParameter.RBS_PIPE_DIAMETER_PARAM);
-                                string diameterParamString = diameterParam.AsValueString().ToString();
+                                //Parameter diameterParam = ele.get_Parameter(BuiltInParameter.RBS_PIPE_DIAMETER_PARAM);
+                                //string diameterParamString = diameterParam.AsValueString().ToString();
 
-                                int diameterValue = int.Parse(diameterParamString) / 55;
+                                //int diameterValue = int.Parse(diameterParamString) / 55;
 
                                 LocationCurve lc = ele.Location as LocationCurve;
                                 Line lineCurve = lc.Curve as Line;
@@ -202,28 +184,29 @@ namespace H5Plugins
                     }
                 }
 
-                //get only selected pipes and inserting dimensions on its
+                //INSERTING DIMENSIONS
                 using (Transaction thirdTrans = new Transaction(doc))
                 {
                     thirdTrans.Start(" third transaction");
-
+                    
                     try
                     {
                         foreach (ElementId eleId in eleIds)
                         {
                             List<XYZ> locationPoints = new List<XYZ>();
                             Element ele = doc.GetElement(eleId);
-                            ConnectorSet connectors = null;                            
+                            ConnectorSet connectors = null;
+                            ReferenceArray referenceArray = new ReferenceArray();                       
 
                             if (ele.Category.Name == "Tubulação")
-                            {
+                            {                               
                                 if (ele is MEPCurve)
                                 {
-                                    connectors = ((MEPCurve)ele).ConnectorManager.Connectors;                                    
-                                }                            
+                                    connectors = ((MEPCurve)ele).ConnectorManager.Connectors;
+                                }                                                           
 
                                 foreach (Connector connector in connectors)
-                                {                                   
+                                {
                                     ConnectorSet connectorSet = connector.AllRefs;
 
                                     if (connector.IsConnected == true)
@@ -232,13 +215,13 @@ namespace H5Plugins
                                         foreach (Connector connec in connectorSet)
                                         {
 
-                                            Element myEle = connec.Owner;                                                                         
+                                            Element myEle = connec.Owner;
                                             if ((myEle.Category.Name == "Tubulação") is false)
-                                            {
+                                            {                                                                            
                                                 Location location = myEle.Location;
                                                 LocationPoint locationPoint = location as LocationPoint;
                                                 XYZ point = locationPoint.Point;
-                                                locationPoints.Add(point);
+                                                locationPoints.Add(point);                                           
                                             }
                                         }
                                     }
@@ -246,58 +229,278 @@ namespace H5Plugins
                                     {
                                         XYZ emptyConnec = connector.Origin;
                                         locationPoints.Add(emptyConnec);
-                                    }                                                                
-                                    
-                                }
-                            
-
+                                    }
+                                }                               
+                                                        
                                 XYZ point1 = locationPoints[0];
-                                XYZ point2 = locationPoints[1];
-
-                                ReferenceArray referenceArray = new ReferenceArray();
+                                XYZ point2 = locationPoints[1];                                
                                 ModelCurve modelCurve;
-                                Line line;
+                                Line linebetweenFittings = null;
+                                Line shortLineinFitting = null;
 
-                                //check if points are coplanars
+                                
+                                //check if points are coplanars 
                                 if (Math.Round(point1.Z, 4) == Math.Round(point2.Z, 4))
-                                {
-                                    XYZ point3 = new XYZ(locationPoints[0].X + 20, locationPoints[0].Y + 20, locationPoints[0].Z);
+                                {                                    
 
-                                    Plane myPlane = Plane.CreateByThreePoints(point1, point2, point3);
-                                    SketchPlane sktPlane = SketchPlane.Create(doc, myPlane);
+                                    foreach (Connector connector in connectors)
+                                    {
+                                        ConnectorSet connectorSet = connector.AllRefs;
 
-                                    uidoc.ActiveView.SketchPlane = sktPlane;
+                                        if (connector.IsConnected == true)
+                                        {
 
-                                    XYZ point1a = new XYZ(point1.X, point1.Y, point1.Z);
-                                    XYZ point2a = new XYZ(point2.X, point2.Y, point2.Z);
+                                            foreach (Connector connec in connectorSet)
+                                            {
 
-                                    line = Line.CreateBound(point1, point2);
-                                    modelCurve = doc.Create.NewModelCurve(line, sktPlane);
+                                                Element myEle = connec.Owner;
+                                                if ((myEle.Category.Name == "Tubulação") is false)
+                                                {
+                                                    //Pega a localização da conexão atual e compara os dois
+                                                    //location points das conexões que foram coletadas
+                                                    //anteriormente
+                                                    
+                                                    //Location point atual
+                                                    Location location = myEle.Location;
+                                                    LocationPoint locationPoint = location as LocationPoint;
+                                                    XYZ locationPointOrigin = locationPoint.Point;
 
-                                    referenceArray.Append(modelCurve.GeometryCurve.GetEndPointReference(1));
-                                    referenceArray.Append(modelCurve.GeometryCurve.GetEndPointReference(0));
+                                                    //compara com os location points das conexões anteriores                                                    
+                                                    double distancebetweenfittingPoints = Math.Round(locationPointOrigin.DistanceTo(point1), 4);
+
+                                                    if (distancebetweenfittingPoints <= 0.00001)
+                                                    {                                                        
+                                                        linebetweenFittings = Line.CreateBound(locationPointOrigin, point2);
+                                                    }
+                                                    else
+                                                    {                                                        
+                                                        linebetweenFittings = Line.CreateBound(locationPointOrigin, point1);
+                                                    }
+
+                                                    //Coletando um novo ponto muito próximo ao locationPoint da conexão sobre a linha que liga elas duas
+                                                    XYZ intermediatePoint = linebetweenFittings.Evaluate(0.005, true);
+
+                                                    //nova linha muito curta com origem na conexão
+                                                    shortLineinFitting = Line.CreateBound(locationPointOrigin, intermediatePoint);
+
+                                                    //Criando um plano de referência para criar a linha de modelo
+                                                    XYZ point3 = new XYZ(locationPoints[0].X + 20, locationPoints[0].Y + 20, locationPoints[0].Z);
+                                                    Plane myPlane = Plane.CreateByThreePoints(point1, point2, point3);
+                                                    SketchPlane sktPlane = SketchPlane.Create(doc, myPlane);
+
+                                                    uidoc.ActiveView.SketchPlane = sktPlane;
+
+                                                    modelCurve = doc.Create.NewModelCurve(shortLineinFitting, sktPlane);
+
+                                                    //Pegando as referências e os pontos da linha de modelo que foi criada
+                                                    //ponto inicial
+                                                    Reference startpointReference = modelCurve.GeometryCurve.GetEndPointReference(0);
+                                                    XYZ startPoint = modelCurve.GeometryCurve.GetEndPoint(0);
+                                                    //ponto final
+                                                    Reference endpointReference = modelCurve.GeometryCurve.GetEndPointReference(1);
+                                                    XYZ endPoint = modelCurve.GeometryCurve.GetEndPoint(1);
+
+                                                    //comparando os dois pontos da linha de modelo com a origem de inserção da conexão
+                                                    double distanceBetweenPoints = startPoint.DistanceTo(locationPointOrigin);
+
+                                                    if (distanceBetweenPoints <= 0.0001)
+                                                    {
+                                                        referenceArray.Append(startpointReference);
+                                                    }
+                                                    else
+                                                    {
+                                                        referenceArray.Append(endpointReference);
+                                                    }
+                                                }                                                                                      
+                                            }
+                                        }
+                                        else
+                                        {
+                                            XYZ emptyConnec = connector.Origin;                                          
+
+                                            //compara com os location points da lista anterior (tubo + conexão) com o ponto vigente (emptyConnec)                                                    
+                                            double distancebetweenfittingPoints = Math.Round(emptyConnec.DistanceTo(point1), 4);
+
+                                            if (distancebetweenfittingPoints <= 0.00001)
+                                            {
+                                                linebetweenFittings = Line.CreateBound(emptyConnec, point2);
+                                            }
+                                            else
+                                            {
+                                                linebetweenFittings = Line.CreateBound(emptyConnec, point1);
+                                            }
+
+                                            //Coletando um novo ponto muito próximo ao locationPoint da conexão sobre a linha que liga elas duas
+                                            XYZ intermediatePoint = linebetweenFittings.Evaluate(0.005, true);
+
+                                            //nova linha muito curta com origem na conexão
+                                            shortLineinFitting = Line.CreateBound(emptyConnec, intermediatePoint);
+
+                                            //Criando um plano de referência para criar a linha de modelo
+                                            XYZ point3 = new XYZ(locationPoints[0].X + 20, locationPoints[0].Y + 20, locationPoints[0].Z);
+                                            Plane myPlane = Plane.CreateByThreePoints(point1, point2, point3);
+                                            SketchPlane sktPlane = SketchPlane.Create(doc, myPlane);
+
+                                            uidoc.ActiveView.SketchPlane = sktPlane;
+
+                                            modelCurve = doc.Create.NewModelCurve(shortLineinFitting, sktPlane);
+
+                                            //Pegando as referências e os pontos da linha de modelo que foi criada
+                                            //ponto inicial
+                                            Reference startpointReference = modelCurve.GeometryCurve.GetEndPointReference(0);
+                                            XYZ startPoint = modelCurve.GeometryCurve.GetEndPoint(0);
+                                            //ponto final
+                                            Reference endpointReference = modelCurve.GeometryCurve.GetEndPointReference(1);
+                                            XYZ endPoint = modelCurve.GeometryCurve.GetEndPoint(1);
+
+                                            //comparando os dois pontos da linha de modelo com a origem de inserção da conexão
+                                            double distanceBetweenPoints = startPoint.DistanceTo(emptyConnec);
+
+                                            if (distanceBetweenPoints <= 0.0001)
+                                            {
+                                                referenceArray.Append(startpointReference);
+                                            }
+                                            else
+                                            {
+                                                referenceArray.Append(endpointReference);
+                                            }
+                                        }
+                                    }                                                                      
+
                                 }
+
+                                //if the points are not coplanars
                                 else
                                 {
-                                    XYZ point3 = new XYZ(locationPoints[0].X, locationPoints[0].Y + 100, locationPoints[1].Z - 50);
+                                    foreach (Connector connector in connectors)
+                                    {
+                                        ConnectorSet connectorSet = connector.AllRefs;
 
-                                    Plane myPlane = Plane.CreateByThreePoints(point1, point2, point3);
-                                    SketchPlane sktPlane = SketchPlane.Create(doc, myPlane);
+                                        if (connector.IsConnected == true)
+                                        {
 
-                                    uidoc.ActiveView.SketchPlane = sktPlane;
+                                            foreach (Connector connec in connectorSet)
+                                            {
 
-                                    XYZ point1a = new XYZ(point1.X, point1.Y, point1.Z);
-                                    XYZ point2a = new XYZ(point2.X, point2.Y, point2.Z);
+                                                Element myEle = connec.Owner;
+                                                if ((myEle.Category.Name == "Tubulação") is false)
+                                                {
+                                                    //Pega a localização da conexão atual e compara os dois
+                                                    //location points das conexões que foram coletadas
+                                                    //anteriormente
 
-                                    line = Line.CreateBound(point1, point2);
-                                    modelCurve = doc.Create.NewModelCurve(line, sktPlane);
+                                                    //Location point atual
+                                                    Location location = myEle.Location;
+                                                    LocationPoint locationPoint = location as LocationPoint;
+                                                    XYZ locationPointOrigin = locationPoint.Point;
 
-                                    referenceArray.Append(modelCurve.GeometryCurve.GetEndPointReference(1));
-                                    referenceArray.Append(modelCurve.GeometryCurve.GetEndPointReference(0));
+                                                    //compara com os location points das conexões anteriores                                                    
+                                                    double distancebetweenfittingPoints = Math.Round(locationPointOrigin.DistanceTo(point1), 4);
+
+                                                    if (distancebetweenfittingPoints <= 0.00001)
+                                                    {
+                                                        linebetweenFittings = Line.CreateBound(locationPointOrigin, point2);
+                                                    }
+                                                    else
+                                                    {
+                                                        linebetweenFittings = Line.CreateBound(locationPointOrigin, point1);
+                                                    }
+
+                                                    //Coletando um novo ponto muito próximo ao locationPoint da conexão sobre a linha que liga elas duas
+                                                    XYZ intermediatePoint = linebetweenFittings.Evaluate(0.005, true);
+
+                                                    //nova linha muito curta com origem na conexão
+                                                    shortLineinFitting = Line.CreateBound(locationPointOrigin, intermediatePoint);
+
+                                                    //Criando um plano de referência para criar a linha de modelo
+                                                    XYZ point3 = new XYZ(locationPoints[0].X, locationPoints[0].Y + 100, locationPoints[1].Z - 50);
+                                                    Plane myPlane = Plane.CreateByThreePoints(point1, point2, point3);
+                                                    SketchPlane sktPlane = SketchPlane.Create(doc, myPlane);
+
+                                                    uidoc.ActiveView.SketchPlane = sktPlane;
+
+                                                    modelCurve = doc.Create.NewModelCurve(shortLineinFitting, sktPlane);
+
+                                                    //Pegando as referências e os pontos da linha de modelo que foi criada
+                                                    //ponto inicial
+                                                    Reference startpointReference = modelCurve.GeometryCurve.GetEndPointReference(0);
+                                                    XYZ startPoint = modelCurve.GeometryCurve.GetEndPoint(0);
+                                                    //ponto final
+                                                    Reference endpointReference = modelCurve.GeometryCurve.GetEndPointReference(1);
+                                                    XYZ endPoint = modelCurve.GeometryCurve.GetEndPoint(1);
+
+                                                    //comparando os dois pontos da linha de modelo com a origem de inserção da conexão
+                                                    double distanceBetweenPoints = startPoint.DistanceTo(locationPointOrigin);
+
+                                                    if (distanceBetweenPoints <= 0.0001)
+                                                    {
+                                                        referenceArray.Append(startpointReference);
+                                                    }
+                                                    else
+                                                    {
+                                                        referenceArray.Append(endpointReference);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {                                           
+                                            XYZ emptyConnec = connector.Origin;
+
+                                            //compara com os location points da lista anterior (tubo + conexão) com o ponto vigente (emptyConnec)                                                    
+                                            double distancebetweenfittingPoints = Math.Round(emptyConnec.DistanceTo(point1), 4);
+
+                                            if (distancebetweenfittingPoints <= 0.00001)
+                                            {
+                                                linebetweenFittings = Line.CreateBound(emptyConnec, point2);
+                                            }
+                                            else
+                                            {
+                                                linebetweenFittings = Line.CreateBound(emptyConnec, point1);
+                                            }
+
+                                            //Coletando um novo ponto muito próximo ao locationPoint da conexão sobre a linha que liga elas duas
+                                            XYZ intermediatePoint = linebetweenFittings.Evaluate(0.005, true);
+
+                                            //nova linha muito curta com origem na conexão
+                                            shortLineinFitting = Line.CreateBound(emptyConnec, intermediatePoint);
+
+                                            //Criando um plano de referência para criar a linha de modelo
+                                            XYZ point3 = new XYZ(locationPoints[0].X + 20, locationPoints[0].Y + 20, locationPoints[0].Z);
+                                            Plane myPlane = Plane.CreateByThreePoints(point1, point2, point3);
+                                            SketchPlane sktPlane = SketchPlane.Create(doc, myPlane);
+
+                                            uidoc.ActiveView.SketchPlane = sktPlane;
+
+                                            modelCurve = doc.Create.NewModelCurve(shortLineinFitting, sktPlane);
+
+                                            //Pegando as referências e os pontos da linha de modelo que foi criada
+                                            //ponto inicial
+                                            Reference startpointReference = modelCurve.GeometryCurve.GetEndPointReference(0);
+                                            XYZ startPoint = modelCurve.GeometryCurve.GetEndPoint(0);
+                                            //ponto final
+                                            Reference endpointReference = modelCurve.GeometryCurve.GetEndPointReference(1);
+                                            XYZ endPoint = modelCurve.GeometryCurve.GetEndPoint(1);
+
+                                            //comparando os dois pontos da linha de modelo com a origem de inserção da conexão
+                                            double distanceBetweenPoints = startPoint.DistanceTo(emptyConnec);
+
+                                            if (distanceBetweenPoints <= 0.0001)
+                                            {
+                                                referenceArray.Append(startpointReference);
+                                            }
+                                            else
+                                            {
+                                                referenceArray.Append(endpointReference);
+                                            }
+                                        }
+                                    }
                                 }
-
-                                Dimension newDimension = doc.Create.NewDimension(doc.ActiveView, line, referenceArray);
+                                    
+                                Dimension newDimension = doc.Create.NewDimension(doc.ActiveView, shortLineinFitting, referenceArray);
                             }
+
+                            
                         }
                     }
                     catch (Exception ex)

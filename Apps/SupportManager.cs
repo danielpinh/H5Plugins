@@ -148,7 +148,7 @@ namespace H5Plugins
                     {                        
                         eleId = eleRef.ElementId;
                         element = doc.GetElement(eleId);
-                        Parameter param2 = element.LookupParameter("Bottom Elevation");
+                        Parameter param2 = element.LookupParameter("Elevação inferior");
                         string minimalElevation = param2.AsValueString();
                         double minimalElevationDouble = Math.Round(double.Parse(minimalElevation), 4);
                         minimalElevations.Add(minimalElevationDouble);
@@ -397,7 +397,7 @@ namespace H5Plugins
                         //Pegando as informações de altura de cada um dos elementos selecionados
                         eleId = eleRef.ElementId;
                         element = doc.GetElement(eleId);
-                        Parameter param2 = element.LookupParameter("Bottom Elevation");
+                        Parameter param2 = element.LookupParameter("Elevação inferior");
                         string minimalElevation = param2.AsValueString();
                         double minimalElevationDouble = Math.Round(double.Parse(minimalElevation), 4);
 
@@ -450,7 +450,7 @@ namespace H5Plugins
                             Collectors myCollector = new Collectors();
                             Element hangerElement = myCollector.HangerByFamilyName(doc, "V161");
                             FamilySymbol symbol = hangerElement as FamilySymbol;
-                            Parameter param = element.LookupParameter("Width");
+                            Parameter param = element.LookupParameter("Largura");
                             string paramValue = param.AsValueString();
 
                             string larguraConvertida = (double.Parse(paramValue) / 1000).ToString();
@@ -460,7 +460,7 @@ namespace H5Plugins
                                 t.Start();
                                 Element fixacao = doc.Create.NewFamilyInstance(locationPoint, symbol,
                                     levelsList.First(), Autodesk.Revit.DB.Structure.StructuralType.NonStructural);
-                                Parameter param1 = fixacao.LookupParameter("Width");
+                                Parameter param1 = fixacao.LookupParameter("Largura");
                                 param1.SetValueString(larguraConvertida);
 
                                 Parameter elevacaodoNivel = fixacao.get_Parameter(BuiltInParameter.INSTANCE_ELEVATION_PARAM);
@@ -481,7 +481,7 @@ namespace H5Plugins
                             Collectors myCollector = new Collectors();
                             Element hangerElement = myCollector.HangerByFamilyName(doc, "V171");
                             FamilySymbol symbol = hangerElement as FamilySymbol;
-                            Parameter param = element.LookupParameter("Width");
+                            Parameter param = element.LookupParameter("largura");
                             string paramValue = param.AsValueString();
 
                             string larguraConvertida = (double.Parse(paramValue) / 1000).ToString();
