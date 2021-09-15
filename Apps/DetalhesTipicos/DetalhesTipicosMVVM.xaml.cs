@@ -24,20 +24,16 @@ namespace H5Plugins
     /// Here we also set the interactions between the user input through the window controls 
     /// and the classes that build the commands that Revit should receive as requests.
     /// </summary>
-    public partial class DetalhesTipicosWindow : Window
+    public partial class DetalhesTipicosMVVM : Window
     {
+        public static DetalhesTipicosMVVM MainView { get; set; } = new DetalhesTipicosMVVM();
+        readonly ExternalEvent detalhesTipicosEvent = ExternalEvent.Create(new DetalhesTipicosEEH());
 
-        ExternalEvent externalEvent = ExternalEvent.Create(new DTExternalEventHandler());
-        public DetalhesTipicosWindow()
+        public DetalhesTipicosMVVM()
         {
-            /* The initialization of the MainWindow will be called by the ShowWindow method in the ExternalApplication class, executed by the ExternalCommand class,
-             and will take the RequestHandler and the ExternalEvent already instantiated by the application as arguments. */
-
             InitializeComponent();
             InitializeCommands();
-
-            button.Click += comando01;
-
+            this.DataContext = this;
         }
         private void InitializeCommands()
         {
@@ -47,15 +43,10 @@ namespace H5Plugins
             this.SizeToContent = SizeToContent.WidthAndHeight;
             this.ResizeMode = ResizeMode.NoResize;
         }
-       
-        private void comando01(object sender, RoutedEventArgs e)
-        {            
-            externalEvent.Raise();            
-        }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SupportButton_Click(object sender, RoutedEventArgs e)
         {
-
+            detalhesTipicosEvent.Raise();
         }
     }
 }

@@ -1,0 +1,56 @@
+﻿<Window x:Class="H5Plugins.AreaDeFormasMVVM"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:H5Plugins"
+        mc:Ignorable="d"
+        Title="Área de Formas | Head5 Engenharia" Height="532" Width="573" WindowStyle="SingleBorderWindow" FontFamily="Artifakt Element" Closing="Window_Closing">
+    <Window.Effect>
+        <DropShadowEffect RenderingBias="Quality"/>
+    </Window.Effect>
+    <Grid Margin="0" HorizontalAlignment="Right" Width="565" Background="#FFC8C8C8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="564"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ListBox x:Name="AllCurveFacesListBox" Margin="20,21,0,0" SelectionChanged="AllCurveFacesListBox_SelectionChanged" BorderBrush="Black" Height="169" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200"/>
+        <ListBox x:Name="FinalsCurveFaceListBox" Margin="349,20,0,0" BorderBrush="Black" Background="White" SelectionChanged="FinalsCurveFaceListBox_SelectionChanged" Height="167" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200"/>
+        <Label Content="Faces Curvas Descartadas" HorizontalAlignment="Left" Margin="14,-1,0,0" FontFamily="Artifakt Element" Foreground="#FF2A3D78" FontWeight="Bold" Width="191" Height="27" VerticalAlignment="Top"/>
+        <Button x:Name="FaceCurveAddF1_Select" Content="F1" HorizontalAlignment="Left" Height="21" Margin="288,52,0,0" VerticalAlignment="Top" Width="47" Click="FaceCurveAddF1_Select_Click" Background="Navy" Foreground="White" FontFamily="Artifakt Element" FontWeight="Bold" UseLayoutRounding="False" Padding="0,1,1,1" BorderBrush="#FF0D0D0D"/>
+        <Button x:Name="FaceCurveRemoveButton" Content="Remover" Margin="245,149,239,326" Click="FaceCurveRemoveButton_Click" Background="#FF7A312A" Foreground="White" FontFamily="Artifakt Element" FontWeight="Bold" BorderBrush="#FF0B0B0B"/>
+        <Button x:Name="SelectElements" Content="Selecionar Elementos" Margin="20,425,344,48" Click="SelectElements_Click" Background="#FF2A3C7A" Foreground="White" FontFamily="Artifakt Element" FontWeight="Bold" BorderBrush="Black"/>
+        <ListBox x:Name="AllPlanarFacesListBox" HorizontalAlignment="Left" Margin="20,225,0,0" Width="200" BorderBrush="Black" SelectionChanged="AllPlanarFacesListBox_SelectionChanged" Height="180" VerticalAlignment="Top"/>
+        <Label Content="Faces Planas Descartadas" Margin="14,203,0,0" FontFamily="Artifakt Element" FontWeight="Bold" Foreground="#FF2A3D78" Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" Width="206"/>
+        <Button x:Name="FaceCurveAddF2_Select" Content="F2" HorizontalAlignment="Left" Height="21" Margin="288,82,0,0" VerticalAlignment="Top" Width="47" Click="FaceCurveAddF2_Select_Click" Background="#FF55BAEA" Foreground="White" RenderTransformOrigin="0.468,0.333" FontFamily="Artifakt Element" FontWeight="Bold" BorderBrush="#FF0D0D0D"/>
+        <Button x:Name="FaceCurveAddF3_Select" Content="F3" HorizontalAlignment="Left" Height="21" Margin="288,112,0,0" VerticalAlignment="Top" Width="47" Click="FaceCurveAddF3_Select_Click" Background="#FF3E3EFF" Foreground="White" FontFamily="Artifakt Element" FontWeight="Bold" BorderBrush="#FF0D0D0D"/>
+        <Label Content="Faces Curvas Válidas" HorizontalAlignment="Left" Margin="344,-1,0,0" FontFamily="Artifakt Element" FontWeight="Bold" Foreground="#FF2A3D78" Width="128" Height="27" VerticalAlignment="Top"/>
+        <ListBox x:Name="FinalsPlanarFaceListBox" Margin="349,225,0,0" BorderBrush="Black" SelectionChanged="FinalsPlanarFaceListBox_SelectionChanged" Height="180" VerticalAlignment="Top" HorizontalAlignment="Left" Width="200"/>
+        <Label Content="Faces Planas Válidas" Margin="344,203,93,267" FontFamily="Artifakt Element" FontWeight="Bold" Foreground="#FF2A3D78"/>
+        <Button x:Name="TotalArea" Content="Atribuir Área Total" Margin="349,424,15,48" Background="#FF2A3C7A" Foreground="White" FontFamily="Artifakt Element" FontWeight="Bold" Click="TotalArea_Click" BorderBrush="Black"/>
+        <Button x:Name="PlanarFaceAddF1_Select" Content="F1" Margin="288,265,229,215" Click="PlanarFaceAddF1_Select_Click" Background="Green" Foreground="White" FontFamily="Artifakt Element" FontWeight="Bold" BorderBrush="#FF0D0D0D"/>
+        <Button x:Name="PlanarFaceRemoveButton" Content="Remover" Margin="245,366,239,109" Click="PlanarFaceRemoveButton_Click" Background="#FF7A312A" Foreground="White" FontFamily="Artifakt Element" FontWeight="Bold" BorderBrush="#FF0B0B0B"/>
+        <Button x:Name="PlanarFaceAddF2_Select" Content="F2" Margin="288,295,0,0" Click="PlanarFaceAddF2_Select_Click" Background="Teal" Foreground="White" RenderTransformOrigin="0.468,0.333" FontFamily="Artifakt Element" FontWeight="Bold" BorderBrush="#FF0D0D0D" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="47"/>
+        <Button x:Name="PlanarFaceAddF3_Select" Content="F3" Height="21" Margin="288,325,0,0" VerticalAlignment="Top" Click="PlanarFaceAddF3_Select_Click" Background="#FF13EC2F" Foreground="White" FontFamily="Artifakt Element" FontWeight="Bold" BorderBrush="#FF0D0D0D" HorizontalAlignment="Left" Width="47"/>
+        <Button x:Name="PlanarFaceAddF1" Content="&gt;&gt;" HorizontalAlignment="Left" Height="21" Margin="233,265,0,0" VerticalAlignment="Top" Width="47" Click="PlanarFaceAddF1_Click" Background="Green" Foreground="White" FontFamily="Artifakt Element" FontWeight="Bold" BorderBrush="#FF0D0D0D"/>
+        <Button x:Name="PlanarFaceAddF2" Content="&gt;&gt;" Margin="233,295,285,186" Click="PlanarFaceAddF2_Click" Background="Teal" Foreground="White" RenderTransformOrigin="0.468,0.333" FontFamily="Artifakt Element" FontWeight="Bold" BorderBrush="#FF0D0D0D"/>
+        <Button x:Name="PlanarFaceAddF3" Content="&gt;&gt;" Margin="233,325,0,0" Click="PlanarFaceAddF3_Click" Background="#FF13EC2F" Foreground="White" FontFamily="Artifakt Element" FontWeight="Bold" BorderBrush="#FF0D0D0D" Height="21" VerticalAlignment="Top" HorizontalAlignment="Left" Width="47"/>
+        <Button x:Name="FaceCurveAddF1" Content="&gt;&gt;" HorizontalAlignment="Left" Height="21" Margin="233,52,0,0" VerticalAlignment="Top" Width="47" Click="FaceCurveAddF1_Click" Background="Navy" Foreground="White" FontFamily="Artifakt Element" FontWeight="Bold" UseLayoutRounding="False" Padding="0,1,1,1" BorderBrush="#FF0D0D0D"/>
+        <Button x:Name="FaceCurveAddF2" Content="&gt;&gt;" HorizontalAlignment="Left" Height="21" Margin="233,82,0,0" VerticalAlignment="Top" Width="47" Click="FaceCurveAddF2_Click" Background="#FF55BAEA" Foreground="White" RenderTransformOrigin="0.468,0.333" FontFamily="Artifakt Element" FontWeight="Bold" BorderBrush="#FF0D0D0D"/>
+        <Button x:Name="FaceCurveAddF3" Content="&gt;&gt;" HorizontalAlignment="Left" Height="21" Margin="233,112,0,0" VerticalAlignment="Top" Width="47" Click="FaceCurveAddF3_Click" Background="#FF3E3EFF" Foreground="White" FontFamily="Artifakt Element" FontWeight="Bold" BorderBrush="#FF0D0D0D"/>
+        <TextBlock HorizontalAlignment="Left" Margin="21,404,0,76" TextWrapping="Wrap" Text="Nº Faces:" Width="59" FontWeight="Bold" Foreground="#FF030303"/>
+        <TextBlock HorizontalAlignment="Left" Margin="350,404,0,76" TextWrapping="Wrap" Text="Nº Faces:" Width="59" FontWeight="Bold" Foreground="#FF030303"/>
+        <TextBlock HorizontalAlignment="Left" Margin="21,189,0,291" TextWrapping="Wrap" Text="Nº Faces:" Width="59" FontWeight="Bold" Foreground="#FF030303"/>
+        <TextBlock Margin="350,188,155,292" TextWrapping="Wrap" Text="Nº Faces:" FontWeight="Bold" Foreground="#FF030303"/>
+        <TextBlock Name="textBlockAllPlanarFace" HorizontalAlignment="Left" Margin="74,0,0,79" TextWrapping="Wrap" Text="0" VerticalAlignment="Bottom" Width="59" FontWeight="Bold" Foreground="#FF030303"/>
+        <TextBlock Name="textBlockFinalPlanarFace" HorizontalAlignment="Left" Margin="404,0,0,79" TextWrapping="Wrap" Text="0" VerticalAlignment="Bottom" Width="59" FontWeight="Bold" Foreground="#FF030303"/>
+        <TextBlock Name="textBlockAllCurveFace" HorizontalAlignment="Left" Margin="76,0,0,294" TextWrapping="Wrap" Text="0" VerticalAlignment="Bottom" Width="59" FontWeight="Bold" Foreground="#FF030303"/>
+        <TextBlock Name="textBlockFinalCurveFace" HorizontalAlignment="Left" Margin="404,0,0,295" TextWrapping="Wrap" Text="0" VerticalAlignment="Bottom" Width="59" FontWeight="Bold" Foreground="#FF030303"/>
+        <Button x:Name="ClearFaces" Content="Limpar Faces" HorizontalAlignment="Left" Margin="20,462,0,11" Width="200" Click="ClearFaces_Click" Background="#FF2A3C7A" Foreground="White" FontFamily="Artifakt Element" BorderBrush="Black" FontWeight="Bold"/>
+        <Image HorizontalAlignment="Left" Height="35" Margin="266,200,0,0" VerticalAlignment="Top" Width="38" Source="/H5Plugins;component/Windows/H5.png"/>
+    </Grid>
+    <!-- Nothing fancy here. Just a window containing the buttons that will convert user actions into requests for Revit. See the code behind for more info -->
+</Window>

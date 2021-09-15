@@ -40,11 +40,27 @@
     <ApplicationManifest>H5Plugins.addin</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>packages\CommonServiceLocator.2.0.2\lib\net47\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.4.1.0, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -58,6 +74,15 @@
     <Reference Include="RevitAPIUI">
       <HintPath>C:\Program Files\Autodesk\Revit 2020\RevitAPIUI.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Spire.License, Version=1.3.15.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
+      <HintPath>packages\Spire.XLS.11.7.0\lib\net40\Spire.License.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.Pdf, Version=7.7.0.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\Spire.XLS.11.7.0\lib\net40\Spire.Pdf.dll</HintPath>
+    </Reference>
+    <Reference Include="Spire.XLS, Version=11.7.0.0, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>packages\Spire.XLS.11.7.0\lib\net40\Spire.XLS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -79,6 +104,9 @@
       <HintPath>packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -87,39 +115,84 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
+    <Reference Include="XAct.Core.PCL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\XAct.Core.PCL.0.0.5014.0\lib\portable-win+net45+sl50+wp80\XAct.Core.PCL.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Apps\About.cs" />
-    <Compile Include="Apps\IsometricCreator.cs" />
-    <Compile Include="Apps\SupportManager.cs" />
+    <Compile Include="Apps\AreaDeFormas\ClearPaintedFace.cs" />
+    <Compile Include="Apps\AreaDeFormas\ClearPaintedFaces.cs" />
+    <Compile Include="Apps\AreaDeFormas\SelectFaces.cs" />
+    <Compile Include="Apps\AreaDeFormas\GetAllFacesOfSelectedElements.cs" />
+    <Compile Include="Apps\AreaDeFormas\SetFaceParameters.cs" />
+    <Compile Include="Apps\AreaDeFormas\PaintFaceOverride.cs" />
+    <Compile Include="Apps\DetalhesTipicos\DetalhesTipicos01.cs" />
+    <Compile Include="Apps\ElbowUpdaterApplication.cs" />
+    <Compile Include="Apps\FamilyManager\FamilyManager.cs" />
+    <Compile Include="Apps\FamilyManager\FamilyManagerMVVM.xaml.cs">
+      <DependentUpon>FamilyManagerMVVM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Apps\IsometricCreator\ElementsInIsometricSheets.cs" />
+    <Compile Include="Apps\IsometricCreator\IsometricRefreshDimensionsBySelection.cs" />
+    <Compile Include="Apps\IsometricCreator\IsometricRefreshDimensions.cs" />
+    <Compile Include="Apps\IsometricCreator\IsometricCreator.cs" />
+    <Compile Include="Apps\LookupTableMap.cs" />
+    <Compile Include="Apps\DetalhesTipicos\DetalhesTipicosEEH.cs" />
+    <Compile Include="Apps\SupportManager\SupportManagerEEH.cs" />
+    <Compile Include="Apps\SupportManager\SupportManagerEC.cs" />
+    <Compile Include="Apps\AreaDeFormas\AreaDeFormasEC.cs" />
+    <Compile Include="Apps\ProgressBarWindow\ProgressBar.xaml.cs">
+      <DependentUpon>ProgressBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Apps\ScheduleExport\ScheduleExport.cs" />
+    <Compile Include="Apps\SupportManager\SupportManager.cs" />
     <Compile Include="Apps\VedaJunta.cs" />
     <Compile Include="Apps\ConnectConduit.cs" />
-    <Compile Include="Commands\LookupExternalCommand.cs" />
-    <Compile Include="Factorys\Converter.cs" />
+    <Compile Include="Apps\AreaDeFormas\ADFSelectElements.cs" />
+    <Compile Include="Apps\AreaDeFormas\PaintFinalPlanarFacesOverrideExternalEventHandler .cs" />
+    <Compile Include="Apps\AreaDeFormas\PaintFinalCurveFacesOverrideExternalEventHandler.cs" />
+    <Compile Include="Apps\AreaDeFormas\ClearFacesExternalEventHandler.cs" />
+    <Compile Include="Apps\AreaDeFormas\SelectCurveFaceExternalEventHandler.cs" />
+    <Compile Include="Apps\AreaDeFormas\SelectPlanarFaceExternalEventHandler.cs" />
+    <Compile Include="Apps\AreaDeFormas\SetPlanarFaceParametersExternalEventHandler.cs" />
+    <Compile Include="Apps\ScheduleExport\ScheduleExportEEH.cs" />
+    <Compile Include="Apps\ScheduleExport\ScheduleExportEC.cs" />
+    <Compile Include="Apps\AreaDeFormas\SetCurveFaceParametersExternalEventHandler.cs" />
+    <Compile Include="Apps\AreaDeFormas\PaintFaceOverrideExternalEventHandler.cs" />
+    <Compile Include="ExternalCommand\LookupExternalCommand.cs" />
+    <Compile Include="Apps\AreaDeFormas\AreaDeFormasEEH.cs" />
+    <Compile Include="Factorys\Converters.cs" />
     <Compile Include="Factorys\Util.cs" />
     <Compile Include="Request\Request.cs" />
     <Compile Include="Factorys\Collectors.cs" />
     <Compile Include="Apps\VerificarInclinacao.cs" />
     <Compile Include="Apps\OrdenarCortes.cs" />
-    <Compile Include="Apps\LookupTableMap.cs" />
+    <Compile Include="Apps\CurvaGomada.cs" />
     <Compile Include="Apps\GerenciarParametros.cs" />
-    <Compile Include="Commands\DTExternalCommand.cs" />
-    <Compile Include="Commands\RequestHandler.cs" />
+    <Compile Include="Apps\DetalhesTipicos\DetalhesTipicosEC.cs" />
+    <Compile Include="EventHandler\RequestHandler.cs" />
     <Compile Include="Factorys\LookUpTableMapping.cs" />
-    <Compile Include="Services\ExternalApplication.cs">
+    <Compile Include="ExternalApplication\ExternalApplication.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Factorys\DuplicateViewUtils.cs" />
-    <Compile Include="Apps\DetalhesTipicos.cs" />
+    <Compile Include="Apps\DetalhesTipicos\DetalhesTipicos00.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Windows\SupportManagerWindow.xaml.cs">
-      <DependentUpon>SupportManagerWindow.xaml</DependentUpon>
+    <Compile Include="Apps\ScheduleExport\ScheduleExportMVVM.xaml.cs">
+      <DependentUpon>ScheduleExportMVVM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Apps\AreaDeFormas\AreaDeFormasMVVM.xaml.cs">
+      <DependentUpon>AreaDeFormasMVVM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Apps\SupportManager\SupportManagerMVVM.xaml.cs">
+      <DependentUpon>SupportManagerMVVM.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\LookupTableMapWindow.xaml.cs">
       <DependentUpon>LookupTableMapWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\DTWindow.xaml.cs">
-      <DependentUpon>DTWindow.xaml</DependentUpon>
+    <Compile Include="Apps\DetalhesTipicos\DetalhesTipicosMVVM.xaml.cs">
+      <DependentUpon>DetalhesTipicosMVVM.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -129,7 +202,23 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Windows\SupportManagerWindow.xaml">
+    <Page Include="Apps\FamilyManager\FamilyManagerMVVM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Apps\ProgressBarWindow\ProgressBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Apps\ScheduleExport\ScheduleExportMVVM.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Apps\AreaDeFormas\AreaDeFormasMVVM.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Apps\SupportManager\SupportManagerMVVM.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -137,7 +226,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\DTWindow.xaml">
+    <Page Include="Apps\DetalhesTipicos\DetalhesTipicosMVVM.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -170,18 +259,43 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\LookupTableMapping.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Isometrico.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\TabelaIsometrico.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\AtualizarCotasIsometrico.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Windows\H5.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <EmbeddedResource Include="Resources\AreaDeFormas.png" />
+    <EmbeddedResource Include="Resources\ListaDeMateriais.png" />
+    <EmbeddedResource Include="Resources\H5.png" />
+    <Content Include="Apps\ScheduleExport\H5.png" />
+    <Content Include="Windows\FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Apps\SGDB\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>goto exit
 copy "$(TargetDir)"."" "$(AppData)\Autodesk\Revit\Addins\2020\"
-:exit</PostBuildEvent>
+:exit
+</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="packages\Fody.6.0.0\build\Fody.targets" Condition="Exists('packages\Fody.6.0.0\build\Fody.targets')" />
+  <Import Project="packages\Fody.6.5.1\build\Fody.targets" Condition="Exists('packages\Fody.6.5.1\build\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Este projeto faz referência a pacotes do NuGet que não estão presentes neste computador. Use a Restauração de Pacotes do NuGet para baixá-los.  Para obter mais informações, consulte http://go.microsoft.com/fwlink/?LinkID=322105. O arquivo ausente é {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('packages\Fody.6.0.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Fody.6.0.0\build\Fody.targets'))" />
+    <Error Condition="!Exists('packages\Fody.6.5.1\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Fody.6.5.1\build\Fody.targets'))" />
     <Error Condition="!Exists('packages\PropertyChanged.Fody.3.1.0\build\PropertyChanged.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\PropertyChanged.Fody.3.1.0\build\PropertyChanged.Fody.props'))" />
+    <Error Condition="!Exists('packages\Fody.6.5.2\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Fody.6.5.2\build\Fody.targets'))" />
   </Target>
+  <Import Project="packages\Fody.6.5.2\build\Fody.targets" Condition="Exists('packages\Fody.6.5.2\build\Fody.targets')" />
 </Project>

@@ -211,7 +211,7 @@ namespace H5Plugins
                 {
                     //LookupMapping parameters
                     string keyHeader = "DN##length##millimeters";
-                    string header1 = "CODFAB##other##";
+                    //string header1 = "CODFAB##other##";
                     string header2 = "COD##other##";
                     string csvPath = @"V:\Projetos\2108-BIM\Desenvolvimento-BIM\04-COMPONENTES 3D\02-ELÉTRICA\00-ITENS COMERCIAIS\03-ELETRODUTOS E CONEXÕES\Eletroduto_Rígido_Aço.csv";
 
@@ -493,6 +493,72 @@ namespace H5Plugins
                     }
                 }
 
+                //TUBOS PVC-3 METROS   
+                //Define code for each tube
+                List<Element> pipeListPVC3 = myCollector.PipeByFamilyTypeName(doc, "3 METROS");
+                foreach (Element pp in pipeListPVC3)
+                {
+                    //LookupMapping parameters
+                    string keyHeader = "DN##length##millimeters";
+                    string header1 = "COD##other##";
+                    string header2 = "PESOUNIT##mass##kilograms";
+                    string csvPath = @"V:\Projetos\2108-BIM\Desenvolvimento-BIM\04-COMPONENTES 3D\05-MECÂNICA\00-MATÉRIA-PRIMA\00-TUBO\Tubos-PVC-Marrom-3metros.csv";
+                    string codMat = "H5 Código do material";
+                    string massaLinear = "H5 Massa";
+
+                    Element pipeElement = doc.GetElement(pp.Id);
+                    string pipeDiameter = pipeElement.get_Parameter(BuiltInParameter.RBS_PIPE_DIAMETER_PARAM).AsValueString();
+
+                    LookUpTableMapping lktmapping = new LookUpTableMapping();
+                    string codMatValue = lktmapping.LookupByOneHeader(keyHeader, pipeDiameter.ToString(), header1, csvPath);
+                    string massaLinearValue = lktmapping.LookupByOneHeader(keyHeader, pipeDiameter.ToString(), header2, csvPath);
+
+                    using (Transaction trans = new Transaction(doc, "Atribuir Códigos"))
+                    {
+                        trans.Start();
+                        {
+                            Parameter paramSet1 = pp.LookupParameter(codMat);
+                            paramSet1.Set(codMatValue);
+                            Parameter paramSet2 = pp.LookupParameter(massaLinear);
+                            paramSet2.SetValueString(massaLinearValue);
+                        }
+                        trans.Commit();
+                    }
+                }
+
+                //TUBOS PVC-6 METROS   
+                //Define code for each tube
+                List<Element> pipeListPVC6 = myCollector.PipeByFamilyTypeName(doc, "6 METROS");
+                foreach (Element pp in pipeListPVC6)
+                {
+                    //LookupMapping parameters
+                    string keyHeader = "DN##length##millimeters";
+                    string header1 = "COD##other##";
+                    string header2 = "PESOUNIT##mass##kilograms";
+                    string csvPath = @"V:\Projetos\2108-BIM\Desenvolvimento-BIM\04-COMPONENTES 3D\05-MECÂNICA\00-MATÉRIA-PRIMA\00-TUBO\Tubos-PVC-Marrom-6metros.csv";
+                    string codMat = "H5 Código do material";
+                    string massaLinear = "H5 Massa";
+
+                    Element pipeElement = doc.GetElement(pp.Id);
+                    string pipeDiameter = pipeElement.get_Parameter(BuiltInParameter.RBS_PIPE_DIAMETER_PARAM).AsValueString();
+
+                    LookUpTableMapping lktmapping = new LookUpTableMapping();
+                    string codMatValue = lktmapping.LookupByOneHeader(keyHeader, pipeDiameter.ToString(), header1, csvPath);
+                    string massaLinearValue = lktmapping.LookupByOneHeader(keyHeader, pipeDiameter.ToString(), header2, csvPath);
+
+                    using (Transaction trans = new Transaction(doc, "Atribuir Códigos"))
+                    {
+                        trans.Start();
+                        {
+                            Parameter paramSet1 = pp.LookupParameter(codMat);
+                            paramSet1.Set(codMatValue);
+                            Parameter paramSet2 = pp.LookupParameter(massaLinear);
+                            paramSet2.SetValueString(massaLinearValue);
+                        }
+                        trans.Commit();
+                    }
+                }
+
                 //TUBOS STD     
                 //Define code for each tube
                 List<Element> pipeListSTD = myCollector.PipeByFamilyTypeName(doc, "STD");
@@ -531,10 +597,9 @@ namespace H5Plugins
 
             }
         }
-
+        //SISTEMAS
         public void Sistemas(Document doc)
-        {
-
+        {            
             string systemAbreviationValue;
             string systemNameValue;
 
@@ -543,26 +608,32 @@ namespace H5Plugins
                 string systemParameter = "H5 Sistema";
                 string keyHeader = "ABREVIATURA##other##";
                 string header1 = "NOME##other##";
-                string csvPath = @"V:\Projetos\2108-BIM\Desenvolvimento-BIM\04-COMPONENTES 3D\05-MECÂNICA\00-MATÉRIA-PRIMA\00-SISTEMAS\Sistemas.csv";
+                string csvPath = @"V:\Projetos\2108-BIM\Desenvolvimento-BIM\04-COMPONENTES 3D\05-MECÂNICA\00-MATÉRIA-PRIMA\00-SISTEMAS\Sistemas-utf-8.csv";
 
-                //EQUIPAMENTOS MECÂNICOS   
+                //EQUIPAMENTOS MECÂNICOS (EXCETO PARAFUSOS, PORCAS, ARRUELAS, CHUMBADORES)   
                 //Define code for each mechanical equipment
-                List<Element> mechanicalList = myCollector.AllMechanicalEquipments(doc);               
+                List<string> elementsToNotCollect = new List<string>();
+                elementsToNotCollect.Add("PORCA");
+                elementsToNotCollect.Add("PARAFUSO");
+                elementsToNotCollect.Add("ARRUELA");
+                elementsToNotCollect.Add("CHUMBADOR");
+                elementsToNotCollect.Add("BARRA");
+
+                List<Element> mechanicalList = myCollector.MechanicalEquipmentsWithoutNames(doc, elementsToNotCollect);
                 foreach (Element me in mechanicalList)
                 {
                     try
                     {
-                        Element myEle = doc.GetElement(me.Id);
-                        systemAbreviationValue = myEle.get_Parameter(BuiltInParameter.RBS_SYSTEM_NAME_PARAM).AsString();
+                        systemAbreviationValue = me.get_Parameter(BuiltInParameter.RBS_SYSTEM_NAME_PARAM).AsString();
 
                         if (systemAbreviationValue != null)
                         {
                             try
                             {
-                                string substringValue = systemAbreviationValue.Substring(0, 3);                                
+                                string substringValue = systemAbreviationValue.Substring(0, 2);
 
                                 LookUpTableMapping lktmapping = new LookUpTableMapping();
-                                systemNameValue = lktmapping.LookupByOneHeader(keyHeader, substringValue.ToString(), header1, csvPath);                        
+                                systemNameValue = lktmapping.LookupByOneHeader(keyHeader, substringValue.ToString(), header1, csvPath);
 
                                 using (Transaction trans = new Transaction(doc, "Atribuir Sistemas"))
                                 {
@@ -578,9 +649,92 @@ namespace H5Plugins
                             {
                                 continue;
                             }
-                            
-                        }                      
-                       
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+
+                        continue;
+                    }
+                }
+
+                //CURVA GOMADA  
+                //Define code for each mechanical equipment
+                List<FamilyInstance> elbowS = myCollector.PipeFittingsByFamilyName(doc, "GOMADA");
+                foreach (FamilyInstance elbow in elbowS)
+                {
+                    Element myEle = elbow as Element;
+
+                    try
+                    {
+                        systemAbreviationValue = elbow.get_Parameter(BuiltInParameter.RBS_DUCT_PIPE_SYSTEM_ABBREVIATION_PARAM).AsString();
+                        if (systemAbreviationValue != null)
+                        {
+                            try
+                            {                               
+                                LookUpTableMapping lktmapping = new LookUpTableMapping();
+                                systemNameValue = lktmapping.LookupByOneHeader(keyHeader, systemAbreviationValue.ToString(), header1, csvPath);
+
+                                using (Transaction trans = new Transaction(doc, "Atribuir Sistemas"))
+                                {
+                                    trans.Start();
+                                    {
+                                        Parameter paramSet1 = myEle.LookupParameter("H5 Sistema");
+                                        paramSet1.Set(systemNameValue);
+                                    }
+                                    trans.Commit();
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                continue;
+                            }
+
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                        continue;
+                    }
+                }            
+                
+
+                //TUBOS
+                List<Element> pipeList = myCollector.AllPipes(doc);
+                foreach (Element pipe in pipeList)
+                {
+                    try
+                    {
+                        Element myEle = doc.GetElement(pipe.Id);
+                        systemAbreviationValue = myEle.get_Parameter(BuiltInParameter.RBS_DUCT_PIPE_SYSTEM_ABBREVIATION_PARAM).AsString();
+
+                        if (systemAbreviationValue != null)
+                        {
+                            try
+                            {
+
+                                LookUpTableMapping lktmapping = new LookUpTableMapping();
+                                systemNameValue = lktmapping.LookupByOneHeader(keyHeader, systemAbreviationValue.ToString(), header1, csvPath);
+
+                                using (Transaction trans = new Transaction(doc, "Atribuir Sistemas"))
+                                {
+                                    trans.Start();
+                                    {
+                                        Parameter paramSet1 = pipe.LookupParameter("H5 Sistema");
+                                        paramSet1.Set(systemNameValue);
+                                    }
+                                    trans.Commit();
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                continue;
+                            }
+
+                        }
+
                     }
                     catch (Exception)
                     {
@@ -590,7 +744,7 @@ namespace H5Plugins
 
                 }
 
-                //VÁLVULAS
+                //PIPES
                 //var encoding = Encoding.UTF8;
                 //StreamReader stream = new StreamReader(csvPath, encoding);
 
@@ -604,9 +758,6 @@ namespace H5Plugins
 
                         LookUpTableMapping lktmapping = new LookUpTableMapping();
                         systemNameValue = lktmapping.LookupByOneHeader(keyHeader, systemAbreviationValue.ToString(), header1, csvPath);
-                                            
-
-
                         using (Transaction trans = new Transaction(doc, "Atribuir Sistemas"))
                         {
                             trans.Start();
@@ -622,13 +773,13 @@ namespace H5Plugins
                         continue;
                     }
                 }
+                
             }
             finally
             {
 
             }
-        } 
-      
+        }       
     }
 }
 

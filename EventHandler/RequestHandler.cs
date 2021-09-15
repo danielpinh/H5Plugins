@@ -24,10 +24,8 @@ namespace H5Plugins
         public void Execute(UIApplication app)
 
         {
-
             UIDocument uidoc = app.ActiveUIDocument;
             Document doc = uidoc.Document;
-
             try
             {
                 /* Based on the command started by the user in the MainWindow, 
@@ -82,13 +80,7 @@ namespace H5Plugins
                             LookupTableMap lk = new LookupTableMap();
                             lk.Sistemas(doc);
                             break;
-                        }
-                    case RequestId.DetalhesTipicos:
-                        {                          
-                            Document opendoc = app.Application.OpenDocumentFile(Path);
-                            DetalhesTipicos.DetTip(app, doc, opendoc, uidoc);
-                            break;
-                        }
+                        }                                  
                     default:
                         {
                             TaskDialog.Show("Warning", "No valid request has been taken");

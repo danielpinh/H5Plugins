@@ -179,6 +179,56 @@ namespace H5Plugins
             }
             return elementList;
         }
+        public List<Element> MechanicalEquipmentsWithoutNames(Document doc, List<string> familyNames)
+        {
+            var elementList = new List<Element>();
+
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            ElementCategoryFilter collectorFilter = new ElementCategoryFilter(BuiltInCategory.OST_MechanicalEquipment);
+            collector.WherePasses(collectorFilter)
+                .WhereElementIsNotElementType()
+                .ToElements();      
+            
+            foreach (Element ele in collector)
+            {
+                FamilyInstance fi = ele as FamilyInstance;
+                FamilySymbol eleSymbol = fi.Symbol;               
+
+                if (eleSymbol.FamilyName.Contains(familyNames[0]) || eleSymbol.FamilyName.Contains(familyNames[1]) || eleSymbol.FamilyName.Contains(familyNames[2]) || eleSymbol.FamilyName.Contains(familyNames[3]) || eleSymbol.FamilyName.Contains(familyNames[4]))
+                {
+
+                }
+                else
+                {
+                    elementList.Add(ele);
+                }
+            }
+            return elementList;                       
+        }
+
+
+        public List<FamilyInstance> PipeFittingsByFamilyName(Document doc, string familyName)
+        {            
+            var elementList = new List<FamilyInstance>();
+
+            IEnumerable<FamilyInstance> myCollector = new FilteredElementCollector(doc)
+                .WhereElementIsNotElementType()
+                .OfCategory(BuiltInCategory.OST_PipeFitting)
+                .Cast<FamilyInstance>();
+
+            foreach (FamilyInstance fi in myCollector)
+            {              
+                FamilySymbol eleSymbol = fi.Symbol;
+
+                if (eleSymbol.FamilyName.Contains(familyName))
+                {
+                    {
+                        elementList.Add(fi);
+                    }
+                }
+            }
+            return elementList;            
+        }
 
         public ElementId PipeTagsbyFamilyName(Document doc, string familyName)
         {
@@ -208,6 +258,34 @@ namespace H5Plugins
            .Cast<FamilySymbol>()
            .First(x => x.FamilyName == familyName);
             return tagfamilySymbol.Id;
+        }
+        public ElementId PlumbingFixtureTagsbyFamilyName(Document doc, string familyName)
+        {
+            FamilySymbol tagfamilySymbol = new FilteredElementCollector(doc)
+           .WhereElementIsElementType()
+           .OfCategory(BuiltInCategory.OST_PlumbingFixtureTags)
+           .Cast<FamilySymbol>()
+           .First(x => x.FamilyName == familyName);
+            return tagfamilySymbol.Id;
+        }
+
+        public List<Element> AllPipes(Document doc)
+        {
+            var elementList = new List<Element>();
+
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            ElementCategoryFilter collectorFilter = new ElementCategoryFilter(BuiltInCategory.OST_PipeCurves);
+            collector.WherePasses(collectorFilter)
+                .WhereElementIsNotElementType()
+                .ToElements();
+
+            foreach (Element pipe in collector)
+            {
+                
+                elementList.Add(pipe);
+                
+            }
+            return elementList;
         }
 
     }

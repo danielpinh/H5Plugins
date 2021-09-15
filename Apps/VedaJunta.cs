@@ -17,86 +17,98 @@ namespace H5Plugins
         {
             UIApplication uiapp = commandData.Application;
             UIDocument uidoc = uiapp.ActiveUIDocument;
-            Document doc = uidoc.Document;             
-       
+            Document doc = uidoc.Document;
+
+            Element myElement = null;
 
             //Get first the cable tray to insert the hanger and after pick the hoster family
             try
             {
                 //Pick Object
-
                 Selection sel = uiapp.ActiveUIDocument.Selection;
+                IList<Reference> pickedObj = sel.PickObjects(ObjectType.Edge);
+                List<double> myLenghtList = new List<double>();
 
-                Reference pickedObj = sel.PickObject(ObjectType.Element);
+                foreach (Reference item in pickedObj)
+                {                    
+                    GeometryObject geoObj = doc.GetElement(item).GetGeometryObjectFromReference(item);
+                    Edge myEdge = geoObj as Edge;
+                    double lengthFeet = myEdge.ApproximateLength;
+                    double coefficientFeetToMeter = 3.2808;
+                    double lengthMeter = lengthFeet / coefficientFeetToMeter;
 
-                //Get options and set their value to ActiveView to get_Geometry method
-                Options opts = new Options();
-                opts.View = doc.ActiveView;
+                    myLenghtList.Add(lengthMeter);
 
-                //Pick Object in Active View
-                ElementId elementId = pickedObj.ElementId;
-                Element element = doc.GetElement(elementId);
+                    myElement = doc.GetElement(item);
+                }
 
-                //Get profile area
-                FamilySymbol fS = element as FamilySymbol;
-                FamilyInstance fI = element as FamilyInstance;
-                GeometryElement gE = fI.get_Geometry(opts);
+                double myResult = myLenghtList.Sum();
 
-                double volumeFeet = 0;
-                double volume = 0;
-                double profileAreafeet = 0;
-                double profileArea = 0;
-                double areaFeetdoMeter = 10.764;
-                double volumeFeetdoMeter = 35.31466;
+                ////Get options and set their value to ActiveView to get_Geometry method
+                //Options opts = new Options();
+                //opts.View = doc.ActiveView;
 
-                List<PlanarFace> planarFaces = new List<PlanarFace>();
+                ////Pick Object in Active View
+                //ElementId elementId = pickedObj.ElementId;
+                //Element element = doc.GetElement(elementId);
 
+                ////Get profile area
+                //FamilySymbol fS = element as FamilySymbol;
+                //FamilyInstance fI = element as FamilyInstance;
+                //GeometryElement gE = fI.get_Geometry(opts);
 
+                //double volumeFeet = 0;
+                //double volume = 0;
+                //double profileAreafeet = 0;
+                //double profileArea = 0;
+                //double areaFeetdoMeter = 10.764;
+                //double volumeFeetdoMeter = 35.31466;
 
-                foreach (var item in gE)
-                {
-                    GeometryInstance gI = item as GeometryInstance;
-                    GeometryElement geoElemTmp = gI.GetSymbolGeometry();
+                //List<PlanarFace> planarFaces = new List<PlanarFace>();
 
-                    foreach (GeometryObject geomObjTmp in geoElemTmp)
-                    {
-                        Solid solidObj2 = geomObjTmp as Solid;                    
+                //foreach (var item in gE)
+                //{
+                //    GeometryInstance gI = item as GeometryInstance;
+                //    GeometryElement geoElemTmp = gI.GetSymbolGeometry();
 
-                        FaceArray faceArray = solidObj2.Faces;
-                        foreach (Face face in faceArray)
-                        {
-                            if (face is PlanarFace)
-                            {
-                                planarFaces.Add(face as PlanarFace);
-                                break;
-                            }
+                //    foreach (GeometryObject geomObjTmp in geoElemTmp)
+                //    {
+                //        Solid solidObj2 = geomObjTmp as Solid;                    
 
-                        }
+                //        FaceArray faceArray = solidObj2.Faces;
+                //        foreach (Face face in faceArray)
+                //        {
+                //            if (face is PlanarFace)
+                //            {
+                //                planarFaces.Add(face as PlanarFace);
+                //                break;
+                //            }
 
-                        //Convert area, feet do meter
-                        profileAreafeet = planarFaces.First().Area;
-                        profileArea = profileAreafeet / areaFeetdoMeter;
+                //        }
 
-                        TaskDialog.Show("teste", profileArea.ToString());
+                //        //Convert area, feet do meter
+                //        profileAreafeet = planarFaces.First().Area;
+                //        profileArea = profileAreafeet / areaFeetdoMeter;
 
-                        //Convert volume, feet do meter
-                        volumeFeet = solidObj2.Volume;
-                        volume = volumeFeet / volumeFeetdoMeter;
+                //        TaskDialog.Show("teste", profileArea.ToString());
 
-                        break;
-                    }
-                }          
-                               
-                double linearLength = Math.Round((volume / profileArea),2);                
+                //        //Convert volume, feet do meter
+                //        volumeFeet = solidObj2.Volume;
+                //        volume = volumeFeet / volumeFeetdoMeter;
+
+                //        break;
+                //    }
+                //}        
+                //double linearLength = Math.Round((volume / profileArea),2);
+                
                 using (var t = new Transaction(doc))
                 {
                     t.Start("VedaJunta");
-                    Parameter param = element.LookupParameter("H5 Comprimento");
-                    param.SetValueString(linearLength.ToString());
+                    Parameter param = myElement.LookupParameter("H5 Comprimento");
+                    param.SetValueString(myResult.ToString());
                     t.Commit();
                 }               
             }
-
             finally
             {
                

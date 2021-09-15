@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace H5Plugins.Factorys
+namespace H5Plugins
 {
-    class Converter
+    public class Converters
     {
         public double MetertoFeet (double meterValue)
         {
@@ -22,6 +22,13 @@ namespace H5Plugins.Factorys
             double coefficient = 3.281;
             meterValue = feetValue / coefficient;
             return meterValue;
+        }
+        public double AreaFeettoMeter(double areaFeetValue)
+        {
+            double meterareaValue;
+            double coefficient = 10.764;
+            meterareaValue = areaFeetValue / coefficient;
+            return meterareaValue;
         }
     }
 }

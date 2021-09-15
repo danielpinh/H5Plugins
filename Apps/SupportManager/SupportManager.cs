@@ -12,14 +12,14 @@ using System.Numerics;
 namespace H5Plugins
 {
     [Transaction(TransactionMode.Manual)]
-    public class SupportManager : IExternalCommand
+    public class SupportManager 
     {
-        public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
-        {
-            UIApplication uiapp = commandData.Application;
-            UIDocument uidoc = uiapp.ActiveUIDocument;
-            Document doc = uidoc.Document;
+        public Result Execute(Document doc, UIApplication uiapp)
+        {            
+            UIDocument uidoc = uiapp.ActiveUIDocument;            
             Element eleSupport = null;
+
+            Converters cvn = new Converters();           
 
             //Variables            
             string myresult = null;
@@ -55,8 +55,8 @@ namespace H5Plugins
                 Selection sel = uiapp.ActiveUIDocument.Selection;
 
                 //Create new PickObjects for cable tray elements
-                IList<Reference> pickedObj = sel.PickObjects(Autodesk.Revit.UI.Selection.ObjectType.Element);                           
-
+                IList<Reference> pickedObj = sel.PickObjects(Autodesk.Revit.UI.Selection.ObjectType.Element);  
+                
                 //Elements count
                 double numberOfReferences = pickedObj.Count();               
 
@@ -91,9 +91,24 @@ namespace H5Plugins
                         LocationCurve lc = element.Location as LocationCurve;
                         Line lineCurve = lc.Curve as Line;
                         var listPoints = new List<XYZ>();
-                        listPoints.Add(lc.Curve.Evaluate(1, true));
-                        listPoints.Add(lc.Curve.Evaluate(0, true));
-                        listPoints.Add(lc.Curve.Evaluate(0.5, true));
+
+                        double lineLengthMeter = cvn.FeettoMeter(lineCurve.ApproximateLength);
+
+                        SupportManagerViewModel supportManagerViewModel = new SupportManagerViewModel();
+                        decimal lineLenght = decimal.Parse(lineLengthMeter.ToString());
+                        decimal maximumDistance = SupportManagerMVVM.MainView.ViewModel.MaximumDistance;
+                        decimal numberOfItens = Math.Round(lineLenght/ maximumDistance, 0, MidpointRounding.AwayFromZero);                                       
+                        decimal incrementValue = 1 / numberOfItens;
+                        List<decimal> myIList = new List<decimal>();
+
+                        for (decimal i = 0; i <= 1; i += incrementValue)
+                        {                            
+                            listPoints.Add(lc.Curve.Evaluate((double)i, true));
+                            myIList.Add(i);
+                        }
+
+                        //REMOVENDO DUPLICADOS
+                        var listPointsNoDups = new HashSet<XYZ>(listPoints);                        
 
                         //rotation angle 
                         angleToY = 0;
@@ -115,15 +130,14 @@ namespace H5Plugins
                         string midElevationValue = midElevationParam.AsValueString();
                         midElevationDouble = Math.Round(double.Parse(midElevationValue), 4);                   
                         double result = elevationFace - midElevationDouble;
-                        myresult = result.ToString();                                            
+                        myresult = result.ToString();
 
-                        foreach (var point in listPoints)
+                        //Insert Hanger
+                        using (var t = new Transaction(doc))
                         {
-                            //Insert Hanger
-                            using (var t = new Transaction(doc))
+                            t.Start("Insert Hanger");
+                            foreach (var point in listPointsNoDups)
                             {
-                                t.Start("Insert Hanger");
-
                                 //Set elevation value in support family
                                 eleSupport = doc.Create.NewFamilyInstance(point, symbol, Autodesk.Revit.DB.Structure.StructuralType.NonStructural);
                                 Parameter param = eleSupport.LookupParameter("H5 Deslocamento");
@@ -137,9 +151,9 @@ namespace H5Plugins
                                 XYZ p2 = new XYZ(elementPoint.X, elementPoint.Y, elementPoint.Z + 10);
                                 Line axis = Line.CreateBound(elementPoint, p2);
                                 ElementTransformUtils.RotateElement(doc, eleSupport.Id, axis, angleToY);
-                                t.Commit();                                
                             }
-                        }                                              
+                            t.Commit();
+                        }
                     }                   
                 }                 
                 else
@@ -481,7 +495,7 @@ namespace H5Plugins
                             Collectors myCollector = new Collectors();
                             Element hangerElement = myCollector.HangerByFamilyName(doc, "V171");
                             FamilySymbol symbol = hangerElement as FamilySymbol;
-                            Parameter param = element.LookupParameter("largura");
+                            Parameter param = element.LookupParameter("Largura");
                             string paramValue = param.AsValueString();
 
                             string larguraConvertida = (double.Parse(paramValue) / 1000).ToString();
@@ -533,8 +547,9 @@ namespace H5Plugins
             lineParameter = (planeNormal.DotProduct(planePoint)-
                 planeNormal.DotProduct(linePoint))/ planeNormal.DotProduct(lineDirection);
             return linePoint + lineParameter * lineDirection;
-        }
-    } 
+        }               
+
+    }
 
 }
 

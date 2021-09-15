@@ -33,7 +33,7 @@ namespace H5Plugins
             //Detalhes Típicos            
             PushButton detalhesTipicos = NewMenuRibbonButton("Button1", String.Format("Detalhes" + Environment.NewLine + "Típicos"),
                 path,
-                "H5Plugins.DTExternalCommand",
+                "H5Plugins.DetalhesTipicosEC",
                 "Cria Folhas com os Detalhes Típicos dos Equipamentos Inseridos no Projeto.",
                 panelGer,
                 "H5Plugins.Resources.DetalhesTipicos.png",
@@ -78,7 +78,7 @@ namespace H5Plugins
             //Support Manager   
             PushButton supportManager = NewMenuRibbonButton("Button6", String.Format("Inserir" + Environment.NewLine + "Suportes"),
                 path,
-                "H5Plugins.SupportManager",
+                "H5Plugins.SupportManagerEC",
                 "Insere suportes em famílias de eletrodutos, eletrocalhas, perfilados, leitos e tubos",
                 panelGer,
                 "H5Plugins.Resources.SupportManager.png",
@@ -129,7 +129,7 @@ namespace H5Plugins
                 "H5Plugins.Resources.AtualizarCotasIsometrico.png",
                 helpAdress);
 
-            //Curva Gomada                    
+            //QUANTITATIVOS PARA CURVA GOMADA                    
             PushButton curvaGomada = NewMenuRibbonButton("Button11", String.Format("Curva Gomada" + Environment.NewLine + "Quantitativos"),
                 path,
                 "H5Plugins.CurvaGomada",
@@ -138,16 +138,16 @@ namespace H5Plugins
                 "H5Plugins.Resources.LookupTableMapping.png",
                 helpAdress);
 
-            //Curva Gomada                    
-            PushButton scheduleExport = NewMenuRibbonButton("Button12", String.Format("Exportar" + Environment.NewLine + "Tabelas"),
+            //EXPORTAR LISTA DE MATERIAIS                   
+            PushButton scheduleExport = NewMenuRibbonButton("Button12", String.Format("Exportar" + Environment.NewLine + "Listas de Materiais"),
                 path,
-                "H5Plugins.ScheduleExport",
+                "H5Plugins.ScheduleExportEC",
                 "Exporta as tabelas de quantitativo em formato .xls",
                 panelGer,
                 "H5Plugins.Resources.ListaDeMateriais.png",
                 helpAdress);
 
-            //Detalhes Típicos            
+            //ÁREA DE FORMAS           
             PushButton areaDeFormas = NewMenuRibbonButton("Button13", String.Format("Área de" + Environment.NewLine + "Formas"),
                 path,
                 "H5Plugins.ADFExternalCommand",
@@ -173,7 +173,6 @@ namespace H5Plugins
 
         public RibbonPanel NewMenuRibbonGroup(UIControlledApplication application, string addinName, string groupName)
         {
-
             RibbonPanel newPanel = application.CreateRibbonPanel(addinName, groupName);
             return newPanel;
         }
@@ -191,7 +190,6 @@ namespace H5Plugins
             //Adding icon to button                        
             PushButton newpushButton = panelName.AddItem(newPushButtonData) as PushButton;
             newpushButton.LargeImage = PngImageSource(imageIconSource);
-
             return newpushButton;
         }
 
@@ -203,8 +201,13 @@ namespace H5Plugins
             return decoder.Frames[0];
         }
         public Result OnShutdown(UIControlledApplication application)
-        {
-            throw new NotImplementedException();
+        {          
+            if (ScheduleExportMVVM.MainView != null && ScheduleExportMVVM.MainView.IsVisible)
+            {
+                ScheduleExportMVVM.MainView.Dispose();
+            }
+            return Result.Succeeded;          
+           
         }
     }
 

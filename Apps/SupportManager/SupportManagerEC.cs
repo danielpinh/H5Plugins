@@ -7,6 +7,8 @@ using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using Autodesk.Revit.Attributes;
 using H5Plugins;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace H5Plugins
 {
@@ -16,29 +18,23 @@ namespace H5Plugins
     /// </summary>
 
     [Transaction(TransactionMode.Manual)] // setting transactions to manual in order to associate them with our add-in commands, if needed.
-
-    public class DTExternalCommand : IExternalCommand
-    {
+    class SupportManagerEC : IExternalCommand
+    {     
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            RequestHandler handler = new RequestHandler();
-            ExternalEvent exEvent = ExternalEvent.Create(handler);
-            var mainView = new DTWindow(exEvent, handler);
-            mainView.Show();
-
+            //Exibe a janela principal da aplicação          
+            SupportManagerMVVM.MainView.Show();    
             return Result.Succeeded;
-
-        }
-
+        }       
     }
-        
-}
-       
-    
 
-  
-       
-    
+}
+
+
+
+
+
+
 
 
 

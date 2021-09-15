@@ -19,7 +19,7 @@
 		<FullClassName>H5Plugins.OrdenarCortes</FullClassName>
 		<VendorId>Daniel</VendorId>
 		<VendorDescription>Daniel Pinheiro</VendorDescription>
-	</AddIn>
+	</AddIn>	
 	<AddIn Type="Command">
 		<Name>GerenciarParametros</Name>
 		<Assembly>H5Plugins.dll</Assembly>
@@ -31,12 +31,32 @@
 		<VendorDescription>Daniel Pinheiro</VendorDescription>
 	</AddIn>
 	<AddIn Type="Command">
+		<Name>ScheduleExport</Name>
+		<Assembly>H5Plugins.dll</Assembly>
+		<AddInId>
+			412BEC8E-B049-46D2-B6C8-CD17125B6B2D
+		</AddInId>
+		<FullClassName>H5Plugins.ScheduleExport</FullClassName>
+		<VendorId>Daniel</VendorId>
+		<VendorDescription>Daniel Pinheiro</VendorDescription>
+	</AddIn>
+	<AddIn Type="Command">
 		<Name>SupportManager</Name>
 		<Assembly>H5Plugins.dll</Assembly>
 		<AddInId>
 			DB813C84-F230-4E9E-AB1B-9AE53DC8D14C
 		</AddInId>
 		<FullClassName>H5Plugins.SupportManager</FullClassName>
+		<VendorId>Daniel</VendorId>
+		<VendorDescription>Daniel Pinheiro</VendorDescription>
+	</AddIn>
+	<AddIn Type="Command">
+		<Name>CurvaGomada</Name>
+		<Assembly>H5Plugins.dll</Assembly>
+		<AddInId>
+			41B015BD-51E9-4E3A-83C6-6515AD93EE24
+		</AddInId>
+		<FullClassName>H5Plugins.CurvaGomada</FullClassName>
 		<VendorId>Daniel</VendorId>
 		<VendorDescription>Daniel Pinheiro</VendorDescription>
 	</AddIn>
@@ -52,11 +72,21 @@
 	</AddIn>
 	<AddIn Type="Command">
 		<Name>IsometricCreator</Name>
-		<Assembly>IsometricCreator.dll</Assembly>
+		<Assembly>H5Plugins.dll</Assembly>
 		<AddInId>
 			77A73E1E-64B1-4D36-B2BE-F50FDF4298D5
 		</AddInId>
 		<FullClassName>H5Plugins.IsometricCreator</FullClassName>
+		<VendorId>Daniel</VendorId>
+		<VendorDescription>Daniel Pinheiro</VendorDescription>
+	</AddIn>
+	<AddIn Type="Command">
+		<Name>ElementsInIsometricSheets</Name>
+		<Assembly>H5Plugins.dll</Assembly>
+		<AddInId>
+			B73606A8-8C73-4C96-85BF-A6F5CF57E2C3
+		</AddInId>
+		<FullClassName>H5Plugins.ElementsInIsometricSheets</FullClassName>
 		<VendorId>Daniel</VendorId>
 		<VendorDescription>Daniel Pinheiro</VendorDescription>
 	</AddIn>
@@ -67,6 +97,26 @@
 			78DB76DC-DAB1-4ECD-A7FA-6D9D5B556E79
 		</AddInId>
 		<FullClassName>H5Plugins.LookupTableMap</FullClassName>
+		<VendorId>Daniel</VendorId>
+		<VendorDescription>Daniel Pinheiro</VendorDescription>
+	</AddIn>
+	<AddIn Type="Command">
+		<Name>IsometricRefreshDimensionsBySelection</Name>
+		<Assembly>H5Plugins.dll</Assembly>
+		<AddInId>
+			E417F1CD-8B24-49E7-ACB1-08E1880924D5
+		</AddInId>
+		<FullClassName>H5Plugins.IsometricRefreshDimensionsBySelection</FullClassName>
+		<VendorId>Daniel</VendorId>
+		<VendorDescription>Daniel Pinheiro</VendorDescription>
+	</AddIn>
+	<AddIn Type="Command">
+		<Name>IsometricRefreshDimensions</Name>
+		<Assembly>H5Plugins.dll</Assembly>
+		<AddInId>
+			F2B29526-18AC-48E2-A300-0CB76467E640
+		</AddInId>
+		<FullClassName>H5Plugins.IsometricRefreshDimensions</FullClassName>
 		<VendorId>Daniel</VendorId>
 		<VendorDescription>Daniel Pinheiro</VendorDescription>
 	</AddIn>
@@ -99,3 +149,7 @@
 		<VendorDescription>DanielPinheiro</VendorDescription>		
 	</AddIn>
 </RevitAddIns>
+
+
+
+

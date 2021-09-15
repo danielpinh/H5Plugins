@@ -32,7 +32,7 @@ namespace H5Plugins
                 string sharedParameterFilePath = @"V:\Projetos\2108-BIM\Desenvolvimento-BIM\00-TEMPLATES\00-REVIT\02-ELÉTRICA\02-PARÂMETROS COMPARTILHADOS\PARÂMETROS-COMPARTILHADOS-ELÉTRICA.txt";
 
                 app.SharedParametersFilename = sharedParameterFilePath;
-                FamilyManager familyManager = doc.FamilyManager;
+                Autodesk.Revit.DB.FamilyManager familyManager = doc.FamilyManager;
 
                 // get all shared parameters from shared parameters file
                 DefinitionFile definitionFile = app.OpenSharedParameterFile();

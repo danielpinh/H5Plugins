@@ -9,10 +9,9 @@ using Revit.SDK.Samples.DuplicateViews.CS;
 namespace H5Plugins
 {
     [Transaction(TransactionMode.Manual)]
-    public class DetalhesTipicos 
+    public class DetalhesTipicos00 
     {
         public static void DetTip(UIApplication application, Document doc, Document opendoc, UIDocument uidoc)
-
         {                  
             try
             {
@@ -68,9 +67,7 @@ namespace H5Plugins
                         {
                             viewsDrafing.Add(item);
                         }
-
                     }
-
                 }
 
                 // Copiando as vistas de desenho entre projetos
@@ -164,7 +161,6 @@ namespace H5Plugins
             {
 
             }
-        }
-        
+        }        
     }
 }
