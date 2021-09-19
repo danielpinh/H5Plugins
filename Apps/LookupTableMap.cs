@@ -427,10 +427,46 @@ namespace H5Plugins
         {
             try
             {
+                //TUBOS SISTEMA GROOVED     
+                //Define code for each tube
+                List<Element> pipeListGrooved = myCollector.PipeByFamilyTypeName(doc, "GROOVED");
+                foreach (Element pp in pipeListGrooved)
+                {
+                    //LookupMapping parameters
+                    string keyHeader = "DN##length##millimeters";
+                    string header1 = "COD##other##";
+                    string header2 = "PESOUNIT##mass##kilograms";
+                    string csvPath = @"V:\Projetos\2108-BIM\Desenvolvimento-BIM\04-COMPONENTES 3D\05-MECÂNICA\00-MATÉRIA-PRIMA\00-TUBO\Tubos-Grooved.csv";
+                    string codMat = "H5 Código do material";
+                    string massaLinear = "H5 Massa";
+
+                    Element pipeElement = doc.GetElement(pp.Id);
+                    string pipeDiameter = pipeElement.get_Parameter(BuiltInParameter.RBS_PIPE_DIAMETER_PARAM).AsValueString();
+
+                    LookUpTableMapping lktmapping = new LookUpTableMapping();
+                    string codMatValue = lktmapping.LookupByOneHeader(keyHeader, pipeDiameter.ToString(), header1, csvPath);
+                    string massaLinearValue = lktmapping.LookupByOneHeader(keyHeader, pipeDiameter.ToString(), header2, csvPath);
+
+                    using (Transaction trans = new Transaction(doc, "Atribuir Códigos"))
+                    {
+                        trans.Start();
+                        {
+                            Parameter paramSet1 = pp.LookupParameter(codMat);
+                            paramSet1.Set(codMatValue);
+                            Parameter paramSet2 = pp.LookupParameter(massaLinear);
+                            paramSet2.SetValueString(massaLinearValue);
+                        }
+                        trans.Commit();
+                    }
+                }
+
+
+
+
                 //TUBOS SCH80     
                 //Define code for each tube
                 List<Element> pipeListsch80 = myCollector.PipeByFamilyTypeName(doc, "SCH80");
-                foreach (Element pp in pipeListsch80)
+                foreach (Element pp in pipeListGrooved)
                 {
                     //LookupMapping parameters
                     string keyHeader = "DN##length##millimeters";

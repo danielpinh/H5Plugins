@@ -124,7 +124,7 @@
     <Compile Include="Apps\AreaDeFormas\ClearPaintedFace.cs" />
     <Compile Include="Apps\AreaDeFormas\ClearPaintedFaces.cs" />
     <Compile Include="Apps\AreaDeFormas\SelectFaces.cs" />
-    <Compile Include="Apps\AreaDeFormas\GetAllFacesOfSelectedElements.cs" />
+    <Compile Include="Apps\AreaDeFormas\FaceUtils.cs" />
     <Compile Include="Apps\AreaDeFormas\SetFaceParameters.cs" />
     <Compile Include="Apps\AreaDeFormas\PaintFaceOverride.cs" />
     <Compile Include="Apps\DetalhesTipicos\DetalhesTipicos01.cs" />
@@ -139,6 +139,7 @@
     <Compile Include="Apps\IsometricCreator\IsometricCreator.cs" />
     <Compile Include="Apps\LookupTableMap.cs" />
     <Compile Include="Apps\DetalhesTipicos\DetalhesTipicosEEH.cs" />
+    <Compile Include="Apps\ScheduleExport\ScheduleExportMecanicaEC.cs" />
     <Compile Include="Apps\SupportManager\SupportManagerEEH.cs" />
     <Compile Include="Apps\SupportManager\SupportManagerEC.cs" />
     <Compile Include="Apps\AreaDeFormas\AreaDeFormasEC.cs" />
@@ -150,16 +151,7 @@
     <Compile Include="Apps\VedaJunta.cs" />
     <Compile Include="Apps\ConnectConduit.cs" />
     <Compile Include="Apps\AreaDeFormas\ADFSelectElements.cs" />
-    <Compile Include="Apps\AreaDeFormas\PaintFinalPlanarFacesOverrideExternalEventHandler .cs" />
-    <Compile Include="Apps\AreaDeFormas\PaintFinalCurveFacesOverrideExternalEventHandler.cs" />
-    <Compile Include="Apps\AreaDeFormas\ClearFacesExternalEventHandler.cs" />
-    <Compile Include="Apps\AreaDeFormas\SelectCurveFaceExternalEventHandler.cs" />
-    <Compile Include="Apps\AreaDeFormas\SelectPlanarFaceExternalEventHandler.cs" />
-    <Compile Include="Apps\AreaDeFormas\SetPlanarFaceParametersExternalEventHandler.cs" />
     <Compile Include="Apps\ScheduleExport\ScheduleExportEEH.cs" />
-    <Compile Include="Apps\ScheduleExport\ScheduleExportEC.cs" />
-    <Compile Include="Apps\AreaDeFormas\SetCurveFaceParametersExternalEventHandler.cs" />
-    <Compile Include="Apps\AreaDeFormas\PaintFaceOverrideExternalEventHandler.cs" />
     <Compile Include="ExternalCommand\LookupExternalCommand.cs" />
     <Compile Include="Apps\AreaDeFormas\AreaDeFormasEEH.cs" />
     <Compile Include="Factorys\Converters.cs" />
@@ -173,14 +165,14 @@
     <Compile Include="Apps\DetalhesTipicos\DetalhesTipicosEC.cs" />
     <Compile Include="EventHandler\RequestHandler.cs" />
     <Compile Include="Factorys\LookUpTableMapping.cs" />
-    <Compile Include="ExternalApplication\ExternalApplication.cs">
+    <Compile Include="ExternalApplication\H5AppExternalApplication.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
     <Compile Include="Factorys\DuplicateViewUtils.cs" />
     <Compile Include="Apps\DetalhesTipicos\DetalhesTipicos00.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Apps\ScheduleExport\ScheduleExportMVVM.xaml.cs">
-      <DependentUpon>ScheduleExportMVVM.xaml</DependentUpon>
+    <Compile Include="Apps\ScheduleExport\ScheduleExportMecanicaMVVM.xaml.cs">
+      <DependentUpon>ScheduleExportMecanicaMVVM.xaml</DependentUpon>
     </Compile>
     <Compile Include="Apps\AreaDeFormas\AreaDeFormasMVVM.xaml.cs">
       <DependentUpon>AreaDeFormasMVVM.xaml</DependentUpon>
@@ -210,7 +202,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Apps\ScheduleExport\ScheduleExportMVVM.xaml">
+    <Page Include="Apps\ScheduleExport\ScheduleExportMecanicaMVVM.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

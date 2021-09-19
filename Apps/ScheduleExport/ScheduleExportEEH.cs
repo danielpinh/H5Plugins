@@ -20,11 +20,11 @@ namespace H5Plugins
     /// Also here we will define all the methods that will build the application functionality using the Revit API.
     /// </summary>
     public class ScheduleExportEEH : IExternalEventHandler
-    {
+    {        
         public void Execute(UIApplication app)
         {
             UIDocument uidoc = app.ActiveUIDocument;
-            Document doc = uidoc.Document;
+            Document doc = uidoc.Document;            
 
             //COLETANDO TODAS AS TABELAS DO PROJETO
             FilteredElementCollector scheduleCollector = new FilteredElementCollector(doc)
@@ -34,7 +34,7 @@ namespace H5Plugins
             {
                 if (!(vs.IsTitleblockRevisionSchedule) && !(vs.IsTemplate))
                 {
-                    ScheduleExportMVVM.MainView.MainViewModel.Add(new ScheduleExportViewModel { ScheduleName = vs.Name });
+                    ScheduleExportMVVM.MainView.MainViewModel.Add(new ScheduleExportViewModel { ScheduleName = vs.Name });                       
                 }                
             }
         }
@@ -50,9 +50,9 @@ namespace H5Plugins
         public void Execute(UIApplication app)
         {
             UIDocument uidoc = app.ActiveUIDocument;
-            Document doc = uidoc.Document;
+            Document doc = uidoc.Document;            
             ScheduleExport se = new ScheduleExport();
-            se.Execute(doc);         
+            se.Mecanica(doc);         
         }
 
         public string GetName()

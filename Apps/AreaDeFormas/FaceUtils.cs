@@ -11,9 +11,9 @@ using System.Diagnostics;
 
 namespace H5Plugins
 { 
-    public class GetAllFacesOfSelectedElements
+    public class FaceUtils
     {     
-        public List<Face> Faces(Document doc, UIDocument uidoc)
+        public List<Face> GetAllFacesOfSelectedElements(Document doc, UIDocument uidoc)
         {                                       
             //Select Elements in UI            
             IList<Reference> refs = uidoc.Selection.PickObjects(ObjectType.Element, "Selecione os elementos para tirar a área de formas");
@@ -261,6 +261,67 @@ namespace H5Plugins
                                 }
                             }
                             else if (face is HermiteFace)
+                            {
+                                //SE A FACE JÀ ESTIVER PINTADA, CLASSFIQUE-A CONFORME O MATERIAL
+                                if ((doc.IsPainted(eleId, face) && (!material.Name.Contains("FORMAS"))))
+                                {
+                                    var faceAreaFeet = face.Area;
+                                    double faceAreaMeter = Math.Round(cvn.AreaFeettoMeter(faceAreaFeet), 3);
+                                    if (material.Name.ToString() == "H5-CURVA-F1")
+                                    {
+                                        if (!AreaDeFormasMVVM.MainView.FinalsCurveFaceListBox.Items.Contains(faceAreaMeter + " m² (" + face.GetHashCode().ToString() + ") - F1"))
+                                        {
+                                            ADFSelectElements.CurveFacesElementList.Add(face);
+                                            ADFSelectElements.CurveFacesHashCodeString.Add(face.GetHashCode().ToString());
+                                            ADFSelectElements.CurveFacesAreaDouble.Add(faceAreaMeter);
+                                            ADFSelectElements.CurveFacesAreaAndHashCodeString.Add(faceAreaMeter + " m² (" + face.GetHashCode().ToString() + ")");
+                                            AreaDeFormasMVVM.MainView.FinalsCurveFaceListBox.Items.Add(faceAreaMeter + " m² (" + face.GetHashCode().ToString() + ") - F1");
+                                        }
+                                    }
+                                    else if (material.Name.ToString() == "H5-CURVA-F2")
+                                    {
+                                        if (!AreaDeFormasMVVM.MainView.FinalsCurveFaceListBox.Items.Contains(faceAreaMeter + " m² (" + face.GetHashCode().ToString() + ") - F2"))
+                                        {
+                                            ADFSelectElements.CurveFacesElementList.Add(face);
+                                            ADFSelectElements.CurveFacesHashCodeString.Add(face.GetHashCode().ToString());
+                                            ADFSelectElements.CurveFacesAreaDouble.Add(faceAreaMeter);
+                                            ADFSelectElements.CurveFacesAreaAndHashCodeString.Add(faceAreaMeter + " m² (" + face.GetHashCode().ToString() + ")");
+                                            AreaDeFormasMVVM.MainView.FinalsCurveFaceListBox.Items.Add(faceAreaMeter + " m² (" + face.GetHashCode().ToString() + ") - F2");
+                                        }
+                                    }
+                                    else if (material.Name.ToString() == "H5-CURVA-F3")
+                                    {
+                                        if (!AreaDeFormasMVVM.MainView.FinalsCurveFaceListBox.Items.Contains(faceAreaMeter + " m² (" + face.GetHashCode().ToString() + ") - F3"))
+                                        {
+                                            ADFSelectElements.CurveFacesElementList.Add(face);
+                                            ADFSelectElements.CurveFacesHashCodeString.Add(face.GetHashCode().ToString());
+                                            ADFSelectElements.CurveFacesAreaDouble.Add(faceAreaMeter);
+                                            ADFSelectElements.CurveFacesAreaAndHashCodeString.Add(faceAreaMeter + " m² (" + face.GetHashCode().ToString() + ")");
+                                            AreaDeFormasMVVM.MainView.FinalsCurveFaceListBox.Items.Add(faceAreaMeter + " m² (" + face.GetHashCode().ToString() + ") - F3");
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    using (Transaction tx = new Transaction(doc))
+                                    {
+                                        tx.Start("Colorir Face");
+                                        try
+                                        {
+                                            doc.RemovePaint(eleId, face);
+                                            doc.Paint(eleId, face, myMaterial.Id);
+                                            elementFaces.Add(face);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            continue;
+                                        }
+                                        tx.Commit();
+                                    }
+
+                                }
+                            }
+                            else if (face is RevolvedFace)
                             {
                                 //SE A FACE JÀ ESTIVER PINTADA, CLASSFIQUE-A CONFORME O MATERIAL
                                 if ((doc.IsPainted(eleId, face) && (!material.Name.Contains("FORMAS"))))

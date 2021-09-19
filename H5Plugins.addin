@@ -141,10 +141,10 @@
 		<VendorDescription>Daniel Pinheiro</VendorDescription>
 	</AddIn>	
 	<AddIn Type="Application">
-		<Name>ExternalApplication</Name>
+		<Name>H5App</Name>		
 		<Assembly>H5Plugins.dll</Assembly>		
-		<FullClassName>H5Plugins.ExternalApplication</FullClassName>		
-		<ClientId>09AA2FB9-DEC9-4E86-9EE4-8226782D68BA</ClientId>
+		<FullClassName>H5Plugins.H5AppExternalApplication</FullClassName>		
+		<ClientId>A692ED46-D658-41E1-AB9C-71258014AB73</ClientId>
 		<VendorId>Daniel</VendorId>		
 		<VendorDescription>DanielPinheiro</VendorDescription>		
 	</AddIn>

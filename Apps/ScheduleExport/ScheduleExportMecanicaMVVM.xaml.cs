@@ -22,42 +22,42 @@ using GalaSoft.MvvmLight;
 
 namespace H5Plugins
 {
-    public partial class ScheduleExportMVVM : Window, IDisposable
-    {            
-        public static ScheduleExportMVVM MainView { get; set; } = new ScheduleExportMVVM();
-        readonly ExternalEvent scheduleExportEvent = ExternalEvent.Create(new ScheduleExportEEH());
-        readonly ExternalEvent scheduleExportSaveEvent = ExternalEvent.Create(new ScheduleExportSaveEEH());
+    public partial class ScheduleExportMVVM : Window , IDisposable
+    {
+        private static ExternalEvent scheduleExportSaveEEH = ExternalEvent.Create(new ScheduleExportSaveEEH());      
+
         public ObservableCollection<ScheduleExportViewModel> MainViewModel { get; set; }
         public ScheduleExportViewModel ViewModel { get; set; }
-        
-        public ScheduleExportMVVM()
-        {            
-            
-            MainViewModel = new ObservableCollection<ScheduleExportViewModel>();            
-            ViewModel = new ScheduleExportViewModel();            
-            scheduleExportEvent.Raise();
+
+        public static ScheduleExportMVVM MainView { get; set; }
+
+        public ScheduleExportMVVM(ExternalEvent externalEvent)
+        {
+            MainViewModel = new ObservableCollection<ScheduleExportViewModel>();
+            ViewModel = new ScheduleExportViewModel();
+            MainView = this;            
+            externalEvent.Raise();            
             InitializeComponent();
             InitializeCommands();
-            this.DataContext = this;            
+            this.DataContext = this;           
         }    
-
         private void InitializeCommands()
         {
             this.Topmost = true;
             this.ShowInTaskbar = true;
             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             this.SizeToContent = SizeToContent.WidthAndHeight;
-            this.ResizeMode = ResizeMode.NoResize;            
+            this.ResizeMode = ResizeMode.NoResize;   
         }        
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            e.Cancel = true;
-            this.Visibility = System.Windows.Visibility.Hidden;
-        }
+        //private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        //{            
+        //    e.Cancel = true;
+        //    this.Visibility = System.Windows.Visibility.Hidden;
+        //}        
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            scheduleExportSaveEvent.Raise();           
+        {            
+            scheduleExportSaveEEH.Raise();
         }
 
         private void ClearSelectionButton_Checked(object sender, RoutedEventArgs e)
@@ -65,7 +65,9 @@ namespace H5Plugins
             foreach (var item in MainViewModel)
             {
                 item.IsCheckedScheduleName = false;
-            }           
+            }
+
+            SelectAllButton.IsChecked = false;
         }
 
         private void SelectAllButton_Checked(object sender, RoutedEventArgs e)
@@ -74,14 +76,15 @@ namespace H5Plugins
             {
                 item.IsCheckedScheduleName = true;
             }
+            ClearSelectionButton.IsChecked = false;
         }
 
         private void SelectAllButton_UnChecked(object sender, RoutedEventArgs e)
         {
-            foreach (var item in MainViewModel)
-            {
-                item.IsCheckedScheduleName = false;
-            }
+            //foreach (var item in MainViewModel)
+            //{
+            //    item.IsCheckedScheduleName = false;
+            //}
         }
         private void ScheduleExportMVVM_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
@@ -89,23 +92,43 @@ namespace H5Plugins
             this.Visibility = System.Windows.Visibility.Hidden;
         }
         public void Dispose()
+        {     
+              this.Close();
+        }           
+
+        private void scheduleExportListBox_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            scheduleExportSaveEvent.Dispose();
-            scheduleExportEvent.Dispose();
-            this.Close();
+            foreach (var item in MainViewModel)
+            {
+                if (item.IsCheckedScheduleName == false)
+                {
+                    SelectAllButton.IsChecked = false;
+                }
+            }
         }
 
-        private void Window_Closed(object sender, EventArgs e)
+        private void scheduleExportListBox_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
         {
-            this.Close();
-            scheduleExportSaveEvent.Dispose();
-            scheduleExportEvent.Dispose();
-            ViewModel.ScheduleName = null;
-            ViewModel.MyReviewValue = null;
-            ViewModel.MyReviewValue = null;
+            foreach (var item in MainViewModel)
+            {
+                if (item.IsCheckedScheduleName == false)
+                {
+                    SelectAllButton.IsChecked = false;
+                }
+            }
+        }
+
+        private void scheduleExportListBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            foreach (var item in MainViewModel)
+            {
+                if (item.IsCheckedScheduleName == false)
+                {
+                    SelectAllButton.IsChecked = false;
+                }
+            }
         }
     }
-
     public class ScheduleExportViewModel : INotifyPropertyChanged
     {      
         private string scheduleName { get; set; }
@@ -113,7 +136,7 @@ namespace H5Plugins
 
         private string myReviewValue;
 
-
+        private string myDocumentValue;
         public string ScheduleName
         {
             get { return scheduleName; }
@@ -123,8 +146,7 @@ namespace H5Plugins
                 // Call OnPropertyChanged whenever the property is updated
                 OnPropertyChanged();
             }
-        }
-       
+        }       
         public bool IsCheckedScheduleName
         {
             get { return isCheckedScheduleName; }
@@ -146,6 +168,17 @@ namespace H5Plugins
                 OnPropertyChanged();
             }
         }
+        public string MyDocumentValue
+        {
+            get { return myDocumentValue; }
+            set
+            {
+                myDocumentValue = value;
+                // Call OnPropertyChanged whenever the property is updated
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {

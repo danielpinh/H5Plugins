@@ -12,13 +12,7 @@ using System.Runtime.CompilerServices;
 
 namespace H5Plugins
 {
-    /// <summary>
-    /// This class implements the IExternalCommand interface and contains the command to execute the application, 
-    /// which will be called by the button created in the application class.
-    /// </summary>
-
-    [Transaction(TransactionMode.Manual)] // setting transactions to manual in order to associate them with our add-in commands, if needed.    
-
+    [Transaction(TransactionMode.Manual)] 
     public class ADFSelectElements         
     {
         public static List<Face> FacesElementsList { get; set; } = new List<Face>();
@@ -33,10 +27,9 @@ namespace H5Plugins
         public static Face FaceToPaint { get; set; }        
 
         public static void GetFaces(Document doc, UIDocument uidoc)        
-        {
-            
-            GetAllFacesOfSelectedElements getAllFaces = new GetAllFacesOfSelectedElements();
-            FacesElementsList = getAllFaces.Faces(doc, uidoc);
+        {            
+            FaceUtils getAllFaces = new FaceUtils();
+            FacesElementsList = getAllFaces.GetAllFacesOfSelectedElements(doc, uidoc);
             Converters cvn = new Converters();          
 
             //FACES PLANAS
@@ -64,7 +57,7 @@ namespace H5Plugins
                 var faceAreaFeet = face.Area;
                 double faceAreaMeter = Math.Round(cvn.AreaFeettoMeter(faceAreaFeet), 3);
 
-                if (face is RuledFace || face is CylindricalFace || face is HermiteFace)
+                if (face is RuledFace || face is CylindricalFace || face is HermiteFace || face is RevolvedFace)
                 {
                     CurveFacesElementList.Add(face);
                     CurveFacesHashCodeString.Add(face.GetHashCode().ToString());

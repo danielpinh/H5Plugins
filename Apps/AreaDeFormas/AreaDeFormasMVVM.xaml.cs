@@ -26,13 +26,13 @@ namespace H5Plugins
     public partial class AreaDeFormasMVVM : Window
     {
         readonly ExternalEvent externalEvent = ExternalEvent.Create(new AreaDeFormasEEH());
-        readonly ExternalEvent paintfaceexternalEvent = ExternalEvent.Create(new PaintFaceOverrideExternalEventHandler());
-        readonly ExternalEvent setparameterCurveFaceExternalEvent = ExternalEvent.Create(new SetCurveFaceParametersExternalEventHandler());
-        readonly ExternalEvent setparameterPlanarFaceExternalEvent = ExternalEvent.Create(new SetPlanarFaceParametersExternalEventHandler());
-        readonly ExternalEvent selectcurveFaceExternalEvent = ExternalEvent.Create(new SelectCurveFaceExternalEventHandler());
-        readonly ExternalEvent selectplanarFaceExternalEvent = ExternalEvent.Create(new SelectPlanarFaceExternalEventHandler());
-        readonly ExternalEvent paintcurvefacesbyselectionExternalEvent = ExternalEvent.Create(new PaintFinalCurveFacesOverrideExternalEventHandler());
-        readonly ExternalEvent paintplanarfacesbyselectionExternalEvent = ExternalEvent.Create(new PaintFinalPlanarFacesOverrideExternalEventHandler());
+        readonly ExternalEvent paintfaceexternalEvent = ExternalEvent.Create(new PaintFaceOverrideEEH());
+        readonly ExternalEvent setparameterCurveFaceExternalEvent = ExternalEvent.Create(new SetCurveFaceParametersEEH());
+        readonly ExternalEvent setparameterPlanarFaceExternalEvent = ExternalEvent.Create(new SetPlanarFaceParametersEEH());
+        readonly ExternalEvent selectcurveFaceExternalEvent = ExternalEvent.Create(new SelectCurveFaceEEH());
+        readonly ExternalEvent selectplanarFaceExternalEvent = ExternalEvent.Create(new SelectPlanarFaceEEH());
+        readonly ExternalEvent paintcurvefacesbyselectionExternalEvent = ExternalEvent.Create(new PaintFinalCurveFacesOverrideEEH());
+        readonly ExternalEvent paintplanarfacesbyselectionExternalEvent = ExternalEvent.Create(new PaintFinalPlanarFacesOverrideEEH());
         readonly ExternalEvent clearpaintedfaces = ExternalEvent.Create(new ClearFacesEEH());
 
         public static List<string> CurveFaceListFinalString = new List<string>();
@@ -395,7 +395,7 @@ namespace H5Plugins
             
             //LIMPANDO A LISTA DE FACES SELECIONADAS
             SelectFaces.MySelectedFaces.Clear();
-            SelectCurveFaceExternalEventHandler.typeofFace = "F1";
+            SelectCurveFaceEEH.typeofFace = "F1";
             //PINTANDO A FACE APÓS A SELEÇÃO CONFORME A COR DO TIPO DE FORMA            
             selectcurveFaceExternalEvent.Raise();
             try
@@ -424,7 +424,7 @@ namespace H5Plugins
             }
 
             SelectFaces.MySelectedFaces.Clear();
-            SelectCurveFaceExternalEventHandler.typeofFace = "F2";
+            SelectCurveFaceEEH.typeofFace = "F2";
             //PINTANDO A FACE APÓS A SELEÇÃO CONFORME A COR DO TIPO DE FORMA            
             selectcurveFaceExternalEvent.Raise();
             try
@@ -452,7 +452,7 @@ namespace H5Plugins
             }
 
             SelectFaces.MySelectedFaces.Clear();
-            SelectCurveFaceExternalEventHandler.typeofFace = "F3";
+            SelectCurveFaceEEH.typeofFace = "F3";
             //PINTANDO A FACE APÓS A SELEÇÃO CONFORME A COR DO TIPO DE FORMA
             selectcurveFaceExternalEvent.Raise();
             try
@@ -480,7 +480,7 @@ namespace H5Plugins
             {
             }
             SelectFaces.MySelectedFaces.Clear();
-            SelectPlanarFaceExternalEventHandler.typeofFace = "F1";
+            SelectPlanarFaceEEH.typeofFace = "F1";
             //PINTANDO A FACE APÓS A SELEÇÃO CONFORME A COR DO TIPO DE FORMA
             selectplanarFaceExternalEvent.Raise();
             try
@@ -508,7 +508,7 @@ namespace H5Plugins
             }
 
             SelectFaces.MySelectedFaces.Clear();
-            SelectPlanarFaceExternalEventHandler.typeofFace = "F2";
+            SelectPlanarFaceEEH.typeofFace = "F2";
             //PINTANDO A FACE APÓS A SELEÇÃO CONFORME A COR DO TIPO DE FORMA
             selectplanarFaceExternalEvent.Raise();
             try
@@ -536,7 +536,7 @@ namespace H5Plugins
             }
 
             SelectFaces.MySelectedFaces.Clear();
-            SelectPlanarFaceExternalEventHandler.typeofFace = "F3";
+            SelectPlanarFaceEEH.typeofFace = "F3";
             //PINTANDO A FACE APÓS A SELEÇÃO CONFORME A COR DO TIPO DE FORMA
             selectplanarFaceExternalEvent.Raise();
             try
