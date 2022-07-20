@@ -1,0 +1,39 @@
+﻿<Window x:Class="H5Plugins.LinkParameterMVVM"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:H5Plugins"
+        mc:Ignorable="d"
+        Title="Atribuir Parâmetros | Head5 Engenharia" Height="598" Width="522" FontFamily="Artifakt Element">
+    <Grid Height="567" VerticalAlignment="Top" HorizontalAlignment="Left" Width="514" Background="#FFC8C8C8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Parâmetros de projeto:" HorizontalAlignment="Left" Margin="6,-1,0,0" FontFamily="Artifakt Element" FontWeight="Bold" Foreground="#FF2A3D78" Width="283" Height="26" VerticalAlignment="Top"/>
+        <ListBox x:Name="projectParametersListBox" ItemsSource="{Binding Path=ParametersMainViewModel, UpdateSourceTrigger=PropertyChanged}" Margin="10,52,0,0" BorderBrush="Black" HorizontalAlignment="Left" Width="280" FontSize="11" Height="430" VerticalAlignment="Top">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox Content="{Binding Path=ParameterName}" IsChecked="{Binding Path=IsCheckedParameterName, Mode=TwoWay}" Margin="5 5 0 0"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button x:Name="SaveButton" Content="Executar por categoria" HorizontalAlignment="Left" Margin="306,522,0,0" Width="142" Background="#FF273069" Foreground="White" FontWeight="Bold" BorderBrush="Black" Click="SaveButton_Click" Height="30" VerticalAlignment="Top"/>
+        <CheckBox x:Name="SelectAllButton" Content="Selecionar tudo" HorizontalAlignment="Left" Margin="9,491,0,0" Foreground="#FF2A3D8C" FontWeight="Bold" BorderBrush="Black" Checked="SelectAllButton_Checked" Unchecked="SelectAllButton_Unchecked" Height="24" VerticalAlignment="Top"/>
+        <Image HorizontalAlignment="Left" Margin="465,517,0,0" Width="38" Source="/H5Plugins;component/Windows/H5.png" Height="38" VerticalAlignment="Top"/>
+        <ListBox x:Name="categoriesListBox" ItemsSource="{Binding Path=CategoryMainViewModel, UpdateSourceTrigger=PropertyChanged}" Margin="306,52,0,0" BorderBrush="Black" HorizontalAlignment="Left" Width="198" FontSize="11" Height="430" VerticalAlignment="Top" IsTabStop="True">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox Content="{Binding Path=CategoryName}" IsChecked="{Binding Path=IsCheckedCategoryName, Mode=TwoWay}" Margin="5 5 0 0"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Label Content="Categorias:" HorizontalAlignment="Left" Margin="302,-1,0,0" FontFamily="Artifakt Element" FontWeight="Bold" Foreground="#FF2A3D78" Width="202" Height="26" VerticalAlignment="Top"/>
+        <CheckBox x:Name="TypeParameterCheckBox" DataContext="{Binding Path=ParameterViewModel}" IsChecked="{Binding Path=IsTypeParameter, Mode=TwoWay}"  Content="Tipo" HorizontalAlignment="Left" Margin="9,30,0,0" Foreground="#FF2A3D8C" FontWeight="Bold" BorderBrush="Black" Unchecked="TypeParameterCheckBox_Unchecked" Height="24" VerticalAlignment="Top" Checked="TypeParameterCheckBox_Checked"/>
+        <CheckBox x:Name="InstanceParameterCheckBox" DataContext="{Binding Path=ParameterViewModel}" IsChecked="{Binding Path=IsInstanceParameter, Mode=TwoWay}" Content="Instância" HorizontalAlignment="Left" Margin="61,30,0,0" Foreground="#FF2A3D8C" FontWeight="Bold" BorderBrush="Black" Unchecked="InstanceParameterCheckBox_Unchecked" Height="24" VerticalAlignment="Top" Checked="InstanceParameterCheckBox_Checked"/>
+        <TextBox x:Name="FindCategoryTextBox" DataContext="{Binding Path=ParameterViewModel}" Text="{Binding Path=SearchText}" HorizontalAlignment="Left" Height="22" Margin="306,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="197" BorderBrush="Black" TextChanged="FindCategoryTextBox_TextChanged"/>
+        <Button x:Name="SelectFamilies" Content="Executar por seleção" HorizontalAlignment="Left" Margin="10,522,0,0" Width="133" Background="#FF273069" Foreground="White" FontWeight="Bold" BorderBrush="Black" Click="SelectFamilies_Click" Height="30" VerticalAlignment="Top"/>
+    </Grid>
+    <!-- Nothing fancy here. Just a window containing the buttons that will convert user actions into requests for Revit. See the code behind for more info -->
+</Window>

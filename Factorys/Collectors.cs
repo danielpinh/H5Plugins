@@ -32,6 +32,32 @@ namespace H5Plugins
             return elementList;
         }
 
+        public IList<Wall> AllWalls(Document doc)
+        {
+            ElementCategoryFilter collectorFilter = new ElementCategoryFilter(BuiltInCategory.OST_Walls);
+            IList<Wall> familyInstanceList = new FilteredElementCollector(doc)
+                .WherePasses(collectorFilter)
+                .WhereElementIsNotElementType()
+                .ToElements()
+                .Cast<Wall>()
+                .ToList();
+
+
+            return familyInstanceList;
+        }
+
+        public IList<WallSweep> AllWallSweeps(Document doc)
+        {
+            ElementCategoryFilter collectorFilter = new ElementCategoryFilter(BuiltInCategory.OST_Cornices);
+            IList<WallSweep> familyInstanceList = new FilteredElementCollector(doc)
+                .WhereElementIsNotElementType()
+                .WherePasses(collectorFilter)
+                .Cast<WallSweep>()
+                .ToList();
+
+            return familyInstanceList;
+        }
+
         public List<Element> CableTraysByFamilyTypeName(Document doc, string familyType)
         {
             var elementList = new List<Element>();
@@ -145,6 +171,30 @@ namespace H5Plugins
             return elementList;
         }
 
+        public List<Element> PipeByFamilyTypeNames(Document doc, List<string> typeNames)
+        {
+            var elementList = new List<Element>();
+
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            ElementCategoryFilter collectorFilter = new ElementCategoryFilter(BuiltInCategory.OST_PipeCurves);
+            collector.WherePasses(collectorFilter)
+                .WhereElementIsNotElementType()
+                .ToElements();
+
+            foreach (string typeName in typeNames)
+            {
+                foreach (Element pipe in collector)
+                {
+                    if (pipe.Name.Contains(typeName))
+                    {
+                        elementList.Add(pipe);
+                    }
+                }               
+            }
+
+            return elementList;
+        }
+
         public List<Element> AllMechanicalEquipments(Document doc)
         {
             var elementList = new List<Element>();
@@ -161,6 +211,34 @@ namespace H5Plugins
             }
             return elementList;
 
+        }
+
+        public List<FamilyInstance> AllFamilyInstancesOfCategory(Document doc, Category myCategory)
+        {
+            //Coletando o Builtincategory da Category
+            BuiltInCategory enumCategory = (BuiltInCategory)myCategory.Id.IntegerValue;
+
+            IList<FamilyInstance> familyInstances = new FilteredElementCollector(doc)
+                .OfCategory(enumCategory)
+                .WhereElementIsNotElementType()
+                .Cast<FamilyInstance>()
+                .ToList();            
+
+            return familyInstances as List<FamilyInstance>;
+        }
+
+        public List<FamilySymbol> AllFamilySymbolsOfCategory(Document doc, Category myCategory)
+        {
+            //Coletando o Builtincategory da Category
+            BuiltInCategory enumCategory = (BuiltInCategory)myCategory.Id.IntegerValue;
+
+            IList<FamilySymbol> familyInstances = new FilteredElementCollector(doc)
+                .OfCategory(enumCategory)
+                .WhereElementIsElementType()
+                .Cast<FamilySymbol>()
+                .ToList();
+
+            return familyInstances as List<FamilySymbol>;
         }
 
         public List<Element> AllPipeAcessories(Document doc)
@@ -232,41 +310,77 @@ namespace H5Plugins
 
         public ElementId PipeTagsbyFamilyName(Document doc, string familyName)
         {
-            FamilySymbol tagfamilySymbol = new FilteredElementCollector(doc)
-                .WhereElementIsElementType()
-                .OfCategory(BuiltInCategory.OST_PipeTags)
-                .Cast<FamilySymbol>()
-                .First(x => x.FamilyName == familyName);
-            return tagfamilySymbol.Id;         
+            try
+            {
+                FamilySymbol tagfamilySymbol = new FilteredElementCollector(doc)
+                    .WhereElementIsElementType()
+                    .OfCategory(BuiltInCategory.OST_PipeTags)
+                    .Cast<FamilySymbol>()
+                    .First(x => x.FamilyName == familyName);
+                return tagfamilySymbol.Id;
+            }
+            catch 
+            {
+                return null;
+            }
+            
         }
 
         public ElementId PipeFittingsTagsbyFamilyName(Document doc, string familyName)
         {
-            FamilySymbol tagfamilySymbol = new FilteredElementCollector(doc)
-                .WhereElementIsElementType()
-                .OfCategory(BuiltInCategory.OST_PipeFittingTags)
-                .Cast<FamilySymbol>()
-                .First(x => x.FamilyName == familyName);
-            return tagfamilySymbol.Id;
+
+            try
+            {
+                FamilySymbol tagfamilySymbol = new FilteredElementCollector(doc)
+                   .WhereElementIsElementType()
+                   .OfCategory(BuiltInCategory.OST_PipeFittingTags)
+                   .Cast<FamilySymbol>()
+                   .First(x => x.FamilyName == familyName);
+                return tagfamilySymbol.Id;
+            }
+            catch 
+            {
+                return null;
+            }
+            
         }
 
         public ElementId PipeAcessoryTagsbyFamilyName(Document doc, string familyName)
         {
-            FamilySymbol tagfamilySymbol = new FilteredElementCollector(doc)
-           .WhereElementIsElementType()
-           .OfCategory(BuiltInCategory.OST_PipeAccessoryTags)
-           .Cast<FamilySymbol>()
-           .First(x => x.FamilyName == familyName);
-            return tagfamilySymbol.Id;
+            try
+            {
+                FamilySymbol tagfamilySymbol = new FilteredElementCollector(doc)
+                    .WhereElementIsElementType()
+                    .OfCategory(BuiltInCategory.OST_PipeAccessoryTags)
+                    .Cast<FamilySymbol>()
+                    .First(x => x.FamilyName == familyName);
+                return tagfamilySymbol.Id;
+            }
+            catch 
+            {
+                return null;
+            }          
+            
+           
         }
         public ElementId PlumbingFixtureTagsbyFamilyName(Document doc, string familyName)
         {
-            FamilySymbol tagfamilySymbol = new FilteredElementCollector(doc)
-           .WhereElementIsElementType()
-           .OfCategory(BuiltInCategory.OST_PlumbingFixtureTags)
-           .Cast<FamilySymbol>()
-           .First(x => x.FamilyName == familyName);
-            return tagfamilySymbol.Id;
+
+            try
+            {
+                FamilySymbol tagfamilySymbol = new FilteredElementCollector(doc)
+                    .WhereElementIsElementType()
+                    .OfCategory(BuiltInCategory.OST_PlumbingFixtureTags)
+                    .Cast<FamilySymbol>()
+                    .First(x => x.FamilyName == familyName);
+                return tagfamilySymbol.Id;
+            }
+            catch
+            {
+                return null;
+            }
+            
+           
         }
 
         public List<Element> AllPipes(Document doc)

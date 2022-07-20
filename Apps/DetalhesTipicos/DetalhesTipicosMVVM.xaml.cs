@@ -24,15 +24,17 @@ namespace H5Plugins
     /// Here we also set the interactions between the user input through the window controls 
     /// and the classes that build the commands that Revit should receive as requests.
     /// </summary>
-    public partial class DetalhesTipicosMVVM : Window
-    {
-        public static DetalhesTipicosMVVM MainView { get; set; } = new DetalhesTipicosMVVM();
-        readonly ExternalEvent detalhesTipicosEvent = ExternalEvent.Create(new DetalhesTipicosEEH());
+    public partial class DetalhesTipicosMVVM : Window, IDisposable
+    {        
+        public static DetalhesTipicosMVVM MainView { get; set; }
+
+        readonly ExternalEvent detalhesTipicosEEH = ExternalEvent.Create(new DetalhesTipicosEEH());
 
         public DetalhesTipicosMVVM()
         {
+            MainView = this;            
             InitializeComponent();
-            InitializeCommands();
+            InitializeCommands();            
             this.DataContext = this;
         }
         private void InitializeCommands()
@@ -43,10 +45,14 @@ namespace H5Plugins
             this.SizeToContent = SizeToContent.WidthAndHeight;
             this.ResizeMode = ResizeMode.NoResize;
         }
-
-        private void SupportButton_Click(object sender, RoutedEventArgs e)
+        private void DetalhesTipicosButton_Click(object sender, RoutedEventArgs e)
         {
-            detalhesTipicosEvent.Raise();
+            detalhesTipicosEEH.Raise();
         }
+        public void Dispose()
+        {
+            this.Close();
+        }
+
     }
 }

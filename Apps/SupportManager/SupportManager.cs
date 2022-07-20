@@ -91,10 +91,11 @@ namespace H5Plugins
                         LocationCurve lc = element.Location as LocationCurve;
                         Line lineCurve = lc.Curve as Line;
                         var listPoints = new List<XYZ>();
-
+                       
+                        //Converting line length
                         double lineLengthMeter = cvn.FeettoMeter(lineCurve.ApproximateLength);
 
-                        SupportManagerViewModel supportManagerViewModel = new SupportManagerViewModel();
+                        //SupportManagerViewModel supportManagerViewModel = new SupportManagerViewModel();
                         decimal lineLenght = decimal.Parse(lineLengthMeter.ToString());
                         decimal maximumDistance = SupportManagerMVVM.MainView.ViewModel.MaximumDistance;
                         decimal numberOfItens = Math.Round(lineLenght/ maximumDistance, 0, MidpointRounding.AwayFromZero);                                       
@@ -108,22 +109,67 @@ namespace H5Plugins
                         }
 
                         //REMOVENDO DUPLICADOS
-                        var listPointsNoDups = new HashSet<XYZ>(listPoints);                        
+                        var listPointsNoDups = new HashSet<XYZ>(listPoints);
 
-                        //rotation angle 
-                        angleToY = 0;
-                        XYZ originPoint = lineCurve.Direction;
-                        double xAbs = Math.Abs(originPoint.X);
-                        double yAbs = Math.Abs(originPoint.Y);
+                        //Get Direction XYZ Points (Very Important!!)
+                        XYZ directionPoint = lineCurve.Direction;
 
-                        if (originPoint.X > originPoint.Y || (originPoint.X == originPoint.Y))
-                        {
-                            angleToY = -Math.Acos(originPoint.Y);
+
+                        //DIRECTIONS STUDY
+                        double XAxisDirection = directionPoint.X;
+                        double YAxisDirection = directionPoint.Y;                       
+
+                        if (XAxisDirection > 0 && YAxisDirection > 0)
+                        {                          
+                            //rotation angle 
+                            angleToY = 0;
+                            XYZ originPoint = lineCurve.Direction;
+                            double xAbs = Math.Abs(originPoint.X);
+                            double yAbs = Math.Abs(originPoint.Y);
+
+                            if (originPoint.X > originPoint.Y || (originPoint.X == originPoint.Y))
+                            {
+                                angleToY = Math.Acos(originPoint.Y);
+                            }
+                            else
+                            {
+                                angleToY = -Math.Acos(originPoint.Y);
+                            }
+                        }
+                        else if (XAxisDirection < 0 && YAxisDirection < 0)
+                        {                          
+                            //rotation angle 
+                            angleToY = 0;
+                            XYZ originPoint = lineCurve.Direction;
+                            double xAbs = Math.Abs(originPoint.X);
+                            double yAbs = Math.Abs(originPoint.Y);
+
+                            if (originPoint.X > originPoint.Y || (originPoint.X == originPoint.Y))
+                            {
+                                angleToY = Math.Acos(originPoint.Y);
+                            }
+                            else
+                            {
+                                angleToY = -Math.Acos(originPoint.Y);
+                            }
                         }
                         else
-                        {
-                            angleToY = Math.Acos(originPoint.Y);
-                        }
+                        {                            
+                            //rotation angle 
+                            angleToY = 0;
+                            XYZ originPoint = lineCurve.Direction;
+                            double xAbs = Math.Abs(originPoint.X);
+                            double yAbs = Math.Abs(originPoint.Y);
+
+                            if (originPoint.X > originPoint.Y || (originPoint.X == originPoint.Y))
+                            {
+                                angleToY = -Math.Acos(originPoint.Y);
+                            }
+                            else
+                            {
+                                angleToY = Math.Acos(originPoint.Y);
+                            }
+                        }                                                               
 
                         //Distance between face and cable tray mid elevation
                         Parameter midElevationParam = element.LookupParameter("Elevação intermediária");
@@ -158,6 +204,11 @@ namespace H5Plugins
                 }                 
                 else
                 {
+                    //LISTA DE PONTOS
+                    var listPoints = new List<XYZ>();
+                    //REMOVENDO PONTOS DUPLICADOS
+                    var listPointsNoDups = new HashSet<XYZ>(listPoints);                    
+
                     foreach (Reference eleRef in pickedObj)
                     {                        
                         eleId = eleRef.ElementId;
@@ -169,23 +220,83 @@ namespace H5Plugins
 
                        //Get point of support insertion in each cable tray
                         LocationCurve lc = element.Location as LocationCurve;
-                        Line lineCurve = lc.Curve as Line;
-                        var listPoints = new List<XYZ>();
-                        xValuepoints.Add(lc.Curve.Evaluate(0.5, true).X);
-                        yValuepoints.Add(lc.Curve.Evaluate(0.5, true).Y);
+                        Line lineCurve = lc.Curve as Line;                       
 
-                        //rotation angle                        
-                        XYZ originPoint = lineCurve.Direction;
-                        double xAbs = Math.Abs(originPoint.X);
-                        double yAbs = Math.Abs(originPoint.Y);
+                        //Converting line length
+                        double lineLengthMeter = cvn.FeettoMeter(lineCurve.ApproximateLength);                        
+                        decimal lineLenght = decimal.Parse(lineLengthMeter.ToString());
+                        decimal maximumDistance = SupportManagerMVVM.MainView.ViewModel.MaximumDistance;
+                        decimal numberOfItens = Math.Round(lineLenght / maximumDistance, 0, MidpointRounding.AwayFromZero);
+                        decimal incrementValue = 1 / numberOfItens;
 
-                        if (originPoint.X > originPoint.Y || (originPoint.X == originPoint.Y))
+                        List<decimal> myIList = new List<decimal>();
+
+                        for (decimal i = 0; i <= 1; i += incrementValue)
                         {
-                            angleToY = -Math.Acos(originPoint.Y);
+                            listPoints.Add(lc.Curve.Evaluate((double)i, true));
+                            myIList.Add(i);
+                        }                       
+
+                        //xValuepoints.Add(lc.Curve.Evaluate(0.5, true).X);
+                        //yValuepoints.Add(lc.Curve.Evaluate(0.5, true).Y);
+
+                        //Get Direction XYZ Points (Very Important!!)
+                        XYZ directionPoint = lineCurve.Direction;
+
+                        //DIRECTIONS STUDY
+                        double XAxisDirection = directionPoint.X;
+                        double YAxisDirection = directionPoint.Y;
+
+                        if (XAxisDirection > 0 && YAxisDirection > 0)
+                        {
+                            //rotation angle 
+                            angleToY = 0;
+                            XYZ originPoint = lineCurve.Direction;
+                            double xAbs = Math.Abs(originPoint.X);
+                            double yAbs = Math.Abs(originPoint.Y);
+
+                            if (originPoint.X > originPoint.Y || (originPoint.X == originPoint.Y))
+                            {
+                                angleToY = Math.Acos(originPoint.Y);
+                            }
+                            else
+                            {
+                                angleToY = -Math.Acos(originPoint.Y);
+                            }
+                        }
+                        else if (XAxisDirection < 0 && YAxisDirection < 0)
+                        {
+                            //rotation angle 
+                            angleToY = 0;
+                            XYZ originPoint = lineCurve.Direction;
+                            double xAbs = Math.Abs(originPoint.X);
+                            double yAbs = Math.Abs(originPoint.Y);
+
+                            if (originPoint.X > originPoint.Y || (originPoint.X == originPoint.Y))
+                            {
+                                angleToY = Math.Acos(originPoint.Y);
+                            }
+                            else
+                            {
+                                angleToY = -Math.Acos(originPoint.Y);
+                            }
                         }
                         else
                         {
-                            angleToY = Math.Acos(originPoint.Y);
+                            //rotation angle 
+                            angleToY = 0;
+                            XYZ originPoint = lineCurve.Direction;
+                            double xAbs = Math.Abs(originPoint.X);
+                            double yAbs = Math.Abs(originPoint.Y);
+
+                            if (originPoint.X > originPoint.Y || (originPoint.X == originPoint.Y))
+                            {
+                                angleToY = -Math.Acos(originPoint.Y);
+                            }
+                            else
+                            {
+                                angleToY = Math.Acos(originPoint.Y);
+                            }
                         }
                     }
 
@@ -195,9 +306,15 @@ namespace H5Plugins
                     XYZ inserctionPoint = new XYZ(xMidPoint, yMidPoint, minimalElevations.Min());
 
                     //Definindo a família com base nos elementos selecionados
+
+                    //--------------------------------------------------------------A "CAMADA 1" ESTÁ PENDENTE PARA AJUSTE CONFORME OS PERFILADOS...A PARTIR DA DISTANCIA MAXIMA INSERIDA PELO USUÁRIO.
+
+
                     if (numberOfReferences == 1)
                     {
                         familyType = "1 CAMADA";
+
+                        TaskDialog.Show("teste", "Cheguei");
 
                         //Selecionando a família de suporte com base no parametro "familyType" 
                         Collectors myCollector = new Collectors();
@@ -209,22 +326,25 @@ namespace H5Plugins
                         using (Transaction t = new Transaction(doc, "Suportes"))
                         {
                             t.Start();
-                            eleSupport = doc.Create.NewFamilyInstance(inserctionPoint, symbol, levelsList.First(), Autodesk.Revit.DB.Structure.StructuralType.NonStructural);
-                            //Inserindo valores nos parâmetros do suporte
+                            foreach (var point in listPointsNoDups)
+                            {
+                                eleSupport = doc.Create.NewFamilyInstance(point, symbol, levelsList.First(), Autodesk.Revit.DB.Structure.StructuralType.NonStructural);
+                                //Inserindo valores nos parâmetros do suporte
 
-                            double alturaTirante = Math.Round(elevationFace, 4) - Math.Round(minimalElevationsListOrder.ElementAt(0), 4);
-                            Parameter tirante = eleSupport.LookupParameter("H5 Comprimento Tirante");
-                            tirante.SetValueString(alturaTirante.ToString());
+                                double alturaTirante = Math.Round(elevationFace, 4) - Math.Round(minimalElevationsListOrder.ElementAt(0), 4);
+                                Parameter tirante = eleSupport.LookupParameter("H5 Comprimento Tirante");
+                                tirante.SetValueString(alturaTirante.ToString());
 
-                            Parameter elevacaodoNivel = eleSupport.get_Parameter(BuiltInParameter.INSTANCE_ELEVATION_PARAM);
-                            elevacaodoNivel.SetValueString(Math.Round(minimalElevationsListOrder.ElementAt(0), 4).ToString());
+                                Parameter elevacaodoNivel = eleSupport.get_Parameter(BuiltInParameter.INSTANCE_ELEVATION_PARAM);
+                                elevacaodoNivel.SetValueString(Math.Round(minimalElevationsListOrder.ElementAt(0), 4).ToString());
 
-                            //Rotacionando o suporte para que esteja perpendicular as eletrocalhas
-                            LocationPoint location = eleSupport.Location as LocationPoint;
-                            XYZ elementPoint = location.Point;
-                            XYZ p2 = new XYZ(elementPoint.X, elementPoint.Y, elementPoint.Z + 10);
-                            Line axis = Line.CreateBound(elementPoint, p2);
-                            ElementTransformUtils.RotateElement(doc, eleSupport.Id, axis, angleToY);
+                                //Rotacionando o suporte para que esteja perpendicular as eletrocalhas
+                                LocationPoint location = eleSupport.Location as LocationPoint;
+                                XYZ elementPoint = location.Point;
+                                XYZ p2 = new XYZ(elementPoint.X, elementPoint.Y, elementPoint.Z + 10);
+                                Line axis = Line.CreateBound(elementPoint, p2);
+                                ElementTransformUtils.RotateElement(doc, eleSupport.Id, axis, angleToY);
+                            }                            
                             t.Commit();
                         }
                     }
