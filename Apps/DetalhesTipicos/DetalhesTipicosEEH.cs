@@ -25,15 +25,16 @@ namespace H5Plugins
         {
             UIDocument uidoc = app.ActiveUIDocument;
             Document doc = uidoc.Document;
-            DetalhesTipicos01.DetTip2(doc, uidoc);
+            DetalhesTipicosByDWG.AllElements(doc, uidoc);
+            //DocumentViewerMVVM window = new DocumentViewerMVVM();
+            //window.Show();            
         }
 
         public string GetName()
         {
             return this.GetType().Name;
         }
-
-    }
+    }    
 }
 
 

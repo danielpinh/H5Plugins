@@ -78,10 +78,35 @@ namespace H5Plugins
             return IsClosed;
         }
 
+        public bool RunElements<ElementId>(string title, List<ElementId> collection, Action<ElementId> action)
+        {
+            this.Title = title;
+            return RunElements(collection, action);
+        }
+
+        public bool RunElements<ElementId>(List<ElementId> collection, Action<ElementId> action)
+        {
+            if (IsClosed) return IsClosed;
+            Show();
+            this.progressBar.Value = 0;
+            this.progressBar.Maximum = collection.Count();
+
+            foreach (ElementId item in collection)
+            {
+                action?.Invoke(item);
+                if (Update()) break;
+            }
+
+            return IsClosed;
+        }
         private bool Update (double value = 1.0)
         {          
             DoEvents();
+
+            System.Windows.Forms.Application.DoEvents();
+            System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
             progressBar.Value += value;
+
             return IsClosed;
         }
 

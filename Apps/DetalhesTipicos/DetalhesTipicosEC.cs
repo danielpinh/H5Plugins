@@ -21,10 +21,12 @@ namespace H5Plugins
     {
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
-            DetalhesTipicosMVVM.MainView.Show();
+            UIApplication app = commandData.Application;
+            H5Plugins.H5AppExternalApplication.h5App.uiApp = app;
+            H5Plugins.H5AppExternalApplication.h5App.ShowDetalhesTipicosUI();            
             return Result.Succeeded;
         }
-    }        
+    }
 }
        
     

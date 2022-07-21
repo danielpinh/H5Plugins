@@ -5,15 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:H5Plugins"
         mc:Ignorable="d"
-        Title="Detalhes Típicos | Head5 Engenharia" Height="407" Width="295.333">
-    <Grid HorizontalAlignment="Right" Height="378" Margin="0,-2,0,0" VerticalAlignment="Bottom" Width="287" Background="#FFC8C8C8">
+        Title="Detalhes Típicos | Head5 Engenharia" Height="392" Width="295.333">
+    <Grid HorizontalAlignment="Right" Height="361" VerticalAlignment="Top" Width="287" Background="#FFC8C8C8">
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button x:Name="SupportButton" Content="Equip. Mecânicos" Margin="75,0,0,314" Background="#FF273069" BorderBrush="#FF070707" FontFamily="Artifakt Element" Foreground="White" RenderTransformOrigin="0.511,0.071" HorizontalAlignment="Left" Width="130" Height="25" VerticalAlignment="Bottom" Click="SupportButton_Click" FontWeight="Bold"/>
-        <TextBlock Margin="6,0,147,358" TextWrapping="Wrap" VerticalAlignment="Bottom" FontFamily="Artifakt Element" Foreground="#FF2A3C7A" FontWeight="Bold"><Run Text="Selecione"/><Run Text=" a categoria: "/></TextBlock>
+        <TextBlock Margin="6,0,147,396" TextWrapping="Wrap" VerticalAlignment="Bottom" FontFamily="Artifakt Element" Foreground="#FF2A3C7A" FontWeight="Bold"><Run Text="Selecione"/><Run Text=" a categoria: "/></TextBlock>
         <Image Margin="0,0,5,8" Source="/H5Plugins;component/Windows/H5.png" HorizontalAlignment="Right" Width="38" Height="40" VerticalAlignment="Bottom"/>
-        <Button Content="Ligações Flangeadas" Margin="75,0,0,274" Background="#FF273069" BorderBrush="#FF070707" FontFamily="Artifakt Element" Foreground="White" RenderTransformOrigin="0.511,0.071" HorizontalAlignment="Left" Width="130" Height="25" VerticalAlignment="Bottom" FontWeight="Bold"/>
+        <GroupBox Header="Mecânica" HorizontalAlignment="Left" Height="70" Margin="15,25,0,0" VerticalAlignment="Top" Width="255" BorderBrush="#FF273069" Foreground="#FF273069" FontFamily="Artifakt Element" FontWeight="Bold">
+            <Button x:Name="DetalhesTipicosButton" Content="Detalhes Típicos" Margin="60,10,0,0" Background="#FF273069" BorderBrush="#FF070707" FontFamily="Artifakt Element" Foreground="White" RenderTransformOrigin="0.511,0.071" HorizontalAlignment="Left" Width="130" Click="DetalhesTipicosButton_Click" FontWeight="Bold" Height="25" VerticalAlignment="Top"/>
+        </GroupBox>
+        <GroupBox Header="Elétrica" HorizontalAlignment="Left" Height="200" Margin="15,105,0,0" VerticalAlignment="Top" Width="255" BorderBrush="#FF273069" Foreground="#FF273069" FontFamily="Artifakt Element" FontWeight="Bold">
+            <Grid HorizontalAlignment="Left" Height="191" Margin="-6,-8,-6,-6" VerticalAlignment="Top" Width="255">
+                <Button x:Name="ViasDeCabosButton" Content="Vias de Cabos" Margin="65,22,0,0" Background="#FF273069" BorderBrush="#FF070707" FontFamily="Artifakt Element" Foreground="White" RenderTransformOrigin="0.511,0.071" HorizontalAlignment="Left" Width="130" FontWeight="Bold" Height="25" VerticalAlignment="Top"/>
+                <Button x:Name="AterramentoButton" Content="Aterramento" Margin="65,62,0,0" Background="#FF273069" BorderBrush="#FF070707" FontFamily="Artifakt Element" Foreground="White" RenderTransformOrigin="0.511,0.071" HorizontalAlignment="Left" Width="130" Height="25" VerticalAlignment="Top" FontWeight="Bold"/>
+                <Button x:Name="IluminacaoButton" Content="Iluminação" Margin="65,102,0,0" Background="#FF273069" BorderBrush="#FF070707" FontFamily="Artifakt Element" Foreground="White" RenderTransformOrigin="0.511,0.071" HorizontalAlignment="Left" Width="130" Height="25" VerticalAlignment="Top" FontWeight="Bold"/>
+                <Button x:Name="SPDAButton" Content="SPDA" Margin="65,142,0,0" Background="#FF273069" BorderBrush="#FF070707" FontFamily="Artifakt Element" Foreground="White" RenderTransformOrigin="0.511,0.071" HorizontalAlignment="Left" Width="130" Height="25" VerticalAlignment="Top" FontWeight="Bold"/>
+            </Grid>
+        </GroupBox>
     </Grid>
     <!-- Nothing fancy here. Just a window containing the buttons that will convert user actions into requests for Revit. See the code behind for more info -->
 </Window>

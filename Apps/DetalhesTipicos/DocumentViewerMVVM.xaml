@@ -1,0 +1,39 @@
+﻿<Window x:Class="H5Plugins.DocumentViewerMVVM"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:H5Plugins"
+        mc:Ignorable="d"
+        Title="Detalhes Típicos | Head5 Engenharia" Height="827" Width="824">
+    <Grid Height="796" VerticalAlignment="Top" Background="#FFC8C8C8" HorizontalAlignment="Left" Width="816">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Image Margin="0,0,596,6" Source="/H5Plugins;component/Windows/H5.png" HorizontalAlignment="Right" Width="38" Height="40" VerticalAlignment="Bottom"/>
+        <DocumentViewer HorizontalAlignment="Right" VerticalAlignment="Top" Height="796" Width="589" RenderTransformOrigin="0.5,0.5" Foreground="#FF273069" Background="#FFE1E1E8">
+            <DocumentViewer.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.015"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </DocumentViewer.RenderTransform>
+        </DocumentViewer>
+        <ListBox Height="705" ItemsSource="{Binding Path=MainViewModel, UpdateSourceTrigger=PropertyChanged}" Margin="0,40,596,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="213" BorderBrush="#FF273069">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox Content="{Binding Path=NomeDoDetalheTipico}" IsChecked="{Binding Path=IsCheckedDetalheTipicoName, Mode=TwoWay}" Margin="5 5 0 0"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>           
+        <TextBlock HorizontalAlignment="Left" Margin="8,5,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="209" FontFamily="Artifakt Element" FontWeight="Bold" Foreground="#FF273069"><Run Text="Selecione "/><Run Text="os Detalhes"/><Run Text=" Típicos"/><Run Text=" a serem "/><Run Text="exportados: "/></TextBlock>
+        <Button x:Name="DetailsGenerateButton" Content="Gerar Detalhes" HorizontalAlignment="Left" Margin="7,750,0,0" VerticalAlignment="Top" Width="130" Height="25" BorderBrush="#FF090913" Background="#FF273069" Foreground="White" FontFamily="Artifakt Element" FontWeight="Bold" Click="DetailsGenerateButton_Click"/>
+    </Grid>
+    <!-- Nothing fancy here. Just a window containing the buttons that will convert user actions into requests for Revit. See the code behind for more info -->
+</Window>

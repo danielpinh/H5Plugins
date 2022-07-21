@@ -10,19 +10,31 @@ namespace H5Plugins
     public class H5AppExternalApplication : IExternalApplication
     {
         internal static H5AppExternalApplication h5App = new H5AppExternalApplication();
-        internal UIApplication uiApp = null;
-
-        //LISTA DE MATERIAIS APP        
-        internal ExternalEvent scheduleExportEvent = null;        
-        internal ScheduleExportEEH scheduleExportHandler = null;
-        internal ScheduleExportMVVM scheduleExportMVVM = null;        
-        ////ÁREA DE FORMAS APP
-        //internal ExternalEvent areaDeFormasEvent = null;
-        //internal AreaDeFormasEEH areaDeFormas     
-
+        internal UIApplication uiApp = null;    
         public Result OnShutdown(UIControlledApplication application)
         {
             return Result.Succeeded;
+        }
+        /// <summary>
+        /// Custom tool to open new projects by newest templates by Head5 Engenharia.
+        /// </summary>
+        /// <param name="application">An object that is passed to the external application 
+        /// which contains the controlled application.</param>
+        void CreateCommandBinding(UIControlledApplication application)
+        {
+            RevitCommandId commandId = RevitCommandId.LookupCommandId("ID_FILE_NEW_CHOOSE_TEMPLATE");
+            try
+            {
+                AddInCommandBinding importBinding = application.CreateAddInCommandBinding(commandId);
+                importBinding.Executed += new EventHandler<Autodesk.Revit.UI.Events.ExecutedEventArgs>(ImportReplacement);
+            }
+            catch 
+            { }
+        }
+        private void ImportReplacement(object sender, Autodesk.Revit.UI.Events.ExecutedEventArgs arg)
+        {
+            TemplateManagerAppMVVM templateManagerAppMVVM = new TemplateManagerAppMVVM();
+            templateManagerAppMVVM.Show();
         }
 
         public Result OnStartup(UIControlledApplication app)
@@ -30,26 +42,115 @@ namespace H5Plugins
             //CRIANDO O MENU RIBBON COM OS BOTÕES PRINCIPAIS NA INTERFACE DO USUÁRIO
             CreateH5AppMenuRibbon(app);
 
+            CreateCommandBinding(app);
+
             //INSTANCIANDO ESSA APLICAÇÃO            
-            h5App = this;            
+            h5App = this;
             return Result.Succeeded;
         }
 
         //------------------------------------------------------------------JANELAS EXTERNAS PARA OS PLUG-INS 
-
-        //EXPORTAR LISTAS DE MATERIAIS
-        internal void ShowScheduleExportUI()
+        //SCHEDULE EXPORT MECHANICAL APP        
+        internal ExternalEvent scheduleExportMechanicalEvent = null;
+        internal ScheduleExportMechanicalEEH scheduleExportMechanicalHandler = null;
+        internal ScheduleExportMechanicalMVVM scheduleExportMechanicalMVVM = null;
+        internal void ShowScheduleExportMechanicalUI()
         {
-            if (scheduleExportMVVM == null || scheduleExportMVVM.IsLoaded == false)
+            if (scheduleExportMechanicalMVVM == null || scheduleExportMechanicalMVVM.IsLoaded == false)
             {            
                 //CRIANDO O EXTERNAL EVENT               
-                scheduleExportHandler = new ScheduleExportEEH();                
-                scheduleExportEvent = ExternalEvent.Create(scheduleExportHandler);              
+                scheduleExportMechanicalHandler = new ScheduleExportMechanicalEEH();                
+                scheduleExportMechanicalEvent = ExternalEvent.Create(scheduleExportMechanicalHandler);            
                 
+                //INICIALIZANDO A JANELA E PASSANDO O EXTERNAL EVENT
+                scheduleExportMechanicalMVVM = new ScheduleExportMechanicalMVVM(scheduleExportMechanicalEvent);
+                scheduleExportMechanicalMVVM.Show();
+            }
+        }
+
+        //SCHEDULE EXPORT ELECTRICAL APP        
+        internal ExternalEvent scheduleExportElectricalEvent = null;
+        internal ScheduleExportElectricalEEH scheduleExportElectricalHandler = null;
+        internal ScheduleExportElectricalMVVM scheduleExportElectricalMVVM = null;
+        internal void ShowScheduleExportElectricalUI()
+        {
+            if (scheduleExportElectricalMVVM == null || scheduleExportElectricalMVVM.IsLoaded == false)
+            {
+                //CRIANDO O EXTERNAL EVENT               
+                scheduleExportElectricalHandler = new ScheduleExportElectricalEEH();
+                scheduleExportElectricalEvent = ExternalEvent.Create(scheduleExportElectricalHandler);
 
                 //INICIALIZANDO A JANELA E PASSANDO O EXTERNAL EVENT
-                scheduleExportMVVM = new ScheduleExportMVVM(scheduleExportEvent);
-                scheduleExportMVVM.Show();
+                scheduleExportElectricalMVVM = new ScheduleExportElectricalMVVM(scheduleExportElectricalEvent);
+                scheduleExportElectricalMVVM.Show();
+            }
+        }
+
+        //LINK PARAMETER APP       
+        internal ExternalEvent linkParameterEvent = null;
+        internal LinkParameterEEH linkParameterHandler = null;
+        internal LinkParameterMVVM linkParameterMVVM = null;
+        internal void ShowLinkParameterlUI()
+        {
+            if (linkParameterMVVM == null || linkParameterMVVM.IsLoaded == false)
+            {
+                //CRIANDO O EXTERNAL EVENT               
+                linkParameterHandler = new LinkParameterEEH();
+                linkParameterEvent = ExternalEvent.Create(linkParameterHandler);
+
+                //INICIALIZANDO A JANELA E PASSANDO O EXTERNAL EVENT
+                linkParameterMVVM = new LinkParameterMVVM(linkParameterEvent);
+                linkParameterMVVM.Show();
+            }
+        }
+
+        //LOOKUPTABLEMAP APP
+        internal ExternalEvent lookupTableMapEvent = null;
+        internal LookupTableMapEEH lookupTableMapHandler = null;
+        internal LookupTableMapMVVM lookupTableMapMVVM = null;
+        internal void ShowLookupTableMapUI()
+        {
+            if (lookupTableMapMVVM == null || lookupTableMapMVVM.IsLoaded == false)
+            {
+                //CRIANDO O EXTERNAL EVENT               
+                lookupTableMapHandler = new LookupTableMapEEH();
+                lookupTableMapEvent = ExternalEvent.Create(lookupTableMapHandler);
+
+
+                //INICIALIZANDO A JANELA E PASSANDO O EXTERNAL EVENT
+                lookupTableMapMVVM = new LookupTableMapMVVM(lookupTableMapEvent, lookupTableMapHandler);
+                lookupTableMapMVVM.Show();
+            }
+        }
+
+
+        //LOOKUPTABLEMAPPING APP
+        internal LookupTableMappingMVVM lookupTableMappingMVVM = null;
+        internal void ShowLookupTableMappingUI()
+        {
+            if (lookupTableMappingMVVM == null || lookupTableMappingMVVM.IsLoaded == false)
+            {
+                //INICIALIZANDO A JANELA E PASSANDO O EXTERNAL EVENT
+                lookupTableMappingMVVM = new LookupTableMappingMVVM();
+                lookupTableMappingMVVM.Show();
+            }
+        }
+
+        //DETALHES TÍPICOS APP
+        internal ExternalEvent detalhesTipicosEvent = null;
+        internal DetalhesTipicosEEH detalhesTipicosHandler = null;
+        internal DetalhesTipicosMVVM detalhesTipicosMVVM = null;        
+        internal void ShowDetalhesTipicosUI()
+        {
+            if (detalhesTipicosMVVM == null || detalhesTipicosMVVM.IsLoaded == false)
+            {
+                //CRIANDO O EXTERNAL EVENT               
+                detalhesTipicosHandler = new DetalhesTipicosEEH();
+                detalhesTipicosEvent = ExternalEvent.Create(detalhesTipicosHandler);
+
+                //INICIALIZANDO A JANELA E PASSANDO O EXTERNAL EVENT
+                detalhesTipicosMVVM = new DetalhesTipicosMVVM();
+                detalhesTipicosMVVM.Show();
             }
         }
 
@@ -62,76 +163,13 @@ namespace H5Plugins
         //        //CRIANDO O EXTERNAL EVENT               
         //        scheduleExportHandler = new ScheduleExportEEH();
         //        scheduleExportEvent = ExternalEvent.Create(scheduleExportHandler);
-
-
+        //
         //        //INICIALIZANDO A JANELA E PASSANDO O EXTERNAL EVENT
         //        scheduleExportMVVM = new ScheduleExportMVVM(scheduleExportEvent);
         //        scheduleExportMVVM.Show();
         //    }
-        //}
-
-        //------------------------------------------------------------------MÉTODOS PARA CRIAR E PREENCHER O MENU RIBBON
-
-        public RibbonPanel NewMenuRibbonGroup(UIControlledApplication application, string addinName, string groupName)
-        {
-            RibbonPanel newPanel = application.CreateRibbonPanel(addinName, groupName);
-            return newPanel;
-        }
-        public PushButton NewPushButton(string genericName, string buttonName, string buttonPath, string buttonCommand, string toolTip, RibbonPanel panelName, string imageIconSource, string helpAdress)
-        {
-            //Help button adress            
-            ContextualHelp contexHelp = new ContextualHelp(ContextualHelpType.Url, helpAdress);
-
-            //Create a button
-            PushButtonData newPushButtonData = new PushButtonData(genericName, buttonName, buttonPath, buttonCommand);
-            newPushButtonData.SetContextualHelp(contexHelp);
-            newPushButtonData.ToolTip = toolTip;
-
-            //Adding icon to button                        
-            PushButton newpushButton = panelName.AddItem(newPushButtonData) as PushButton;
-            newpushButton.LargeImage = PngImageSource(imageIconSource);
-
-            return newpushButton;
-        }
-
-        public PushButtonData NewPushButtonData(string genericName, string buttonName, string buttonPath, string buttonCommand, string toolTip, string helpAdress)
-        {
-            //Help button adress            
-            ContextualHelp contexHelp = new ContextualHelp(ContextualHelpType.Url, helpAdress);
-
-            //Create a button
-            PushButtonData newPushButtonData = new PushButtonData(genericName, buttonName, buttonPath, buttonCommand);
-            newPushButtonData.SetContextualHelp(contexHelp);
-            newPushButtonData.ToolTip = toolTip;            
-
-            return newPushButtonData;
-        }
-        public SplitButton NewSplitButton(RibbonPanel panel, string toolTip, string splitButtonGenericName, string splitButtonName, string imageIconSource, string helpAdress)
-        {
-            //Help button adress            
-            ContextualHelp contexHelp = new ContextualHelp(ContextualHelpType.Url, helpAdress);
-
-            //Create a Split Button
-            SplitButtonData splitButtonData = new SplitButtonData(splitButtonGenericName, splitButtonName);
-            splitButtonData.Name = splitButtonName;
-            splitButtonData.Text = splitButtonName;            
-            splitButtonData.LargeImage = PngImageSource(imageIconSource);
-            splitButtonData.ToolTip = toolTip;
-            splitButtonData.SetContextualHelp(contexHelp);
-
-            //Add icon to button
-            SplitButton newsplitButton = panel.AddItem(splitButtonData) as SplitButton;          
-
-            return newsplitButton;
-        }
-
-        private System.Windows.Media.ImageSource PngImageSource(string embeddedPath)
-        {
-            Stream stream = this.GetType().Assembly.GetManifestResourceStream(embeddedPath);
-            var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
-
-            return decoder.Frames[0];
-        }           
+        //}       
+        //------------------------------------------------------------------BOTÕES NO MENU RIBBON 
 
         private void CreateH5AppMenuRibbon(UIControlledApplication app)
         {
@@ -145,16 +183,18 @@ namespace H5Plugins
             //Help adress for buttons
             string helpAdress = @"https://www.head5.com.br/";
 
+            //---------------------------------------------------------------CREATING MENU RIBBON PANELS            
+
             //Ribbon Menu Groups
-            RibbonPanel panelMec = NewMenuRibbonGroup(app, addinName, "Mecânica");
+            RibbonPanel panelMec = NewMenuRibbonGroup(app, addinName, "Mecânica");            
             RibbonPanel panelCiv = NewMenuRibbonGroup(app, addinName, "Civil");
             RibbonPanel panelGer = NewMenuRibbonGroup(app, addinName, "Geral");
             //RibbonPanel panelEle = NewMenuRibbonGroup(app, addinName, "Elétrica");
             RibbonPanel panelAbout = NewMenuRibbonGroup(app, addinName, "Sobre");
-            //RibbonPanel panelSupport = NewMenuRibbonGroup(app, addinName, "Suportes");
+            //RibbonPanel panelSupport = NewMenuRibbonGroup(app, addinName, "Suportes");          
 
-            //Adding buttons
-            //
+            //---------------------------------------------------------------ADDING BUTTONS TO MENU RIBBON PANELS            
+
             //Detalhes Típicos            
             PushButton detalhesTipicos = NewPushButton("Button1", String.Format("Detalhes" + Environment.NewLine + "Típicos"),
                 path,
@@ -194,7 +234,7 @@ namespace H5Plugins
             //Lookup Table Mapping    
             PushButton lookupTableMapping = NewPushButton("Button5", String.Format("Mapear" + Environment.NewLine + "Lookup Tables"),
                 path,
-                "H5Plugins.LookupExternalCommand",
+                "H5Plugins.LookupTableMapEC",
                 "Atribui os Códigos Internos e de Fabricantes às Famílias de Sistema",
                 panelGer,
                 "H5Plugins.Resources.LookupTableMapping.png",
@@ -276,7 +316,7 @@ namespace H5Plugins
             //PushButton - Lista de Materiais - Elétrica
             PushButtonData scheduleExportPushButtonDataEletrica = NewPushButtonData("Button12", String.Format("Lista de Materiais: Elétrica"),
                 path,
-                "H5Plugins.ScheduleExportEletricaEC",
+                "H5Plugins.ScheduleExportElectricalEC",
                 "Exporta as tabelas de quantitativo em formato .xls",                
                 helpAdress);
             PushButton scheduleExportPushButtonEletrica  = scheduleExportSplitButton.AddPushButton(scheduleExportPushButtonDataEletrica);
@@ -285,7 +325,7 @@ namespace H5Plugins
             //PushButton - Lista de Materiais - Mecânica
             PushButtonData scheduleExportPushButtonDataMecanica = NewPushButtonData("Button13", String.Format("Lista de Materiais: Mecânica"),
                 path,
-                "H5Plugins.ScheduleExportMecanicaEC",
+                "H5Plugins.ScheduleExportMechanicalEC",
                 "Exporta as tabelas de quantitativo em formato .xls",                
                 helpAdress);
             PushButton scheduleExportPushButtonMecanica = scheduleExportSplitButton.AddPushButton(scheduleExportPushButtonDataMecanica);
@@ -303,8 +343,17 @@ namespace H5Plugins
                 "H5Plugins.Resources.AreaDeFormas.png",
                 helpAdress);
 
+            //LINK PARAMETER          
+            PushButton linkParameter = NewPushButton("Button15", String.Format("Vincular" + Environment.NewLine + "Parâmetros"),
+                path,
+                "H5Plugins.LinkParameterEC",
+                "Atribui o valor do Parâmetro H5 Sistema às famílias aninhadas às famílias selecionadas",
+                panelMec,
+                "H5Plugins.Resources.LookupTableMapping.png",
+                helpAdress);
+
             //Sobre a Head5   
-            PushButton aboutButton = NewPushButton("Button15", String.Format("Head5"),
+            PushButton aboutButton = NewPushButton("Button16", String.Format("Head5"),
                 path,
                 "H5Plugins.About",
                 "Mais que Projetos. Engenharia Aplicada à Inovação.",
@@ -314,6 +363,69 @@ namespace H5Plugins
 
             //Adding ToolTipImage to a about button
             aboutButton.ToolTipImage = PngImageSource("H5Plugins.Resources.Sobre.png");
+        }
+
+        //------------------------------------------------------------------MÉTODOS PARA CRIAR E PREENCHER O MENU RIBBON
+
+        public RibbonPanel NewMenuRibbonGroup(UIControlledApplication application, string addinName, string groupName)
+        {
+            RibbonPanel newPanel = application.CreateRibbonPanel(addinName, groupName);            
+            return newPanel;
+        }
+        public PushButton NewPushButton(string genericName, string buttonName, string buttonPath, string buttonCommand, string toolTip, RibbonPanel panelName, string imageIconSource, string helpAdress)
+        {
+            //Help button adress            
+            ContextualHelp contexHelp = new ContextualHelp(ContextualHelpType.Url, helpAdress);
+
+            //Create a button
+            PushButtonData newPushButtonData = new PushButtonData(genericName, buttonName, buttonPath, buttonCommand);
+            newPushButtonData.SetContextualHelp(contexHelp);
+            newPushButtonData.ToolTip = toolTip;
+
+            //Adding icon to button                        
+            PushButton newpushButton = panelName.AddItem(newPushButtonData) as PushButton;
+            newpushButton.LargeImage = PngImageSource(imageIconSource);
+
+            return newpushButton;
+        }
+
+        public PushButtonData NewPushButtonData(string genericName, string buttonName, string buttonPath, string buttonCommand, string toolTip, string helpAdress)
+        {
+            //Help button adress            
+            ContextualHelp contexHelp = new ContextualHelp(ContextualHelpType.Url, helpAdress);
+
+            //Create a button
+            PushButtonData newPushButtonData = new PushButtonData(genericName, buttonName, buttonPath, buttonCommand);
+            newPushButtonData.SetContextualHelp(contexHelp);
+            newPushButtonData.ToolTip = toolTip;
+
+            return newPushButtonData;
+        }
+        public SplitButton NewSplitButton(RibbonPanel panel, string toolTip, string splitButtonGenericName, string splitButtonName, string imageIconSource, string helpAdress)
+        {
+            //Help button adress            
+            ContextualHelp contexHelp = new ContextualHelp(ContextualHelpType.Url, helpAdress);
+
+            //Create a Split Button
+            SplitButtonData splitButtonData = new SplitButtonData(splitButtonGenericName, splitButtonName);
+            splitButtonData.Name = splitButtonName;
+            splitButtonData.Text = splitButtonName;
+            splitButtonData.LargeImage = PngImageSource(imageIconSource);
+            splitButtonData.ToolTip = toolTip;
+            splitButtonData.SetContextualHelp(contexHelp);
+
+            //Add icon to button
+            SplitButton newsplitButton = panel.AddItem(splitButtonData) as SplitButton;
+
+            return newsplitButton;
+        }
+
+        public System.Windows.Media.ImageSource PngImageSource(string embeddedPath)
+        {
+            Stream stream = this.GetType().Assembly.GetManifestResourceStream(embeddedPath);
+            var decoder = new PngBitmapDecoder(stream, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
+
+            return decoder.Frames[0];
         }
 
 

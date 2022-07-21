@@ -1,0 +1,179 @@
+﻿<Window x:Class="H5Plugins.LookupTableMapReportMVVM"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:H5Plugins"
+        mc:Ignorable="d"
+        Title="Lookup Table Mapping - Relatório | Head5 Engenharia" Height="500" Width="800" Loaded="Window_Loaded">
+    <Grid Margin="0,0,0,0" 
+          Background="#FFF1F1F1">
+        <DataGrid x:Name="ReportDatagrid" 
+                      BorderBrush="#FF2A3C7A"
+                      Background="#FFF3F3F3"
+                      BorderThickness="2"  
+                      Margin="11,10,11,50"
+                      Width="770"
+                      Height="400"
+                      HorizontalScrollBarVisibility="Auto"
+                      CanUserResizeColumns="False"
+                      CanUserSortColumns="False"
+                      CanUserResizeRows="False"
+                      ColumnWidth="Auto"
+                      CanUserAddRows="False" 
+                      SelectionMode="Extended"
+                      SelectionUnit="FullRow"  
+                      CanUserDeleteRows="False"
+                      CanUserReorderColumns="False" 
+                      HorizontalGridLinesBrush="#FFB9B9B9" 
+                      VirtualizingStackPanel.VirtualizationMode="Standard"
+                      AutoGenerateColumns="False"
+                      VerticalGridLinesBrush="#FFB9B9B9" 
+                      FontSize="12">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="VerticalContentAlignment" Value="Center"/>
+                    <Setter Property="SeparatorVisibility" Value="Visible"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                    <Setter Property="Background" Value="#FFB9B9B9"/>
+                    <Setter Property="FontStyle" Value="Normal"/>
+                    <Setter Property="FontFamily" Value="Artifakt Element"/>
+                    <Setter Property="Height" Value="35"/>
+                    <Setter Property="SeparatorBrush" Value="#FFC1C1C1"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Style>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                            <Setter Property="Background" Value="#FF98A9D5" />
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Família" 
+                                    IsReadOnly="True"                                    
+                                    Binding="{Binding FamilyName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                    FontWeight="SemiBold"
+                                    Foreground="Black">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Background" Value="#FFE6E5E3"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Setter Property="FontStyle" Value="Normal"/>
+                            <Setter Property="SeparatorBrush" Value="Black"/>
+                            <Setter Property="Margin" Value="0,0,1,0"/>
+                            <Setter Property="SeparatorVisibility" Value="Visible"/>
+                            <Setter Property="BorderBrush" Value="#FF707070"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#FF98A9D5"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter Property="Background" Value="#FF707070"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Left"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="FontFamily" Value="Artifakt Element"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="ID" 
+                                    IsReadOnly="True"
+                                    Binding="{Binding FamilyId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                    Foreground="Black">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Background" Value="#FFE6E5E3"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Setter Property="FontStyle" Value="Normal"/>
+                            <Setter Property="SeparatorBrush" Value="Black"/>
+                            <Setter Property="Margin" Value="0,0,1,0"/>
+                            <Setter Property="SeparatorVisibility" Value="Visible"/>
+                            <Setter Property="BorderBrush" Value="#FF707070"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#FF98A9D5"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter Property="Background" Value="#FF707070"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="FontFamily" Value="Artifakt Element"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Resultado" 
+                                    Foreground="Black"
+                                    MinWidth="600"
+                                    IsReadOnly="True" 
+                                    Binding="{Binding Result, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                    FontWeight="Normal">
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Background" Value="#FFE6E5E3"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Setter Property="FontStyle" Value="Normal"/>
+                            <Setter Property="SeparatorBrush" Value="Black"/>
+                            <Setter Property="Margin" Value="0,0,1,0"/>
+                            <Setter Property="SeparatorVisibility" Value="Visible"/>
+                            <Setter Property="BorderBrush" Value="#FF707070"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="true">
+                                    <Setter Property="Background" Value="#FF98A9D5"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter Property="Background" Value="#FF707070"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Left"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="FontFamily" Value="Artifakt Element"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="Ok_Button" Cursor="Hand" 
+                Content="OK" 
+                Margin="642,0,0,10"
+                Background="#FF2A3C7A" 
+                BorderBrush="Black"
+                FontFamily="Artifakt Element"
+                Foreground="White" 
+                Click="Ok_Button_Click"
+                HorizontalAlignment="Left"
+                Width="140" Height="25" 
+                VerticalAlignment="Bottom" FontWeight="Bold"/>
+    </Grid>
+</Window>

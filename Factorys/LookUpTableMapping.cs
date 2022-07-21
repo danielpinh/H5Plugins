@@ -41,28 +41,33 @@ namespace H5Plugins
 
         public string LookupByOneHeader(string keyHeader, string keyValue, string headerToSearchValue, string csvPath) 
         {
+            string parameterValue = "null";
 
-            string rowValue = "";
-
-            //Key Header List
-            var keyHeaderListColumnValues = CsvColumnListValuesByHeader(keyHeader, csvPath);          
-
-            //Head5 Code List
-            var listToSearchValue = CsvColumnListValuesByHeader(headerToSearchValue, csvPath);
-
-            //Search Parameter Value
-            for (int i = 0; i < keyHeaderListColumnValues.Count; i++)
+            try
             {
-                if (keyHeaderListColumnValues[i] == keyValue)
-                {
-                    rowValue += i.ToString();
-                }
-            }
+                string rowValue = "";
 
-            // Return final value
-            string parameterValue = ValueByCsvColumnListAndRowIndex(listToSearchValue, rowValue);      
-            return parameterValue; 
-           
+                //Key Header List
+                var keyHeaderListColumnValues = CsvColumnListValuesByHeader(keyHeader, csvPath);
+
+                //Head5 Code List
+                var listToSearchValue = CsvColumnListValuesByHeader(headerToSearchValue, csvPath);
+
+                //Search Parameter Value
+                for (int i = 0; i < keyHeaderListColumnValues.Count; i++)
+                {
+                    if (keyHeaderListColumnValues[i] == keyValue)
+                    {
+                        rowValue += i.ToString();
+                    }
+                }
+
+                // Return final value
+                parameterValue = ValueByCsvColumnListAndRowIndex(listToSearchValue, rowValue);
+            }
+            catch { }
+          
+            return parameterValue;            
         }
         public List<string> CsvColumnListValuesByHeader(string header, string csvPath)
         {
@@ -71,26 +76,31 @@ namespace H5Plugins
             var columnValues = new List<string>();
             string keyColumnValue = "";
 
-            //Path to acess the .csv file
-            string[] csvLines = System.IO.File.ReadAllLines(csvPath);
+            try
+            {
+                //Path to acess the .csv file
+                string[] csvLines = System.IO.File.ReadAllLines(csvPath);
 
-            //Split each row into column data and create an array of strings with each row into a new List
-            for (int i = 0; i < csvLines.Length; i++)
-            {
-                csvList.Add(csvLines[i].Split(';'));
-            }
-            //Creating a column lis based on header value
-            for (int j = 0; j < csvList.Count; j++)
-            {
-                for (int z = 0; z < csvList[j].Length; z++)
+                //Split each row into column data and create an array of strings with each row into a new List
+                for (int i = 0; i < csvLines.Length; i++)
                 {
-                    if (csvList[j][z] == header)
-                    {
-                        keyColumnValue += z.ToString();
-                    }
+                    csvList.Add(csvLines[i].Split(';'));
                 }
-                columnValues.Add(csvList[j][int.Parse(keyColumnValue)]);
+                //Creating a column lis based on header value
+                for (int j = 0; j < csvList.Count; j++)
+                {
+                    for (int z = 0; z < csvList[j].Length; z++)
+                    {
+                        if (csvList[j][z] == header)
+                        {
+                            keyColumnValue += z.ToString();
+                        }
+                    }
+                    columnValues.Add(csvList[j][int.Parse(keyColumnValue)]);
+                }
             }
+            catch { }
+            
             return columnValues;
         }
         public string ValueByCsvColumnListAndRowIndex(List<string> List, string rowValue)
@@ -99,6 +109,4 @@ namespace H5Plugins
             return myValue;
         }
     }
-
-
 }
